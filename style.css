@@ -1,0 +1,670 @@
+/* ### Schriftart-Definition ### */
+@font-face {
+  font-family: "Sixtyfour Convergence";
+  src: url('./fonts/SixtyfourConvergence-Regular-VariableFont_BLED,SCAN,XELA,YELA.ttf')
+}
+
+
+html{
+  font-family: "Sixtyfour Convergence";
+  font-weight: bolder;
+  font-variation-settings: "BLED" 0, "SCAN" 22, "XELA" 100, "YELA" -100;
+  color: rgb(133, 28, 28);
+}
+
+/* ### Allgemeine Body-Styles ### */
+body {
+  background-color: rgba(13, 1, 68, 0.76);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-image: url(./img/image-asset.gif);
+  background-position: center;
+  background-size: cover;
+}
+
+/* ### Überschriften ### */
+h1 {
+  background-color: rgb(0 0 0 / 75%);
+  font-weight: bolder;
+  font-variation-settings: "BLED" 0, "SCAN" 22, "XELA" 100, "YELA" -100;
+}
+
+h2 {
+  position: absolute;
+  top: 870px;
+  font-size: 60px;
+  margin: 0px;
+}
+
+h3 {
+  
+background-color: rgba(0, 0, 0, 0.377);
+  font-weight: bolder;
+  font-size: 50px;
+  font-variation-settings: "BLED" 0, "SCAN" 22, "XELA" 100, "YELA" -100;
+  text-align: center;
+}
+
+h4, h5 {
+  font-size: 60px;
+  margin: 0px;
+  margin-top: 20px;
+}
+
+/* ### Text und Absätze ### */
+p {
+  font-size: 35px;
+}
+
+span {
+  line-height: 2;
+}
+
+/* ### Button-Styles ### */
+button {
+  font-family: "Sixtyfour Convergence";
+    color: rgb(255, 0, 0);
+    font-weight: bolder;
+    font-variation-settings: "BLED" 0, "SCAN" 22, "XELA" 100, "YELA" -100;
+    padding: 10px 40px;
+    font-size: 25px;
+    background-color: #333;
+    text-shadow: 0 2px 0 rgb(0 0 0 / 25%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 0;
+    z-index: 1;
+    user-select: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: unset;
+    padding: .8rem 1.5rem;
+    text-decoration: none;
+    font-weight: 900;
+    transition: all 0.7s cubic-bezier(0,.8,.26,.99);
+    width: 350px;
+    height: 70px;
+ }
+
+button:before {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: '';
+  transition: .7s cubic-bezier(0,.8,.26,.99);
+  z-index: -1;
+  background-color: #333!important;
+  box-shadow: 0 -4px rgb(0 0 0 / 50%) inset, 0 4px rgb(255 255 255 / 20%) inset, -4px 0 rgb(255 255 255 / 20%) inset, 4px 0 rgb(0 0 0 / 50%) inset;
+}
+
+button:after {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: '';
+  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
+  transition: .7s cubic-bezier(0,.8,.26,.99);
+}
+
+button:hover:before {
+  box-shadow: 0 -4px rgb(0 0 0 / 50%) inset, 0 4px rgb(255 255 255 / 20%) inset, -4px 0 rgb(255 255 255 / 20%) inset, 4px 0 rgb(0 0 0 / 50%) inset;
+}
+
+button:hover:after {
+  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
+button:active:after {
+  box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
+}
+
+/* ### Canvas-Styles ### */
+canvas {
+  background-color: rgb(0, 0, 0);
+  display: block;
+}
+
+/* ### Container-Styles ### */
+#Container {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* ### Alarm-Bomben-Styles ### */
+.alertBomb {
+  font-size: 35px;
+  height: 180px;
+  position: absolute;
+  bottom: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.712);
+  flex-direction: column;
+  border: 1px solid red;
+  width: 720px;
+}
+
+.alertBomb img {
+  width: 50px;
+  height: 50px;
+}
+
+/* ### Game-Over-Styles ### */
+.gameOver {
+  width: 400px;
+  font-size: 20px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 7, 7, 0.822);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation: fadeIn 2s ease-in;
+  z-index: 1;
+}
+
+.gameOverBtn {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: -100px;
+}
+
+.gameOverImg {
+  
+  height: 1000px;
+}
+
+.gameOverRetry {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 700px;
+}
+
+/* ### You-Win-Styles ### */
+.youWin {
+  width: 400px;
+  font-size: 20px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 7, 7, 0.822);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url(./img/EndGame.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  animation: fadeIn 2s ease-in;
+  text-align: center;
+}
+
+.youWin img {
+  width: 700px;
+  height: 700px;
+}
+
+/* ### Steuerungs-Buttons ### */
+.controllBtn {
+  background-color: #000000c0;
+  width: 600px;
+  height: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 20px;
+  margin-top: 150px;
+  flex-direction: row;
+}
+
+#restart{
+  display: none;
+}
+
+.controllBtn img {
+  width: 70px;
+  height: 70px;
+}
+
+.controllBtn img:hover {
+  filter: drop-shadow(3px 2px 2px rgba(255, 255, 255, 0.342));
+  transform: scale(1.1);
+}
+
+/* ### Startseiten-Styles ### */
+.startPage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.canvas-slide {
+  animation: slideUpCanvas 1s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  background-color: #0000009d;
+}
+
+.homeBtn {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+/* ### Back-Button-Styles ### */
+.containerStartPage button {
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* ### Story-Styles ### */
+.story p {
+  max-width: 900px;
+  font-size: 1.2rem;
+  line-height: 2;
+}
+
+/* ### Container für dynamische Inhalte ### */
+.containerStartPage {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.61);
+  z-index: 999;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.show-container {
+  opacity: 1;
+  visibility: visible;
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.hide-container {
+  opacity: 0;
+  visibility: hidden;
+  animation: slideOut 0.5s ease-in forwards;
+}
+
+/* ### Steuerungs-, Story- und Missionsinfo-Styles ### */
+.controls, .story, .missionInfo {
+  margin-top: 50px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  color: #ff0000;
+  width: 100%;
+  height: 100%;
+  font-variation-settings: "BLED" 2, "SCAN" 50, "XELA" 10, "YELA" 1;
+  font-size: -webkit-xxx-large;
+  color: #ff0000;
+}
+
+.ctrimg{
+  width: 40px;
+  height: 40px;
+}
+
+.bombimg{
+  width: 60px;
+  height: 40px;
+}
+
+.phoneControllBtn{
+  position: absolute;
+  bottom: 0px;
+  display: none;
+  justify-content: space-evenly;
+  gap: 400px;
+
+}
+
+.controllBtn.fullscreen {
+  position: fixed;
+  top: 100px;
+  right: 150px;
+  margin: 0px;
+  background-color: #000000c0;
+    width: 600px;
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 20px;
+   flex-direction: row;
+}
+
+.alertBomb.fullscreen {
+  font-size: 25px;
+  height: 110px;
+  position: absolute;
+  top: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.712);
+  flex-direction: column;
+  border: 1px solid red;
+  width: 600px;
+  right: 150px;
+}
+
+
+/* ### Keyframe-Animationen ### */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpCanvas {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideIn {
+  0% { transform: translateY(-30px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes slideOut {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
+}
+
+
+
+
+
+
+/* Overlay nur anzeigen, wenn die Bildschirmbreite <= 768px und im Portrait-Modus */
+@media only screen and (max-width: 1024px) and (orientation: portrait) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* Weißer Hintergrund */
+    background-image: url('./img/PhoneRotate.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* Im Landscape-Modus (oder in anderen Fällen) soll das Overlay nicht erscheinen */
+@media only screen and (orientation: landscape) {
+  body::before {
+    display: none;
+  }
+
+
+
+}
+
+/* ### Responsive Styles für Smartphones ### */
+
+@media only screen and (max-height: 1024px) {
+ #fullscreenButton{
+  display: none;
+ }
+
+ #restart{
+  display: flex;
+ }
+ 
+  canvas{
+   width: 70%;
+ }
+ 
+  .controllBtn{
+    margin-top: 15px;
+  }
+
+  h2{
+    display:none
+  }
+
+  .phoneControllBtn {
+    display: flex;
+    background: hsl(0deg 0% 13% / 85%);
+    margin-bottom: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    border-radius: 150px;
+}
+
+   .ctrimg{
+      width: 50px;
+      height: 50px;
+    }
+
+  .bombimg{
+      width: 70px;
+      height: 50px;
+    }
+
+    .gameOverImg {
+      height: -webkit-fill-available;
+  }
+
+  .gameOverBtn {
+   margin-bottom: 20px;
+  }
+}
+
+@media only screen and (max-width: 915px) {
+  canvas {
+    width: 100vw;
+  }
+
+}
+
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100vh;
+  }
+
+  .phoneControllBtn{
+    display: flex;
+    margin-bottom: 0px;
+    height: 15px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.212);
+   }
+
+  
+.ctrimg{
+  width: 40px;
+  height: 40px;
+}
+
+.bombimg{
+  width: 40px;
+  height: 40px;
+}
+
+
+  #restart{
+    display: flex
+  }
+
+  .controllBtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    height: 50px;
+    width: 250px;
+    margin-top: 0px;
+}
+
+.controls, .story, .missionInfo {
+   margin-top: 0px;
+  }
+
+
+
+ .controllBtn img {
+  max-width: 35px;
+  height: 35px;
+ }
+
+  .gameOverImg{
+     max-height: 100%;
+  }
+
+  h3{
+    font-size: 35px;
+  }
+
+  #fullscreenButton{
+    display: none;
+  }
+
+  button {
+    width: 190px;
+    height: 40px;
+    font-size: 10px;
+}
+
+  .gameOverBtn{
+    margin-top: -80px;
+  }
+
+  h4 {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+
+  h5{
+    font-size: 15px;
+  }
+
+  .story p{
+    font-size: 8px;
+    
+  }
+
+  span{
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 10px;
+    margin: 10px;
+  }
+
+  h2 {
+    display: none;}
+
+    .homeBtn {
+    margin-top: 5px;
+    gap: 10px;
+  }
+
+  .alertBomb {
+    font-size: 10px;
+    height: fit-content;
+    border: 3px solid red;
+    width: 230px;
+    top: 90px;
+    right: 20px;
+    padding: 2px;
+    position: fixed;
+    top: 70px;
+}
+
+.alertBomb img {
+  width: 30px;
+  height: 30px;
+}
+}
+
+@media(max-height: 414px){
+  .gameOverBtn {
+    margin-top: -80px;
+  }
+}
+
+canvas.fullscreen{
+  width: 90%;
+  height: 1130px;
+}
+
+
+
+
+
+
+
+
+  
