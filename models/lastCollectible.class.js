@@ -1,23 +1,25 @@
 /**
- * Class representing the last collectible item in the game.
- * This item plays background music when the character is near.
+ * Klasse, die das letzte sammelbare Objekt im Spiel repräsentiert.
+ * Dieses Objekt spielt Hintergrundmusik, wenn sich der Charakter in der Nähe befindet.
  */
 class LastCollectible extends MovableObject {
     /**
-     * @property {number} width - The width of the collectible.
-     * @property {number} height - The height of the collectible.
-     * @property {boolean} musicPlayed - Indicates whether the music has been played.
-     * @property {boolean} isMusicPaused - Indicates whether the music is paused.
-     * @property {boolean} isMuted - Indicates whether the music is muted.
+     * @property {number} width - Die Breite des sammelbaren Objekts.
+     * @property {number} height - Die Höhe des sammelbaren Objekts.
+     * @property {boolean} musicPlayed - Gibt an, ob die Musik bereits abgespielt wurde.
+     * @property {boolean} isMusicPaused - Gibt an, ob die Musik pausiert ist.
+     * @property {boolean} isMuted - Gibt an, ob die Musik stummgeschaltet ist.
+     * @property {Audio} music - Die Audio-Instanz für die Hintergrundmusik.
      */
     width = 250;
     height = 250;
     musicPlayed = false;
     isMusicPaused = false;
     isMuted = false;
+    music = null;
 
     /**
-     * Creates an instance of LastCollectible.
+     * Erstellt eine Instanz von LastCollectible und lädt das Bild des Objekts.
      */
     constructor() {
         super().loadImage('./img/Ship6.webp');
@@ -26,18 +28,19 @@ class LastCollectible extends MovableObject {
     }
 
     /**
-     * Checks if the collectible is within the character's visibility range and plays music.
-     * @param {Object} character - The character object.
+     * Überprüft, ob sich das sammelbare Objekt im Sichtbereich des Charakters befindet, 
+     * und spielt Musik ab, falls es noch nicht abgespielt wurde.
+     * @param {Object} character - Das Charakter-Objekt, das die Position des Spielers enthält.
      */
     checkVisibility(character) {
-        const viewDistance = 600;
-        if (!this.musicPlayed && Math.abs(character.x - this.x) < viewDistance) {
+        const sichtweite = 600;
+        if (!this.musicPlayed && Math.abs(character.x - this.x) < sichtweite) {
             this.playMusic();
         }
     }
 
     /**
-     * Plays background music when the collectible is visible.
+     * Erstellt die Audio-Instanz und startet die Hintergrundmusik, falls das Objekt sichtbar ist.
      */
     playMusic() {
         if (!this.music) {
@@ -52,14 +55,14 @@ class LastCollectible extends MovableObject {
             this.resumeMusic();
         } else if (this.music.paused) {
             this.music.play().catch(() => {
-                // Handle autoplay block
+                console.warn("Autoplay blockiert, Interaktion erforderlich.");
             });
             this.musicPlayed = true;
         }
     }
 
     /**
-     * Stops the background music.
+     * Stoppt die Hintergrundmusik und setzt den Pausenstatus.
      */
     stopMusic() {
         if (this.music && !this.music.paused) {
@@ -69,20 +72,22 @@ class LastCollectible extends MovableObject {
     }
 
     /**
-     * Resumes the background music if it was paused.
+     * Setzt die Hintergrundmusik fort, falls sie pausiert war und nicht stummgeschaltet ist.
      */
     resumeMusic() {
         if (this.music && this.isMusicPaused && !this.isMuted) {
             this.music.play().catch(() => {
-                // Handle resume block
+                console.warn("Fehler beim Fortsetzen der Wiedergabe.");
             });
             this.isMusicPaused = false;
         }
     }
 
     /**
-     * Toggles the mute state of the background music.
-     * @param {boolean} isMuted - The mute state to be applied.
+     * Schaltet den Stummschaltungsstatus der Hintergrundmusik um.
+     * Wenn die Musik stummgeschaltet wird, wird sie gestoppt. 
+     * Wenn die Stummschaltung aufgehoben wird, wird die Musik fortgesetzt.
+     * @param {boolean} isMuted - Der neue Stummschaltungsstatus (true = stumm, false = laut).
      */
     toggleMute(isMuted) {
         this.isMuted = isMuted;
@@ -94,5 +99,25 @@ class LastCollectible extends MovableObject {
                 this.resumeMusic();
             }
         }
+    }
+
+    /**
+     * Setzt die Position des sammelbaren Objekts neu.
+     * @param {number} x - Die neue X-Koordinate.
+     * @param {number} y - Die neue Y-Koordinate.
+     */
+    setPosition(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * Setzt die Größe des sammelbaren Objekts neu.
+     * @param {number} width - Die neue Breite des Objekts.
+     * @param {number} height - Die neue Höhe des Objekts.
+     */
+    setSize(width, height) {
+        this.width = width;
+        this.height = height;
     }
 }

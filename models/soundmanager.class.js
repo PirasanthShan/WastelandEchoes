@@ -1,7 +1,7 @@
 /**
  * Klasse zur Verwaltung von Spielsounds.
  */
-class SoundManager {
+class SoundManager{
   /**
    * Erstellt eine Instanz des SoundManagers.
    */

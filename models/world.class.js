@@ -42,7 +42,7 @@ class World {
   collectibleBar = new CollectibleBar();
 
   /** @type {CollectibleBar2} Die Sammelleiste für Kristalle. */
-  crystalBar = new CollectibleBar2();
+  crystalBar = new CollectibleBarCrystal();
 
   /** @type {number} Die Anzahl der Bomben, die der Charakter besitzt. */
   characterBombs = 5;
@@ -92,7 +92,7 @@ class World {
     this.interfaceRenderer.renderGameOver();
     this.lastCollectible = new LastCollectible();
     this.interfaceRenderer.renderControllButtons();
-    this.crystalBar = new CollectibleBar2();
+    this.crystalBar = new CollectibleBarCrystal();
   }
 
   /**

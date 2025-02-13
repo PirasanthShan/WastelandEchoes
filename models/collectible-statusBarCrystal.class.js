@@ -5,7 +5,7 @@
  * @class CollectibleBar2
  * @extends {MovableObject}
  */
-class CollectibleBar2 extends MovableObject {
+class CollectibleBarCrystal extends MovableObject {
   width = 220;
   height = 40;
   IMAGES = [
