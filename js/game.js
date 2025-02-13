@@ -1,5 +1,21 @@
+/** 
+ * @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird.
+ */
 let canvas;
+
+/**
+ * @type {World} Die Spielwelt, die alle Objekte und Logik enthält.
+ */
 let world;
+
+/**
+ * @type {Object} Ein Objekt, das den Zustand der Tastatureingaben speichert.
+ * @property {boolean} RIGHT - Gibt an, ob die rechte Pfeiltaste gedrückt ist.
+ * @property {boolean} LEFT - Gibt an, ob die linke Pfeiltaste gedrückt ist.
+ * @property {boolean} UP - Gibt an, ob die obere Pfeiltaste gedrückt ist.
+ * @property {boolean} DOWN - Gibt an, ob die untere Pfeiltaste gedrückt ist.
+ * @property {boolean} SPACE - Gibt an, ob die Leertaste gedrückt ist.
+ */
 let gameKeyboard = {
   RIGHT: false,
   LEFT: false,
@@ -8,7 +24,9 @@ let gameKeyboard = {
   SPACE: false,
 };
 
-// Hilfsfunktion zum Zurücksetzen der Tastenzustände
+/**
+ * Setzt alle Tastenzustände im `gameKeyboard`-Objekt auf `false` zurück.
+ */
 function resetKeyboard() {
   gameKeyboard.RIGHT = false;
   gameKeyboard.LEFT = false;
@@ -17,6 +35,11 @@ function resetKeyboard() {
   gameKeyboard.SPACE = false;
 }
 
+/**
+ * Initialisiert das Spiel:
+ * - Holt das Canvas-Element aus dem DOM.
+ * - Erstellt eine neue Spielwelt (`World`) und weist sie der Variable `world` zu.
+ */
 function init() {
   canvas = document.getElementById("canvas");
   if (!canvas) {
@@ -25,8 +48,13 @@ function init() {
   world = new World(canvas, gameKeyboard);
 }
 
-// Keydown-Listener: Verarbeiten nur, wenn das Spiel läuft
+/**
+ * Event-Listener für Tastendruck-Ereignisse (`keydown`).
+ * Aktualisiert den Zustand der Tasten im `gameKeyboard`-Objekt, wenn das Spiel läuft.
+ * @param {KeyboardEvent} e - Das Tastatur-Ereignis.
+ */
 window.addEventListener("keydown", (e) => {
+  // Verarbeite Tastendrücke nur, wenn das Spiel läuft
   if (typeof world === "undefined" || !world?.isGameRunning) return;
 
   switch (e.key) {
@@ -48,7 +76,11 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-// Keyup-Listener: Immer verarbeiten, damit die Tasten beim Loslassen zurückgesetzt werden
+/**
+ * Event-Listener für Tastenloslassen-Ereignisse (`keyup`).
+ * Setzt den Zustand der Tasten im `gameKeyboard`-Objekt zurück.
+ * @param {KeyboardEvent} e - Das Tastatur-Ereignis.
+ */
 window.addEventListener("keyup", (e) => {
   if (typeof world === "undefined") return;
 
@@ -71,7 +103,11 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-// Touch-Events für mobile Steuerung
+/**
+ * Event-Listener für Touchstart-Ereignisse (mobile Steuerung).
+ * Aktualisiert den Zustand der Tasten im `gameKeyboard`-Objekt basierend auf den berührten Buttons.
+ * @param {TouchEvent} e - Das Touch-Ereignis.
+ */
 document.addEventListener("touchstart", (e) => {
   if (typeof world === "undefined" || !world?.isGameRunning) return;
 
@@ -89,6 +125,11 @@ document.addEventListener("touchstart", (e) => {
   }
 });
 
+/**
+ * Event-Listener für Touchend-Ereignisse (mobile Steuerung).
+ * Setzt den Zustand der Tasten im `gameKeyboard`-Objekt zurück, wenn die Berührung endet.
+ * @param {TouchEvent} e - Das Touch-Ereignis.
+ */
 document.addEventListener("touchend", (e) => {
   if (typeof world === "undefined" || !world?.isGameRunning) return;
 
