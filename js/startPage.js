@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     let i = 0;
-    const speed = 50;
+    const speed = 35;
     const storyElement = document.querySelector("#story-text");
 
     function typeWriter() {
