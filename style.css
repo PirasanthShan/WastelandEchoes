@@ -330,6 +330,13 @@ canvas {
   transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
 }
 
+.impressum{
+  margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .show-container {
   opacity: 1;
   visibility: visible;
@@ -492,6 +499,10 @@ canvas {
     display:none
   }
 
+  h4{
+    font-size: 50px;
+  }
+
   .phoneControllBtn {
     display: flex;
     background: hsl(0deg 0% 13% / 85%);
@@ -501,6 +512,28 @@ canvas {
     align-items: center;
     padding: 15px;
     border-radius: 150px;
+}
+
+.homeBtn{
+  margin-top: 5px;
+}
+
+.impressum{
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 150px;
+}
+
+.impressum h4{
+  font-size: 30px;
+}
+
+.impressum p{
+  font-size: 15px;
+}
+
+.impressum h5{
+  font-size: 20px;
 }
 
    .ctrimg{
@@ -532,6 +565,10 @@ canvas {
 @media only screen and (max-height: 480px) {
   canvas {
     height: 100vh;
+  }
+
+  .containerStartPage button {
+    left: 10px
   }
 
   .phoneControllBtn{
@@ -621,6 +658,12 @@ canvas {
   p {
     font-size: 10px;
     margin: 10px;
+  }
+  
+
+  .impressum p {
+    font-size: 7px;
+    
   }
 
   h2 {

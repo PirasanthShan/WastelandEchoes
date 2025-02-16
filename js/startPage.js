@@ -214,6 +214,40 @@ document.addEventListener('DOMContentLoaded', () => {
     typeWriter();
   }
 
+  /**
+ * Richtet den "Impressum"-Button ein.
+ */
+function initImpressumButton() {
+  const impressumButton = document.querySelector('#Impressum');
+
+  if (impressumButton) {
+    impressumButton.addEventListener('click', () => {
+      showContainer(`
+        <button id="back">Back</button>
+        <div class="impressum">
+          <h4>Impressum</h4>
+          <p><strong>Angaben gemäß § 5 TMG</strong></p>
+          <p>WASTELAND ECHOES<br>Georg-Friedrich-Händel-Str.5<br>Deutschland</p>
+          <p><strong>Vertreten durch:</strong><br>Pirasanth (Geschäftsführer)</p>
+
+          <h5>Kontakt</h5>
+          <p>E-Mail: <a href="mailto:Pirasanth@live.de">Pirasanth@live.de</a></p>
+
+          <h5>Haftungsausschluss</h5>
+          <p>Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+
+          <h5>Urheberrecht</h5>
+          <p>Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+        </div>
+      `);
+    });
+  }
+}
+
+// Füge die Initialisierung zur Startfunktion hinzu
+initImpressumButton();
+
+
   // ─────────────────────────────
   // Initialisierung
   // ─────────────────────────────
