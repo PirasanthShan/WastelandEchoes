@@ -232,7 +232,6 @@ class InterfaceRender {
           <div style="display: flex; gap: 20px;">
             <button onclick="window.location.href='startPage.html'">Home</button>
             <button onclick="window.location.reload()">Restart</button>
-            <button onclick="alert('Next stage coming soon!')">Next Stage?</button>
           </div>
         </div>
       `;

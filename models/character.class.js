@@ -226,7 +226,7 @@ class Character extends MovableObject {
       }
       this.handleMovement(isMovingRight, isMovingLeft);
       this.updateCameraPosition();
-    }, 1000 / 60);
+    }, 1000 / 100);
     this.startAnimationLoop();
   }
 
