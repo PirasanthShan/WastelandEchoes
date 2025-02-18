@@ -112,10 +112,17 @@ class InterfaceRender {
      * Der Button lädt das Canvas neu
      */
     addRestartButtonListener() {
-      document.getElementById('restart')?.addEventListener('click', () => {
+      document.getElementById('restartInGame')?.addEventListener('click', () => {
+        window.world.restartGame();
+      });
+      document.getElementById('restartGameOver')?.addEventListener('click', () => {
+        window.world.restartGame();
+      });
+      document.getElementById('restartYouWin')?.addEventListener('click', () => {
         window.world.restartGame();
       });
     }
+    
     /**
      * Schaltet den Vollbildmodus ein oder aus.
      */
@@ -206,7 +213,7 @@ class InterfaceRender {
           <img id="playButton" src="./img/playpause.webp" alt="Play Button">
           <img id="soundButton" src="./img/soundon.webp" alt="Sound Button">
           <img id="fullscreenButton" src="./img/fullscreen.webp" alt="Fullscreen Button">
-          <img id="restart" src="./img/restart.webp" alt="Restart Button">
+          <img id="restartInGame" src="./img/restart.webp" alt="Restart Button">
         </div>
       `;
       this.addControlButtonListeners();
@@ -230,7 +237,7 @@ class InterfaceRender {
           <h3>Congratulations, You Win!</h3>
           <div style="display: flex; gap: 20px;">
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button id="restart">Restart</button>
+            <button id="restartYouWin">Restart</button>
           </div>
         </div>
       `;
@@ -248,12 +255,11 @@ class InterfaceRender {
           <h2>Try Again!</h2>
           <div class="gameOverBtn"> 
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button id="restart">Restart</button>
+            <button id="restartGameOver">Restart</button>
           </div>
         </div>
       `;
     }
-  
     /**
      * Rendert eine Warnmeldung für Bomben oder Kristalle.
      *
@@ -300,7 +306,7 @@ class InterfaceRender {
   
       this.addPhoneControlButtonListeners();
     }
-  
+    
     /**
      * Fügt Event-Listener zu den Mobilgeräte-Steuerungsbuttons hinzu.
      */
