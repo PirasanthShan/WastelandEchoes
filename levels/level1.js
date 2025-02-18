@@ -1,7 +1,8 @@
 /**
  * Erstellt das erste Level des Spiels mit verschiedenen Gegnern, Vögeln, Hintergrundobjekten und sammelbaren Gegenständen.
  */
-const level1 = new Level(
+function createLevel1() {
+  return new Level(
   /**
    * @property {Object[]} enemies - Die Liste der Gegner im Level.
    */
@@ -104,3 +105,4 @@ const level1 = new Level(
    */
   new LastCollectible()
 );
+}

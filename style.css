@@ -248,9 +248,6 @@ canvas {
   flex-direction: row;
 }
 
-#restart{
-  display: none;
-}
 
 .controllBtn img {
   width: 70px;

@@ -24,52 +24,45 @@ class RenderingManager {
         this.world.soundManager.stopAllSounds();
         return;
       }
-  
+    
       // Lösche den vorherigen Frame
       this.ctx.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
-  
+    
       // Verschiebe die Kamera basierend auf der Charakterposition
       this.ctx.translate(this.world.camera_x, 0);
-  
-      // Zeichne Hintergrundobjekte
       this.addObjectsToMap(this.world.level.backgroundObjects);
-  
-      // Zeichne Statusleisten (ohne Kameraverschiebung)
       this.ctx.translate(-this.world.camera_x, 0);
       this.addToMap(this.world.statusBar);
       this.addToMap(this.world.collectibleBar);
       this.addToMap(this.world.crystalBar);
-  
-      // Zeichne Charakter und Endboss (mit Kameraverschiebung)
       this.ctx.translate(this.world.camera_x, 0);
       this.addToMap(this.world.character);
-  
+    
       if (!this.world.endboss.isRemoved) {
         this.addToMap(this.world.endboss);
       }
-  
+    
       // Zeichne Feinde
       this.world.enemies.forEach((enemy) => {
         if (!enemy.isRemoved) {
           this.addToMap(enemy);
         }
       });
-  
-      // Zeichne Vögel, geworfene Objekte und sammelbare Objekte
+    
+      // Zeichne weitere Objekte (Vögel, Wurfobjekte, Sammelobjekte)
       this.addObjectsToMap(this.world.level.birds);
       this.addObjectsToMap(this.world.throwableObjects);
       this.addObjectsToMap(this.world.level.collectible);
       this.addObjectsToMap(this.world.level.collectible2);
       this.addToMap(this.world.level.lastCollectible);
-  
+    
       // Setze die Kamera zurück
       this.ctx.translate(-this.world.camera_x, 0);
-  
-      // Rendere den nächsten Frame, wenn das Spiel läuft
-      if (this.world.isGameRunning) {
-        requestAnimationFrame(() => this.renderFrame());
-      }
+    
+      // Speichere die requestAnimationFrame-ID in der Welt (zum späteren Abbruch)
+      this.world.renderRequestId = requestAnimationFrame(() => this.renderFrame());
     }
+    
   
     /**
      * Setzt alle Sounds im Spiel fort, einschließlich der Musik des letzten sammelbaren Objekts, falls zutreffend.

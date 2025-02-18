@@ -42,11 +42,10 @@ function resetKeyboard() {
  */
 function init() {
   canvas = document.getElementById("canvas");
-  if (!canvas) {
-    return;
-  }
-  world = new World(canvas, gameKeyboard);
+  if (!canvas) return;
+  window.world = new World(canvas, gameKeyboard);
 }
+
 
 /**
  * Event-Listener für Tastendruck-Ereignisse (`keydown`).

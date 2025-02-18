@@ -109,14 +109,13 @@ class InterfaceRender {
   
     /**
      * Fügt einen Event-Listener zum Restart-Button hinzu.
-     * Der Button lädt die Seite neu, um das Spiel neu zu starten.
+     * Der Button lädt das Canvas neu
      */
     addRestartButtonListener() {
       document.getElementById('restart')?.addEventListener('click', () => {
-        window.location.reload();
+        window.world.restartGame();
       });
     }
-  
     /**
      * Schaltet den Vollbildmodus ein oder aus.
      */
@@ -231,7 +230,7 @@ class InterfaceRender {
           <h3>Congratulations, You Win!</h3>
           <div style="display: flex; gap: 20px;">
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button onclick="window.location.reload()">Restart</button>
+            <button id="restart">Restart</button>
           </div>
         </div>
       `;
@@ -249,7 +248,7 @@ class InterfaceRender {
           <h2>Try Again!</h2>
           <div class="gameOverBtn"> 
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button onclick="window.location.reload()">Restart</button>
+            <button id="restart">Restart</button>
           </div>
         </div>
       `;

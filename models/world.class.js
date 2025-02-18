@@ -15,13 +15,11 @@ class World {
   endboss = new Endboss();
 
   /** @type {Array} Eine Liste aller Gegner im aktuellen Level. */
-  enemies = [...level1.enemies];
+  enemies = [];
 
   /** @type {Array} Eine Liste aller geworfenen Objekte (z. B. Bomben). */
   throwableObjects = [];
 
-  /** @type {Level} Das aktuelle Level des Spiels. */
-  level = level1;
 
   /** @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird. */
   canvas;
@@ -67,10 +65,16 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
 
+    this.level = createLevel1();  
+    this.enemies = this.level.enemies;
+
     this.initializeManagers();
     this.initializeUIElements();
     this.initializeAudio();
     this.startGameProcesses();
+
+    window.world = this;
+    world = this;
   }
 
   /**
@@ -141,6 +145,30 @@ class World {
       this.setupThrowChecks();
       this.setupStatusUpdates();
     }
+  }
+
+  stopGameProcesses() {
+    for (const id of this.intervals) clearInterval(id);
+    this.intervals = [];
+    if (this.renderRequestId) {
+      cancelAnimationFrame(this.renderRequestId);
+      this.renderRequestId = null;
+    }
+    this.pauseGame();
+    document.querySelectorAll('.gameOver, .youWin, .alertBomb').forEach(el => el.remove());
+    const cont = document.querySelector('#Container');
+    if (cont) cont.innerHTML = '';
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  restartGameInstance() {
+    window.world = new World(this.canvas, this.keyboard);
+    world = window.world;
+  }
+
+  restartGame() {
+    this.stopGameProcesses();
+    this.restartGameInstance();
   }
 
   /**
@@ -308,12 +336,14 @@ class World {
    * Animiert die Kristalle im Level.
    */
   animateCrystals() {
-    setInterval(() => {
+    const crystalInterval = setInterval(() => {
       this.level.collectible2.forEach(crystal => {
         crystal.y += Math.sin(Date.now() / 200) * 1;
       });
     }, 70);
+    this.intervals.push(crystalInterval);
   }
+  
 
   /**
    * Schaltet die Bombenwarnung ein oder aus.
