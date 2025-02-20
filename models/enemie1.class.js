@@ -79,7 +79,7 @@ class Enemie1 extends MovableObject {
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
     this.x = 2100;
-    this.speed = 0.20 + Math.random() * 0.20;
+    this.speed = 1;
 
     /**
      * Sound für das Gehen

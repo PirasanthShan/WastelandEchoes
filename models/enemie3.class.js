@@ -84,7 +84,7 @@ class Enemie3 extends MovableObject {
      * Bewegungsgeschwindigkeit des Gegners.
      * @type {number}
      */
-    this.speedx = 5;
+    this.speed = 1;
 
     /**
      * 🔉 Lauf-Soundeffekt.

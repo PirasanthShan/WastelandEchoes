@@ -20,8 +20,7 @@ class World {
   /** @type {Array} Eine Liste aller geworfenen Objekte (z. B. Bomben). */
   throwableObjects = [];
 
-
-  /** @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird. */
+ /** @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird. */
   canvas;
 
   /** @type {CanvasRenderingContext2D} Der 2D-Rendering-Kontext des Canvas. */
@@ -150,13 +149,16 @@ class World {
   stopGameProcesses() {
     for (const id of this.intervals) clearInterval(id);
     this.intervals = [];
+    
     if (this.renderRequestId) {
       cancelAnimationFrame(this.renderRequestId);
       this.renderRequestId = null;
     }
+    
     this.pauseGame();
     document.querySelectorAll('.gameOver, .youWin, .alertBomb').forEach(el => el.remove());
     const cont = document.querySelector('#Container');
+    
     if (cont) cont.innerHTML = '';
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }

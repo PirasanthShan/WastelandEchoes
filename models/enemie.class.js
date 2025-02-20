@@ -37,8 +37,8 @@ IMAGES_DEAD = [
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
 
-    this.x = 400 + Math.random() * 800;
-    this.speed = 0.20 + Math.random() * 0.40;
+    this.x = 600 + Math.random() * 700;
+    this.speed = 0.70 + Math.random() * 1;
 
     this.walking_sound = new Audio(`./audio/Zombie.mp3?nocache=${Date.now()}`);
     this.walking_sound.volume = 0.02;
@@ -68,7 +68,7 @@ animate() {
 
   setInterval(() => {
     this.handleWalkingAnimation();
-  }, 30000 / 200);
+  }, 30000 / 300);
 }
 
 /**
@@ -192,7 +192,7 @@ runDeathAnimation(onComplete) {
         if (onComplete) onComplete();
       }, 2000);
     }
-  }, 1000 / 7);
+  }, 1000 / 8);
 }
 
 }
