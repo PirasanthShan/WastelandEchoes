@@ -65,7 +65,7 @@ class Enemie2 extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
 
     this.x = 1750;
-    this.speed = 0.50;
+    this.speed = 1;
 
     // Initialize sounds
     this.walking_sound = new Audio(`./audio/snakeWalk.mp3?nocache=${Date.now()}`);

@@ -49,7 +49,7 @@ class DrawableObject {
    * @param {CanvasRenderingContext2D} ctx - Der Zeichenkontext des Canvas.
    */
   drawFrame(ctx) {
-    if (this.DEBUG_MODE && (this instanceof Collectible2 || this instanceof Character)) {
+    if (this.DEBUG_MODE && (this instanceof Collectible || this instanceof Character)) {
       ctx.beginPath();
       ctx.lineWidth = '5';
       ctx.strokeStyle = 'blue';

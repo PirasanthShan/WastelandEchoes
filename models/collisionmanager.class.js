@@ -128,7 +128,7 @@ class CollisionManager {
    * @param {Enemy} enemy - Das Gegnerobjekt.
    */
   handleDefaultZombieBehavior(enemy) {
-    enemy.speed = 0.10;
+    enemy.speed = 0.20;
     enemy.moveLeft();
     enemy.playAnimation(enemy.IMAGES_WALKING);
   }
