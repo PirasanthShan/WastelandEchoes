@@ -63,7 +63,7 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
-
+   
     this.level = createLevel1();  
     this.enemies = this.level.enemies;
 
@@ -153,6 +153,12 @@ class World {
     if (this.renderRequestId) {
       cancelAnimationFrame(this.renderRequestId);
       this.renderRequestId = null;
+    }
+
+     
+     if (this.interfaceRenderer?.winMusic) {
+      this.interfaceRenderer.winMusic.pause();
+      this.interfaceRenderer.winMusic.currentTime = 0; 
     }
     
     this.pauseGame();

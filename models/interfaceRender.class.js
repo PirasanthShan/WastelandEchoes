@@ -25,8 +25,7 @@ class InterfaceRender {
       this.addPlayButtonListener();
       this.addSoundButtonListener();
       this.addFullscreenButtonListener();
-      this.addRestartButtonListener();
-    }
+     }
   
     /**
      * Fügt einen Event-Listener zum Play-Button hinzu.
@@ -107,22 +106,6 @@ class InterfaceRender {
       this.observeAlertBomb();
     }
   
-    /**
-     * Fügt einen Event-Listener zum Restart-Button hinzu.
-     * Der Button lädt das Canvas neu
-     */
-    addRestartButtonListener() {
-      document.getElementById('restartInGame')?.addEventListener('click', () => {
-        window.world.restartGame();
-      });
-      document.getElementById('restartGameOver')?.addEventListener('click', () => {
-        window.world.restartGame();
-      });
-      document.getElementById('restartYouWin')?.addEventListener('click', () => {
-        window.world.restartGame();
-      });
-    }
-    
     /**
      * Schaltet den Vollbildmodus ein oder aus.
      */
@@ -213,7 +196,7 @@ class InterfaceRender {
           <img id="playButton" src="./img/playpause.webp" alt="Play Button">
           <img id="soundButton" src="./img/soundon.webp" alt="Sound Button">
           <img id="fullscreenButton" src="./img/fullscreen.webp" alt="Fullscreen Button">
-          <img id="restartInGame" src="./img/restart.webp" alt="Restart Button">
+          <img onclick="window.world.restartGame();"src="./img/restart.webp" alt="Restart Button">
         </div>
       `;
       this.addControlButtonListeners();
@@ -237,7 +220,7 @@ class InterfaceRender {
           <h3>Congratulations, You Win!</h3>
           <div style="display: flex; gap: 20px;">
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button id="restartYouWin">Restart</button>
+            <button onclick="window.world.restartGame();">Restart</button>
           </div>
         </div>
       `;
@@ -255,7 +238,7 @@ class InterfaceRender {
           <h2>Try Again!</h2>
           <div class="gameOverBtn"> 
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button id="restartGameOver">Restart</button>
+            <button onclick="window.world.restartGame();">Restart</button>
           </div>
         </div>
       `;
