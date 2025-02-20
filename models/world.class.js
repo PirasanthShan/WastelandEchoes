@@ -63,7 +63,7 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
-   
+
     this.level = createLevel1();  
     this.enemies = this.level.enemies;
 
@@ -155,11 +155,9 @@ class World {
       this.renderRequestId = null;
     }
 
-     
-     if (this.interfaceRenderer?.winMusic) {
-      this.interfaceRenderer.winMusic.pause();
-      this.interfaceRenderer.winMusic.currentTime = 0; 
-    }
+    // Stop "You Win" music if playing
+    this.interfaceRenderer?.winMusic?.pause();
+    if (this.interfaceRenderer?.winMusic) this.interfaceRenderer.winMusic.currentTime = 0;
     
     this.pauseGame();
     document.querySelectorAll('.gameOver, .youWin, .alertBomb').forEach(el => el.remove());
