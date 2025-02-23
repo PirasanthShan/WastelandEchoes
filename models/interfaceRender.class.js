@@ -46,7 +46,8 @@ class InterfaceRender {
      */
     addSoundButtonListener() {
       document.getElementById('soundButton').addEventListener('click', () => {
-        this.world.isMuted = !this.world.isMuted;
+        this.world.toggleMute();
+
         this.toggleBackgroundMusic();
         this.toggleObjectMute(this.world.character);
         this.toggleGroupMute(this.world.enemies);
@@ -332,10 +333,17 @@ class InterfaceRender {
      */
     addButtonListener(selector, key) {
       const button = document.querySelector(selector);
-      if (button) {
-        button.addEventListener('touchstart', (e) => { e.preventDefault(); this.world.keyboard[key] = true; });
-        button.addEventListener('touchend', (e) => { e.preventDefault(); this.world.keyboard[key] = false; });
-        button.addEventListener('contextmenu', (event) => event.preventDefault());
-      }
-    }
+      if (!button) return; // Falls der Button nicht existiert, abbrechen
+      const setKeyState = (state) => {
+          e.preventDefault();
+          this.world.keyboard[key] = state;
+      };
+      // Touch-Events mit `passive: true` für bessere Performance
+      button.addEventListener('touchstart', (e) => setKeyState(true), { passive: true });
+      button.addEventListener('touchend', (e) => setKeyState(false), { passive: true });
+      // Kontextmenü (Rechtsklick auf Touch-Geräten) verhindern
+      button.addEventListener('contextmenu', (e) => e.preventDefault(), { passive: true });
+   }
+  
+  
   }

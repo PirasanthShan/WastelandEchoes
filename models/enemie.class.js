@@ -37,8 +37,8 @@ IMAGES_DEAD = [
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
 
-    this.x = 600 + Math.random() * 700;
-    this.speed = 0.70 + Math.random() * 1;
+    this.x = 550 + Math.random() * 800;
+    this.speed = 0.30 + Math.random() * 0.70 ;
 
     this.walking_sound = new Audio(`./audio/Zombie.mp3?nocache=${Date.now()}`);
     this.walking_sound.volume = 0.02;

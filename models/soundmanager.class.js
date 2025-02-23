@@ -11,7 +11,7 @@ class SoundManager {
       this.sounds = [];
   
       /** @type {boolean} Gibt an, ob der Sound stummgeschaltet ist. */
-      this.isMuted = false;
+      this.isMuted = localStorage.getItem('isMuted') === 'true';
     }
   
     /**
@@ -20,6 +20,7 @@ class SoundManager {
      */
     registerSound(sound) {
       this.sounds.push(sound);
+      sound.muted = this.isMuted;
     }
   
     /**
@@ -28,9 +29,8 @@ class SoundManager {
      */
     toggleMute() {
       this.isMuted = !this.isMuted;
-      this.sounds.forEach((sound) => {
-        sound.muted = this.isMuted;
-      });
+      localStorage.setItem('isMuted', this.isMuted.toString());
+      this.sounds.forEach((sound) => sound.muted = this.isMuted);
     }
   
     /**
@@ -54,9 +54,19 @@ class SoundManager {
     resumeAllSounds() {
       this.sounds.forEach((sound) => {
         if (sound.dataset.wasPlaying === "true") {
-          sound.play().catch((err) => console.error(err));
+          sound.play().catch(() => {});
           delete sound.dataset.wasPlaying;
         }
       });
     }
+
+      /**
+     * Stellt sicher, dass alle registrierten Sounds den aktuellen Mute-Status haben.
+     */
+    applyMuteState() {
+      this.sounds.forEach((sound) => {
+          sound.muted = this.isMuted;
+      });
+     }
+
   }

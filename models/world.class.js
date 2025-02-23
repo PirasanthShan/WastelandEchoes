@@ -105,13 +105,20 @@ class World {
     this.backgroundMusic = new Audio('audio/gamebackground.mp3');
     Object.assign(this.backgroundMusic, { volume: 0.07, loop: true });
     this.backgroundMusic.addEventListener('error', e => {});
-    if (!this.soundManager.isMuted) {
-      this.backgroundMusic.play().catch(err => {});
-    }
+    // Versuch, die Musik direkt zu starten
+    this.backgroundMusic.play().catch(() => {
+      // Falls blockiert, höre auf eine Taste
+      document.addEventListener("keydown", (event) => {
+          if (!this.isMuted && this.backgroundMusic.paused) {
+              this.backgroundMusic.play();
+          }
+      }, { once: true });
+    });
     this.soundManager.registerSound(this.backgroundMusic);
-  }
+    this.soundManager.applyMuteState(); // Wende Mute-Status auf ALLE Sounds an
+}
 
-  /**
+ /**
    * Startet alle notwendigen Prozesse für das Spiel.
    */
   startGameProcesses() {
@@ -155,7 +162,6 @@ class World {
       this.renderRequestId = null;
     }
 
-    // Stop "You Win" music if playing
     this.interfaceRenderer?.winMusic?.pause();
     if (this.interfaceRenderer?.winMusic) this.interfaceRenderer.winMusic.currentTime = 0;
     
@@ -168,9 +174,30 @@ class World {
   }
 
   restartGameInstance() {
+    const isMuted = localStorage.getItem('isMuted') === 'true'; // Mute-Status aus localStorage holen
     window.world = new World(this.canvas, this.keyboard);
     world = window.world;
+
+    // Nach dem Neustart den gespeicherten Mute-Status wieder anwenden
+    world.isMuted = isMuted;
+    world.soundManager.isMuted = isMuted;
+
+     // **Stelle sicher, dass ALLE Sounds sofort den korrekten Mute-Status erhalten**
+     if (typeof world.soundManager.applyMuteState === "function") {
+      world.soundManager.applyMuteState();
   }
+
+    // **Direkte Anwendung auf alle Sounds**
+    world.soundManager.applyMuteState(); // Falls nicht vorhanden, in SoundManager implementieren
+    world.interfaceRenderer.toggleBackgroundMusic();
+    world.interfaceRenderer.toggleObjectMute(world.character);
+    world.interfaceRenderer.toggleGroupMute([...world.enemies, ...world.throwableObjects]);
+    world.interfaceRenderer.toggleObjectMute(world.endboss);
+    world.interfaceRenderer.toggleObjectMute(world.lastCollectible);
+
+    // Icon nach Restart aktualisieren
+    world.interfaceRenderer.updateSoundButtonIcon();
+}
 
   restartGame() {
     this.stopGameProcesses();
@@ -262,7 +289,10 @@ class World {
    */
   toggleMute() {
     this.soundManager.toggleMute();
-  }
+    this.isMuted = this.soundManager.isMuted; // Korrekte Referenzierung von `isMuted`
+    // Speichert den neuen Mute-Status
+    localStorage.setItem('isMuted', this.isMuted.toString());
+    }
 
   /**
    * Pausiert das Spiel und stoppt alle Sounds und Animationen.
