@@ -151,6 +151,7 @@ class Character extends MovableObject {
   loadSounds() {
     this.walking_sound = new Audio('./audio/robotwalk3.mp3');
     this.jump_sound = new Audio('./audio/roboJump.mp3');
+    this.death_sound = new Audio('./audio/deathrobot.mp3')
 
     this.walking_sound.volume = 0.4;
     this.walking_sound.loop = true;
@@ -204,6 +205,7 @@ class Character extends MovableObject {
   stopAllCharacterSounds() {
     this.stopSound(this.walking_sound);
     this.stopSound(this.jump_sound);
+    this.stopSound(this.death_sound);
   }
 
   /**

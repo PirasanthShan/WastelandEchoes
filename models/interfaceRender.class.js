@@ -25,6 +25,8 @@ class InterfaceRender {
       this.addPlayButtonListener();
       this.addSoundButtonListener();
       this.addFullscreenButtonListener();
+      this.addRestartButtonListeners();
+      this.addHomeButtonListener();
      }
   
     /**
@@ -106,6 +108,31 @@ class InterfaceRender {
   
       this.observeAlertBomb();
     }
+
+        /**
+     * Fügt Event-Listener zu allen Restart-Buttons hinzu.
+     */
+    addRestartButtonListeners() {
+      document.getElementById('restartButton')?.addEventListener('click', () => {
+          if (window.world) window.world.restartGame();
+      });
+
+      document.getElementById('restartButtonWin')?.addEventListener('click', () => {
+          if (window.world) window.world.restartGame();
+      });
+
+      document.getElementById('restartButtonGameOver')?.addEventListener('click', () => {
+          if (window.world) window.world.restartGame();
+      });
+    }
+
+    addHomeButtonListener() {
+      document.getElementById('homeButton')?.addEventListener('click', () => {
+          localStorage.setItem('isMuted', JSON.stringify(false)); // Setze Mute-Status zurück
+          window.location.href = 'startPage.html'; // Zur Startseite weiterleiten
+      });
+   }
+
   
     /**
      * Schaltet den Vollbildmodus ein oder aus.
@@ -197,7 +224,7 @@ class InterfaceRender {
           <img id="playButton" src="./img/playpause.webp" alt="Play Button">
           <img id="soundButton" src="./img/soundon.webp" alt="Sound Button">
           <img id="fullscreenButton" src="./img/fullscreen.webp" alt="Fullscreen Button">
-          <img onclick="window.world.restartGame();"src="./img/restart.webp" alt="Restart Button">
+          <img id="restartButton" src="./img/restart.webp" alt="Restart Button">
         </div>
       `;
       this.addControlButtonListeners();
@@ -207,10 +234,7 @@ class InterfaceRender {
      * Rendert den You-Win-Bildschirm.
      */
     renderYouWin() {
-      this.world.soundManager.toggleMute();
-      if (this.world.backgroundMusic) {
-        this.world.backgroundMusic.pause();
-      }
+      this.world.soundManager.applyMuteState();
       if (this.world.character && typeof this.world.character.toggleMute === 'function') {
         this.world.character.toggleMute(true);
       }
@@ -221,11 +245,17 @@ class InterfaceRender {
           <h3>Congratulations, You Win!</h3>
           <div style="display: flex; gap: 20px;">
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button onclick="window.world.restartGame();">Restart</button>
+            <button id="restartButtonWin">Restart</button>
           </div>
         </div>
       `;
       this.playWinMusic();
+
+       setTimeout(() => { // Verzögerung, um sicherzustellen, dass das Element existiert
+        document.getElementById('restartButtonWin')?.addEventListener('click', () => {
+        if (window.world) window.world.restartGame();
+        });
+    }, 100);
     }
   
     /**
@@ -239,7 +269,7 @@ class InterfaceRender {
           <h2>Try Again!</h2>
           <div class="gameOverBtn"> 
             <button onclick="window.location.href='startPage.html'">Home</button>
-            <button onclick="window.world.restartGame();">Restart</button>
+            <button id="restartButtonGameOver">Restart</button>
           </div>
         </div>
       `;

@@ -102,21 +102,17 @@ class World {
    * Initialisiert und konfiguriert die Hintergrundmusik.
    */
   initializeAudio() {
-    this.backgroundMusic = new Audio('audio/gamebackground.mp3');
-    Object.assign(this.backgroundMusic, { volume: 0.07, loop: true });
-    this.backgroundMusic.addEventListener('error', e => {});
-    // Versuch, die Musik direkt zu starten
-    this.backgroundMusic.play().catch(() => {
-      // Falls blockiert, höre auf eine Taste
-      document.addEventListener("keydown", (event) => {
-          if (!this.isMuted && this.backgroundMusic.paused) {
-              this.backgroundMusic.play();
-          }
-      }, { once: true });
-    });
-    this.soundManager.registerSound(this.backgroundMusic);
     this.soundManager.applyMuteState(); // Wende Mute-Status auf ALLE Sounds an
 }
+
+  /**
+   * Startet die Musik nach einer Tasteneingabe, falls sie pausiert ist.
+   */
+  startMusicOnKeyPress() {
+    if (!this.isMuted && this.backgroundMusic.paused) {
+        this.backgroundMusic.play().catch(() => {});
+    }
+  }
 
  /**
    * Startet alle notwendigen Prozesse für das Spiel.
@@ -174,7 +170,9 @@ class World {
   }
 
   restartGameInstance() {
-    const isMuted = localStorage.getItem('isMuted') === 'true'; // Mute-Status aus localStorage holen
+    const storedMuteStatus = localStorage.getItem('isMuted');
+    const isMuted = storedMuteStatus !== null ? JSON.parse(storedMuteStatus) : false;
+    
     window.world = new World(this.canvas, this.keyboard);
     world = window.world;
 
@@ -189,7 +187,6 @@ class World {
 
     // **Direkte Anwendung auf alle Sounds**
     world.soundManager.applyMuteState(); // Falls nicht vorhanden, in SoundManager implementieren
-    world.interfaceRenderer.toggleBackgroundMusic();
     world.interfaceRenderer.toggleObjectMute(world.character);
     world.interfaceRenderer.toggleGroupMute([...world.enemies, ...world.throwableObjects]);
     world.interfaceRenderer.toggleObjectMute(world.endboss);
@@ -288,10 +285,13 @@ class World {
    * Schaltet den Mute-Zustand des Spiels um.
    */
   toggleMute() {
-    this.soundManager.toggleMute();
-    this.isMuted = this.soundManager.isMuted; // Korrekte Referenzierung von `isMuted`
-    // Speichert den neuen Mute-Status
-    localStorage.setItem('isMuted', this.isMuted.toString());
+    this.isMuted = !this.isMuted;
+    localStorage.setItem('isMuted', JSON.stringify(this.isMuted));
+    if (typeof this.soundManager.applyMuteState === "function") {
+        this.soundManager.applyMuteState();
+    }
+    
+    this.interfaceRenderer.updateSoundButtonIcon();
     }
 
   /**
@@ -300,8 +300,6 @@ class World {
   pauseGame() {
     this.isGameRunning = false;
     this.renderingManager.stopAllSounds();
-    this.backgroundMusic.pause();
-
     if (this.endboss && typeof this.endboss.stopAnimation === 'function') {
       this.endboss.stopAnimation();
     }
@@ -319,8 +317,6 @@ class World {
   resumeGame() {
     this.isGameRunning = true;
     this.renderingManager.resumeAllSounds();
-    this.backgroundMusic.play().catch(err => {});
-
     if (this.endboss && typeof this.endboss.startAnimation === 'function') {
       this.endboss.startAnimation();
     }
