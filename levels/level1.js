@@ -88,16 +88,16 @@ function createLevel1() {
    * @property {Object[]} collectible2 - Die Liste der zweiten sammelbaren Objekte (Asteroiden).
    */
   [
-    new Collectible('./img/Mega/asteroidR2.webp', 310, 350, 50, 50),
-    new Collectible('./img/Mega/asteroidR3.webp', 300, 640, 50, 50),
-    new Collectible('./img/Mega/asteroidR6.webp', 170, 840, 50, 50),
-    new Collectible('./img/Mega/asteroidR7.webp', 310, 1100, 50, 50),
-    new Collectible('./img/Mega/asteroidR8.webp', 170, 1300, 50, 50),
-    new Collectible('./img/Mega/asteroidR9.webp', 320, 1550, 50, 50),
-    new Collectible('./img/Mega/asteroidR10.webp', 310, 1700, 50, 50),
-    new Collectible('./img/Mega/asteroidR11.webp', 310, 1900, 50, 50),
-    new Collectible('./img/Mega/asteroidR12.webp', 170, 2100, 50, 50),
-    new Collectible('./img/Mega/asteroidR13.webp', 310, 2300, 50, 50),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 310, 350, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 310, 640, 60, 50),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 170, 840, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 310, 1100, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 170, 1300, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 320, 1550, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 310, 1700, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 310, 1900, 60, 60),
+    new Collectible('./img/Mega/asteroidR10_resized.webp', 170, 2100, 60, 60),
+    new Collectible('./img/Mega/asteroidR11_resized.webp', 310, 2300, 60, 60),
   ],
 
   /**

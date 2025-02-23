@@ -151,7 +151,6 @@ class Character extends MovableObject {
   loadSounds() {
     this.walking_sound = new Audio('./audio/robotwalk3.mp3');
     this.jump_sound = new Audio('./audio/roboJump.mp3');
-    this.death_sound = new Audio('./audio/deathrobot.mp3')
 
     this.walking_sound.volume = 0.4;
     this.walking_sound.loop = true;
@@ -205,7 +204,6 @@ class Character extends MovableObject {
   stopAllCharacterSounds() {
     this.stopSound(this.walking_sound);
     this.stopSound(this.jump_sound);
-    this.stopSound(this.death_sound);
   }
 
   /**
@@ -218,20 +216,19 @@ class Character extends MovableObject {
       const isJumping = this.world.keyboard.UP && !this.isAboveGround();
       const isMovingRight = this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
       const isMovingLeft = this.world.keyboard.LEFT && this.x > 0;
+      // Falls die Taste für den Sprung gedrückt wird, wird der Sprung eingeleitet.
       if (isJumping) {
         this.handleJump();
-        return;
       }
-      if (this.isAboveGround()) {
+    if (this.isAboveGround()) {
         this.handleAirborne();
-        return;
       }
-      this.handleMovement(isMovingRight, isMovingLeft);
+     this.handleMovement(isMovingRight, isMovingLeft);
       this.updateCameraPosition();
     }, 1000 / 100);
     this.startAnimationLoop();
   }
-
+  
   /**
    * Behandelt den Sprung der Spielfigur.
    */
@@ -257,15 +254,24 @@ class Character extends MovableObject {
     if (isMovingRight) {
       this.moveRight();
       this.otherDirection = false;
-      this.playSound(this.walking_sound);
+     if (!this.isAboveGround()) {
+        this.playSound(this.walking_sound);
+      } else {
+        this.stopSound(this.walking_sound);
+      }
     } else if (isMovingLeft) {
       this.moveLeft();
       this.otherDirection = true;
-      this.playSound(this.walking_sound);
+      if (!this.isAboveGround()) {
+        this.playSound(this.walking_sound);
+      } else {
+        this.stopSound(this.walking_sound);
+      }
     } else {
       this.stopSound(this.walking_sound);
     }
   }
+  
 
   /**
    * Aktualisiert die Kamera-Position basierend auf der Position der Spielfigur.
