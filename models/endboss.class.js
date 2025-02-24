@@ -11,17 +11,18 @@ class Endboss extends MovableObject {
   y = 220;
   height = 220;
   width = 250;
-  // Zustände des Endboss
+  // Zustände
   isAttacking = false;
   isMovingLeft = false;
+  isMovingRight = false;
   sightRange = 500;
   isHurt = false;
   isDead = false;
   hitCount = 0;
   deadAnimationPlayed = false;
   isCharacterInSight = false;
-
-  // Bilder für die verschiedenen Zustände
+  
+  // Bilder
   IMAGES_STANDING = [
     'img/boss.img/Idle_000_mirrored.webp',
     'img/boss.img/Idle_001_mirrored.webp',
@@ -79,10 +80,6 @@ class Endboss extends MovableObject {
     './img/boss.img/Dead_009.webp'
   ];
 
-  /**
-   * Erzeugt eine neue Instanz des Endboss.
-   * Lädt alle notwendigen Bilder und Sounds, setzt die Startposition und initialisiert die Bewegungsgeschwindigkeit.
-   */
   constructor() {
     super().loadImage('./img/boss.img/Idle_000_mirrored.webp');
     this.loadImages(this.IMAGES_STANDING);
@@ -91,21 +88,26 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.x = 2200;
-    this.speed = 1;
+    this.speed = 5;
     this.loadSounds();
   }
 
-  /**
-   * Startet die Animation des Endboss.
-   */
+  drawEndboss(ctx, x = this.x, y = this.y) {
+    ctx.save();
+    if (this.otherDirection) {
+      ctx.translate(x + this.width, y);
+      ctx.scale(-1, 1);
+      ctx.drawImage(this.img, 0, 0, this.width, this.height);
+    } else {
+      ctx.drawImage(this.img, x, y, this.width, this.height);
+    }
+    ctx.restore();
+  }
+
   startAnimation() {
     this.animate();
   }
 
-  /**
-   * Führt die regelmäßige Animation des Endboss aus.
-   * Je nach Zustand werden unterschiedliche Unterfunktionen zur Animation aufgerufen.
-   */
   animate() {
     this.animationInterval = setInterval(() => {
       if (this.world && !this.world.isGameRunning) return;
@@ -113,14 +115,11 @@ class Endboss extends MovableObject {
       if (this.isHurt) { this.handleHurtState(); }
       else if (this.isAttacking) { this.handleAttackingState(); }
       else if (this.isMovingLeft) { this.handleMovingLeftState(); }
+      else if (this.isMovingRight) { this.handleMovingRightState(); }
       else { this.handleStandingState(); }
     }, 100);
   }
 
-  /**
-   * Behandelt den Zustand "tot".
-   * Spielt die Todesanimation ab und passt Position sowie Größe an, falls noch nicht erfolgt.
-   */
   handleDeadState() {
     if (!this.deadAnimationPlayed) {
       this.playDeadAnimation();
@@ -130,53 +129,37 @@ class Endboss extends MovableObject {
     }
   }
 
-  /**
-   * Behandelt den Zustand "verletzt".
-   * Spielt die Hurt-Animation ab und gibt den Angriffs-Sound wieder.
-   */
   handleHurtState() {
     this.playAnimation(this.IMAGES_HURT);
     this.playSound(this.attackSound);
   }
 
-  /**
-   * Behandelt den Zustand "angreifend".
-   * Spielt die Angriffs-Animation ab und gibt den Angriffs-Sound wieder.
-   */
   handleAttackingState() {
     this.playAnimation(this.IMAGES_ATTACK);
     this.playSound(this.attackSound);
   }
 
-  /**
-   * Behandelt den Zustand "bewegt sich nach links".
-   * Spielt die Walking-Animation ab, bewegt den Endboss nach links und gibt den Walk-Sound wieder.
-   */
   handleMovingLeftState() {
     this.playAnimation(this.IMAGES_WALKING);
     this.moveLeft();
     this.playSound(this.walkSound);
   }
 
-  /**
-   * Behandelt den Zustand "steht" (keine andere Aktion).
-   * Spielt die Standing-Animation ab.
-   */
+  handleMovingRightState() {
+    this.playAnimation(this.IMAGES_WALKING);
+    this.moveRight();
+    this.playSound(this.walkSound);
+  }
+
   handleStandingState() {
     this.playAnimation(this.IMAGES_STANDING);
   }
 
-  /**
-   * Stoppt die Animation des Endboss, indem das Animationsintervall gelöscht und alle Sounds gestoppt werden.
-   */
   stopAnimation() {
     this.clearAnimationInterval();
     this.stopAllSounds();
   }
 
-  /**
-   * Löscht das laufende Animationsintervall und setzt es auf null.
-   */
   clearAnimationInterval() {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
@@ -184,20 +167,12 @@ class Endboss extends MovableObject {
     }
   }
 
-  /**
-   * Stoppt alle zugehörigen Sounds des Endboss.
-   */
   stopAllSounds() {
     this.stopSoundIfExists(this.walkSound);
     this.stopSoundIfExists(this.attackSound);
     this.stopSoundIfExists(this.deadSound);
   }
 
-  /**
-   * Stoppt einen Sound, falls er existiert, und setzt dessen Wiedergabezeit auf 0.
-   *
-   * @param {HTMLAudioElement} sound - Der zu stoppende Sound.
-   */
   stopSoundIfExists(sound) {
     if (sound) {
       sound.pause();
@@ -205,46 +180,23 @@ class Endboss extends MovableObject {
     }
   }
 
-  /**
-   * Behandelt, dass der Endboss Schaden erleidet.
-   * Erhöht den Trefferzähler und löst den Tod aus, wenn eine bestimmte Anzahl an Treffern erreicht ist.
-   * Andernfalls wird der Hurt-Zustand aktiviert.
-   */
   handleHurt() {
     if (this.isDead || this.isHurt) return;
     this.hitCount++;
-    if (this.hitCount >= 5) {
-      this.markAsDead();
-      return;
-    }
+    if (this.hitCount >= 5) { this.markAsDead(); return; }
     this.activateHurtState();
   }
 
-  /**
-   * Markiert den Endboss als tot.
-   */
   markAsDead() {
     this.isDead = true;
     this.isHurt = false;
   }
 
-  /**
-   * Aktiviert den Hurt-Zustand und spielt die Hurt-Animation einmal ab.
-   * Nach Abschluss der Animation wird der Hurt-Zustand aufgehoben.
-   */
   activateHurtState() {
     this.isHurt = true;
-    this.playAnimationOnce(this.IMAGES_HURT, () => {
-      this.isHurt = false;
-    });
+    this.playAnimationOnce(this.IMAGES_HURT, () => { this.isHurt = false; });
   }
 
-  /**
-   * Spielt eine einmalige Animation ab, indem die übergebenen Frames in einem Intervall durchlaufen werden.
-   *
-   * @param {string[]} animationFrames - Array von Bildpfaden für die Animation.
-   * @param {Function} [onComplete] - Callback-Funktion, die nach Abschluss der Animation aufgerufen wird.
-   */
   playAnimationOnce(animationFrames, onComplete) {
     let frameIndex = 0;
     const animationInterval = setInterval(() => {
@@ -256,11 +208,6 @@ class Endboss extends MovableObject {
     }, 30);
   }
 
-  /**
-   * Spielt die Todesanimation ab.
-   * Falls die Todesanimation bereits abgespielt wurde, wird nichts unternommen.
-   * Spielt den Todes-Sound und die Todes-Frames einmal ab.
-   */
   playDeadAnimation() {
     if (this.deadAnimationPlayed) return;
     this.deadAnimationPlayed = true;
@@ -268,36 +215,27 @@ class Endboss extends MovableObject {
     this.playAnimationOnce(this.IMAGES_DEAD);
   }
 
-  /**
-   * Lässt den Endboss dem Charakter folgen.
-   * Prüft, ob der Charakter in Sichtweite ist. Falls nicht, werden alle Aktionen gestoppt und der Walk-Sound angehalten.
-   * Falls der Charakter in Sichtweite ist, wird je nach Distanz entschieden, ob sich der Endboss bewegt oder angreift.
-   *
-   * @param {Character} character - Der Charakter, dem der Endboss folgen soll.
-   */
   followCharacter(character) {
     if (this.isDead || this.isHurt) return;
-    const distance = Math.abs(this.x - character.x);
-    this.isCharacterInSight = distance <= this.sightRange;
-    if (!this.isCharacterInSight) {
-      this.handleOutOfSight();
-      return;
+    let attackPoint = this.otherDirection 
+      ? this.x + this.width * 0.5 
+      : this.x + this.width * 0.009;
+    let diff = character.x - attackPoint;
+    const moveThreshold = 60, attackThreshold = 30;
+    this.isCharacterInSight = Math.abs(diff) <= this.sightRange;
+    if (!this.isCharacterInSight) { this.handleOutOfSight(); return; }
+    if (Math.abs(diff) > moveThreshold) {
+      diff > 0 ? this.startMovingRight() : this.startMovingLeft();
+    } else {
+      this.startAttacking();
     }
-    this.handleInSight(distance);
   }
 
-  /**
-   * Behandelt den Fall, dass der Charakter außerhalb der Sicht ist.
-   * Stoppt alle Aktionen und den Walk-Sound.
-   */
   handleOutOfSight() {
     this.stopAllActions();
     this.stopWalkSound();
   }
 
-  /**
-   * Stoppt den Walk-Sound, falls er aktuell läuft.
-   */
   stopWalkSound() {
     if (!this.walkSound.paused) {
       this.walkSound.pause();
@@ -305,47 +243,31 @@ class Endboss extends MovableObject {
     }
   }
 
-  /**
-   * Behandelt den Fall, dass der Charakter in Sichtweite ist.
-   * Je nach Abstand wird entweder die Bewegung nach links gestartet oder der Angriff aktiviert.
-   *
-   * @param {number} distance - Die Distanz zwischen Endboss und Charakter.
-   */
-  handleInSight(distance) {
-    if (distance > 60) {
-      this.startMovingLeft();
-    } else {
-      this.startAttacking();
-    }
-  }
-
-  /**
-   * Setzt den Zustand, dass der Endboss sich nach links bewegt.
-   */
   startMovingLeft() {
     this.isMovingLeft = true;
+    this.isMovingRight = false;
     this.isAttacking = false;
+    this.otherDirection = false;
   }
 
-  /**
-   * Setzt den Zustand, dass der Endboss angreift.
-   */
-  startAttacking() {
+  startMovingRight() {
+    this.isMovingRight = true;
     this.isMovingLeft = false;
-    this.isAttacking = true;
+    this.isAttacking = false;
+    this.otherDirection = true;
   }
 
-  /**
-   * Stoppt alle aktuellen Aktionen des Endboss (Bewegung und Angriff).
-   */
+  startAttacking() {
+    this.isAttacking = true;
+    this.isMovingLeft = false;
+    this.isMovingRight = false;
+  }
+
   stopAllActions() {
     this.isMovingLeft = false;
     this.isAttacking = false;
   }
 
-  /**
-   * Lädt die Sounds für den Endboss (Walk-, Attack- und Dead-Sound).
-   */
   loadSounds() {
     this.walkSound = new Audio('./audio/GolemWalk.mp3');
     this.attackSound = new Audio('./audio/GolemHit.mp3');
@@ -356,31 +278,15 @@ class Endboss extends MovableObject {
     this.walkSound.loop = true;
   }
 
-  /**
-   * Spielt den übergebenen Sound ab.
-   * Dabei werden alle anderen Sounds gestoppt, sofern der Endboss den Charakter sieht.
-   *
-   * @param {HTMLAudioElement} activeSound - Der Sound, der abgespielt werden soll.
-   */
   playSound(activeSound) {
     if (!this.isCharacterInSight) return;
     const allSounds = [this.walkSound, this.attackSound, this.deadSound];
     allSounds.forEach(sound => {
-      if (sound !== activeSound) {
-        sound.pause();
-        sound.currentTime = 0;
-      }
+      if (sound !== activeSound) { sound.pause(); sound.currentTime = 0; }
     });
-    if (activeSound.paused) {
-      activeSound.play().catch(() => {});
-    }
+    if (activeSound.paused) { activeSound.play().catch(() => {}); }
   }
 
-  /**
-   * Schaltet den Mute-Zustand für alle Endboss-Sounds um.
-   *
-   * @param {boolean} isMuted - true, wenn die Sounds stummgeschaltet werden sollen, sonst false.
-   */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
     this.walkSound.muted = isMuted;

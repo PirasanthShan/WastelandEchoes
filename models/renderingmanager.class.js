@@ -39,7 +39,7 @@ class RenderingManager {
       this.addToMap(this.world.character);
     
       if (!this.world.endboss.isRemoved) {
-        this.addToMap(this.world.endboss);
+        this.addToMapEndboss(this.world.endboss);
       }
     
       // Zeichne Feinde
@@ -112,7 +112,20 @@ class RenderingManager {
       // Stelle das gespiegelte Bild wieder her
       if (mo.otherDirection) this.flipImageBack(mo);
     }
-  
+
+   /**
+   * Fügt den Endboss gesondert zur Canvas hinzu.
+   * Diese Methode nutzt die custom drawEndboss()-Methode des Endboss, um ihn korrekt (mit Flip) zu zeichnen.
+   *
+   * @param {Endboss} endboss - Die Endboss-Instanz, die gezeichnet werden soll.
+   */
+      addToMapEndboss(endboss) {
+        if (!endboss) return;
+        endboss.drawEndboss(this.ctx);
+        if (endboss.drawFrame && typeof endboss.drawFrame === 'function') {
+          endboss.drawFrame(this.ctx);
+        }
+      }
     /**
      * Spiegelt ein Bild horizontal vor dem Rendern.
      * @param {MovableObject} mo - Das Objekt, dessen Bild gespiegelt werden soll.
@@ -132,4 +145,4 @@ class RenderingManager {
       mo.x *= -1;
       this.ctx.restore();
     }
-  }
+}

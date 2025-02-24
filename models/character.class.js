@@ -223,7 +223,7 @@ class Character extends MovableObject {
     if (this.isAboveGround()) {
         this.handleAirborne();
       }
-     this.handleMovement(isMovingRight, isMovingLeft);
+      this.handleMovement(isMovingRight, isMovingLeft);
       this.updateCameraPosition();
     }, 1000 / 100);
     this.startAnimationLoop();
