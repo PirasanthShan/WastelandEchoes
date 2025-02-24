@@ -34,6 +34,10 @@ class LastCollectible extends MovableObject {
      */
     checkVisibility(character) {
         const sichtweite = 600;
+        // Falls das Spiel nicht mehr läuft, wird die Musik nicht gestartet.
+        if (window.world && !window.world.isGameRunning) {
+        return;
+        }
         if (!this.musicPlayed && Math.abs(character.x - this.x) < sichtweite) {
             this.playMusic();
         }
@@ -67,7 +71,9 @@ class LastCollectible extends MovableObject {
     stopMusic() {
         if (this.music && !this.music.paused) {
             this.music.pause();
+            this.music.currentTime = 0
             this.isMusicPaused = true;
+            this.musicPlayed = true;
         }
     }
 

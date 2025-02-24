@@ -151,7 +151,8 @@ class Character extends MovableObject {
   loadSounds() {
     this.walking_sound = new Audio('./audio/robotwalk3.mp3');
     this.jump_sound = new Audio('./audio/roboJump.mp3');
-
+    this.death_sound = new Audio('./audio/deathrobot.mp3');
+    this.death_sound.volume = 0.1;
     this.walking_sound.volume = 0.4;
     this.walking_sound.loop = true;
 
@@ -164,7 +165,7 @@ class Character extends MovableObject {
    */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
-    [this.walking_sound, this.jump_sound].forEach(sound => {
+    [this.walking_sound, this.jump_sound, this.death_sound].forEach(sound => {
       sound.muted = isMuted;
     });
   }
@@ -204,6 +205,7 @@ class Character extends MovableObject {
   stopAllCharacterSounds() {
     this.stopSound(this.walking_sound);
     this.stopSound(this.jump_sound);
+    this.stopSound(this.death_sound);
   }
 
   /**
@@ -251,6 +253,10 @@ class Character extends MovableObject {
    * @param {boolean} isMovingLeft - Gibt an, ob die Spielfigur nach links bewegt wird.
    */
   handleMovement(isMovingRight, isMovingLeft) {
+    if (this.isDead()) {
+        this.stopSound(this.walking_sound);
+        return;
+      }
     if (isMovingRight) {
       this.moveRight();
       this.otherDirection = false;

@@ -302,8 +302,10 @@ class World {
     this.renderingManager.stopAllSounds();
     if (this.endboss && typeof this.endboss.stopAnimation === 'function') {
       this.endboss.stopAnimation();
+    } 
+    if (this.character && typeof this.character.stopDeathSound === 'function') {
+      this.character.stopDeathSound();
     }
-
     if (this.character && typeof this.character.stopAllCharacterSounds === 'function') {
       this.character.stopAllCharacterSounds();
     }
@@ -329,6 +331,7 @@ class World {
    */
   stopGame() {
     this.isGameRunning = false;
+    this.soundManager.stopAllSounds();
     this.interfaceRenderer.showGameOver();
     this.interfaceRenderer.hideAlertsBomb();
     this.endboss.stopAllActions();
