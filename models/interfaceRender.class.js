@@ -306,7 +306,7 @@ class InterfaceRender {
      */
     renderPhoneControlButtons() {
       this.container.innerHTML += `
-        <div class="phoneControllBtn">
+        <div class="phoneControllBtn" oncontextmenu="return false;">
             <div>
               <img class="ctrimg" src="./img/leftarrow.webp" alt="Left Arrow">
               <img class="ctrimg" src="./img/rightarrow.webp" alt="Right Arrow">
