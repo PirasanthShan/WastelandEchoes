@@ -328,13 +328,23 @@ canvas {
 }
 
 .impressum{
-  margin-top: 15px;
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 100px;
   margin-right: 100px;
+  text-align: center;
 }
+
+  .impressum h4, 
+  .impressum h5{
+    font-size: 35px;
+  }
+
+  .impressum p{
+    font-size: 20px;
+  }
 
 .show-container {
   opacity: 1;
@@ -670,7 +680,14 @@ img {
 
   .impressum p {
     font-size: 7px;
-    
+  }
+
+  .impressum {
+    margin-top: 10px;
+    }
+
+  .impressum h4, .impressum h5 {
+    font-size: 18px;
   }
 
   h2 {
