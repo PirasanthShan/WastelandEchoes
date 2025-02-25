@@ -183,12 +183,21 @@ class Character extends MovableObject {
    */
   playSound(sound) {
     if (!this.world || !this.world.isGameRunning || this.isMuted) return;
-    if (sound.paused) {
-      sound.play().catch();
+
+    if (!this.userInteracted) {
+        document.addEventListener('click', () => {
+            this.userInteracted = true;
+            sound.play();
+        }, { once: true });
+    } else {
+        if (sound.paused) {
+            sound.play();
+        }
     }
   }
 
-  /**
+
+/**
    * Stoppt einen bestimmten Sound.
    * @param {Audio} sound - Der Sound, der gestoppt werden soll.
    */
