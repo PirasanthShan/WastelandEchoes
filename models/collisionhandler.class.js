@@ -55,7 +55,7 @@ class CollisionHandler {
    * @returns {boolean} true, wenn die Objekte kollidieren, sonst false.
    */
   static isCollidingCollectible(obj1, obj2) {
-    return this.isColliding(obj1, obj2, 0.5, 0.2);
+    return this.isColliding(obj1, obj2, 0.5, 0.5);
     
   }
 

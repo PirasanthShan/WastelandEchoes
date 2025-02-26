@@ -20,7 +20,7 @@ class World {
   /** @type {Array} Eine Liste aller geworfenen Objekte (z. B. Bomben). */
   throwableObjects = [];
 
- /** @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird. */
+  /** @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird. */
   canvas;
 
   /** @type {CanvasRenderingContext2D} Der 2D-Rendering-Kontext des Canvas. */
@@ -64,12 +64,11 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
 
-    this.level = createLevel1();  
+    this.level = createLevel1();
     this.enemies = this.level.enemies;
 
     this.initializeManagers();
     this.initializeUIElements();
-    this.initializeAudio();
     this.startGameProcesses();
 
     window.world = this;
@@ -80,7 +79,7 @@ class World {
    * Initialisiert die Manager des Spiels.
    */
   initializeManagers() {
-    this.soundManager = new SoundManager();
+    this.soundManager = new SoundManager(this); // SoundManager mit World-Referenz initialisieren
     this.interfaceRenderer = new InterfaceRender(this, '#Container');
     this.collisionManager = new CollisionManager(this);
     this.throwManager = new ThrowManager(this);
@@ -99,22 +98,6 @@ class World {
   }
 
   /**
-   * Initialisiert und konfiguriert die Hintergrundmusik.
-   */
-  initializeAudio() {
-    this.soundManager.applyMuteState(); // Wende Mute-Status auf ALLE Sounds an
-}
-
-  /**
-   * Startet die Musik nach einer Tasteneingabe, falls sie pausiert ist.
-   */
-  startMusicOnKeyPress() {
-    if (!this.isMuted && this.backgroundMusic.paused) {
-        this.backgroundMusic.play().catch(() => {});
-    }
-  }
-
- /**
    * Startet alle notwendigen Prozesse für das Spiel.
    */
   startGameProcesses() {
@@ -149,10 +132,13 @@ class World {
     }
   }
 
+  /**
+   * Stoppt alle Spielprozesse und Intervalle.
+   */
   stopGameProcesses() {
     for (const id of this.intervals) clearInterval(id);
     this.intervals = [];
-    
+
     if (this.renderRequestId) {
       cancelAnimationFrame(this.renderRequestId);
       this.renderRequestId = null;
@@ -160,19 +146,22 @@ class World {
 
     this.interfaceRenderer?.winMusic?.pause();
     if (this.interfaceRenderer?.winMusic) this.interfaceRenderer.winMusic.currentTime = 0;
-    
+
     this.pauseGame();
     document.querySelectorAll('.gameOver, .youWin, .alertBomb').forEach(el => el.remove());
     const cont = document.querySelector('#Container');
-    
+
     if (cont) cont.innerHTML = '';
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  /**
+   * Startet eine neue Spielinstanz.
+   */
   restartGameInstance() {
     const storedMuteStatus = localStorage.getItem('isMuted');
     const isMuted = storedMuteStatus !== null ? JSON.parse(storedMuteStatus) : false;
-    
+
     window.world = new World(this.canvas, this.keyboard);
     world = window.world;
 
@@ -180,13 +169,8 @@ class World {
     world.isMuted = isMuted;
     world.soundManager.isMuted = isMuted;
 
-     // **Stelle sicher, dass ALLE Sounds sofort den korrekten Mute-Status erhalten**
-     if (typeof world.soundManager.applyMuteState === "function") {
-      world.soundManager.applyMuteState();
-  }
-
-    // **Direkte Anwendung auf alle Sounds**
-    world.soundManager.applyMuteState(); // Falls nicht vorhanden, in SoundManager implementieren
+    // Stelle sicher, dass alle Sounds den korrekten Mute-Status erhalten
+    world.soundManager.applyMuteState();
     world.interfaceRenderer.toggleObjectMute(world.character);
     world.interfaceRenderer.toggleGroupMute([...world.enemies, ...world.throwableObjects]);
     world.interfaceRenderer.toggleObjectMute(world.endboss);
@@ -194,8 +178,11 @@ class World {
 
     // Icon nach Restart aktualisieren
     world.interfaceRenderer.updateSoundButtonIcon();
-}
+  }
 
+  /**
+   * Startet das Spiel neu.
+   */
   restartGame() {
     this.stopGameProcesses();
     this.restartGameInstance();
@@ -282,45 +269,33 @@ class World {
   }
 
   /**
-   * Schaltet den Mute-Zustand des Spiels um.
-   */
-  toggleMute() {
-    this.isMuted = !this.isMuted;
-    localStorage.setItem('isMuted', JSON.stringify(this.isMuted));
-    if (typeof this.soundManager.applyMuteState === "function") {
-        this.soundManager.applyMuteState();
-    }
-    
-    this.interfaceRenderer.updateSoundButtonIcon();
-    }
-
-  /**
    * Pausiert das Spiel und stoppt alle Sounds und Animationen.
    */
   pauseGame() {
     this.isGameRunning = false;
-    this.renderingManager.stopAllSounds();
+    this.soundManager.stopAllSounds(); // Stoppt registrierte Sounds
+    if (this.lastCollectible) {
+        this.lastCollectible.stopMusic(); // Stoppt explizit die Hintergrundmusik vom LastCollectible
+    }
     if (this.endboss && typeof this.endboss.stopAnimation === 'function') {
       this.endboss.stopAnimation();
     }
-
     if (this.character && typeof this.character.stopAllCharacterSounds === 'function') {
       this.character.stopAllCharacterSounds();
     }
-
     resetKeyboard();
-  }
+}
+
 
   /**
    * Setzt das Spiel fort und startet alle Sounds und Animationen.
    */
   resumeGame() {
     this.isGameRunning = true;
-    this.renderingManager.resumeAllSounds();
+    this.soundManager.resumeAllSounds(); // Verwende den SoundManager
     if (this.endboss && typeof this.endboss.startAnimation === 'function') {
       this.endboss.startAnimation();
     }
-
     this.renderingManager.renderFrame();
   }
 
@@ -375,7 +350,6 @@ class World {
     }, 70);
     this.intervals.push(crystalInterval);
   }
-  
 
   /**
    * Schaltet die Bombenwarnung ein oder aus.

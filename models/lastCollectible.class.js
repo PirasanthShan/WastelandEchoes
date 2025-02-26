@@ -47,10 +47,15 @@ class LastCollectible extends MovableObject {
             this.music = new Audio('./audio/spaceEngine_000.mp3');
             this.music.volume = 0.05;
             this.music.loop = true;
+            // Registriere die Musik im globalen SoundManager,
+            // sodass sie beim Pausieren automatisch gestoppt wird
+            if (window.world && window.world.soundManager) {
+                window.world.soundManager.registerSound(this.music);
+            }
         }
-
+    
         if (this.isMuted) return;
-
+    
         if (this.isMusicPaused) {
             this.resumeMusic();
         } else if (this.music.paused) {
@@ -59,7 +64,8 @@ class LastCollectible extends MovableObject {
             });
             this.musicPlayed = true;
         }
-    }
+     }
+    
 
     /**
      * Stoppt die Hintergrundmusik und setzt den Pausenstatus.

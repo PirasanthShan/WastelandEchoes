@@ -102,14 +102,12 @@ class ThrowManager {
    * @param {ThrowableObject} bomb - Die explodierende Bombe.
    */
   triggerBombExplosion(bomb) {
+    // Der Sound wird bereits in playExplosion() abgespielt, wenn nicht stummgeschaltet.
     bomb.playExplosion(() => {
       this.world.removeBomb(bomb);
     });
-
-    if (!this.world.isMuted) {
-      bomb.explosion_sound.play().catch(() => {});
-    }
   }
+  
 
   /**
    * Behandelt das Treffen eines Feindes durch eine Bombe.
