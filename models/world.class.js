@@ -1,74 +1,80 @@
 /**
- * Repräsentiert die Spielwelt und verwaltet alle Objekte, Prozesse und Interaktionen im Spiel.
- * Diese Klasse ist das zentrale Steuerungselement für das Spielgeschehen.
+ * Represents the game world and manages all objects, processes, and interactions in the game.
+ * This class is the central control element for the game's events.
  *
  * @class World
  */
 class World {
-  /** @type {boolean} Gibt an, ob das Spiel läuft. */
+  /** @type {boolean} Indicates whether the game is running. */
   isGameRunning = true;
 
-  /** @type {Character} Der Spielercharakter. */
+  /** @type {Character} The player character. */
   character = new Character();
 
-  /** @type {Endboss} Der Endboss des Spiels. */
+  /** @type {Endboss} The end boss of the game. */
   endboss = new Endboss();
 
-  /** @type {Array} Eine Liste aller Gegner im aktuellen Level. */
+  /** @type {Array} A list of all enemies in the current level. */
   enemies = [];
 
-  /** @type {Array} Eine Liste aller geworfenen Objekte (z. B. Bomben). */
+  /** @type {Array} A list of all thrown objects (e.g., bombs). */
   throwableObjects = [];
 
-  /** @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird. */
+  /** @type {HTMLCanvasElement} The canvas element on which the game is rendered. */
   canvas;
 
-  /** @type {CanvasRenderingContext2D} Der 2D-Rendering-Kontext des Canvas. */
+  /** @type {CanvasRenderingContext2D} The 2D rendering context of the canvas. */
   ctx;
 
-  /** @type {Object} Das Tastatur-Objekt, das die Tastatureingaben verwaltet. */
+  /** @type {Object} The keyboard object that manages keyboard inputs. */
   keyboard;
 
-  /** @type {number} Die Kamera-Position auf der X-Achse. */
+  /** @type {number} The camera position on the X-axis. */
   camera_x = 0;
 
-  /** @type {Statusbar} Die Statusleiste für die Lebensenergie des Charakters. */
+  /** @type {Statusbar} The status bar for the character's health. */
   statusBar = new Statusbar();
 
-  /** @type {CollectibleBar} Die Sammelleiste für Bomben. */
+  /** @type {CollectibleBar} The collectible bar for bombs. */
   collectibleBar = new CollectibleBar();
 
-  /** @type {CollectibleBar2} Die Sammelleiste für Kristalle. */
+  /** @type {CollectibleBar2} The collectible bar for crystals. */
   crystalBar = new CollectibleBarCrystal();
 
-  /** @type {number} Die Anzahl der Bomben, die der Charakter besitzt. */
+  /** @type {number} The number of bombs the character possesses. */
   characterBombs = 5;
 
-  /** @type {number} Die maximale Anzahl an Bomben, die der Charakter tragen kann. */
+  /** @type {number} The maximum number of bombs the character can carry. */
   maxBombs = 10;
 
-  /** @type {number} Die Anzahl der Kristalle, die der Charakter gesammelt hat. */
+  /** @type {number} The number of crystals the character has collected. */
   characterCrystals = 0;
 
-  /** @type {number} Die maximale Anzahl an Kristallen, die der Charakter sammeln kann. */
+  /** @type {number} The maximum number of crystals the character can collect. */
   maxCrystals = 10;
 
   /**
-   * Erzeugt eine neue Instanz der Spielwelt.
+   * Creates a new instance of the game world.
    *
-   * @param {HTMLCanvasElement} canvas - Das Canvas-Element, auf dem das Spiel gerendert wird.
-   * @param {Object} keyboard - Das Tastatur-Objekt, das die Tastatureingaben verwaltet.
+   * @param {HTMLCanvasElement} canvas - The canvas element on which the game is rendered.
+   * @param {Object} keyboard - The keyboard object that manages keyboard inputs.
    */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
 
+    // Create level and assign enemies
     this.level = createLevel1();
     this.enemies = this.level.enemies;
 
     this.initializeManagers();
     this.initializeUIElements();
+
+    // Synchronize the UI with the initial mute state
+    // (updateSoundButtonIcon ensures the button icon matches the SoundManager state)
+    this.interfaceRenderer.updateSoundButtonIcon();
+
     this.startGameProcesses();
 
     window.world = this;
@@ -76,10 +82,10 @@ class World {
   }
 
   /**
-   * Initialisiert die Manager des Spiels.
+   * Initializes the game's managers.
    */
   initializeManagers() {
-    this.soundManager = new SoundManager(this); // SoundManager mit World-Referenz initialisieren
+    this.soundManager = new SoundManager(this); // Initialize SoundManager with World reference
     this.interfaceRenderer = new InterfaceRender(this, '#Container');
     this.collisionManager = new CollisionManager(this);
     this.throwManager = new ThrowManager(this);
@@ -87,7 +93,7 @@ class World {
   }
 
   /**
-   * Initialisiert die UI-Elemente des Spiels.
+   * Initializes the game's UI elements.
    */
   initializeUIElements() {
     this.interfaceRenderer.renderPhoneControlButtons();
@@ -98,7 +104,7 @@ class World {
   }
 
   /**
-   * Startet alle notwendigen Prozesse für das Spiel.
+   * Starts all necessary processes for the game.
    */
   startGameProcesses() {
     this.setWorld();
@@ -109,7 +115,7 @@ class World {
   }
 
   /**
-   * Setzt die Welt für alle Objekte, die auf die Spielwelt zugreifen müssen.
+   * Sets the world for all objects that need to access the game world.
    */
   setWorld() {
     this.enemies.forEach((enemy) => {
@@ -119,7 +125,7 @@ class World {
   }
 
   /**
-   * Startet alle Spielprozesse und Intervalle.
+   * Starts all game processes and intervals.
    */
   run() {
     if (!this.intervals) {
@@ -133,7 +139,7 @@ class World {
   }
 
   /**
-   * Stoppt alle Spielprozesse und Intervalle.
+   * Stops all game processes and intervals.
    */
   stopGameProcesses() {
     for (const id of this.intervals) clearInterval(id);
@@ -145,7 +151,8 @@ class World {
     }
 
     this.interfaceRenderer?.winMusic?.pause();
-    if (this.interfaceRenderer?.winMusic) this.interfaceRenderer.winMusic.currentTime = 0;
+    if (this.interfaceRenderer?.winMusic)
+      this.interfaceRenderer.winMusic.currentTime = 0;
 
     this.pauseGame();
     document.querySelectorAll('.gameOver, .youWin, .alertBomb').forEach(el => el.remove());
@@ -156,7 +163,7 @@ class World {
   }
 
   /**
-   * Startet eine neue Spielinstanz.
+   * Starts a new game instance.
    */
   restartGameInstance() {
     const storedMuteStatus = localStorage.getItem('isMuted');
@@ -165,23 +172,23 @@ class World {
     window.world = new World(this.canvas, this.keyboard);
     world = window.world;
 
-    // Nach dem Neustart den gespeicherten Mute-Status wieder anwenden
+    // Reapply the saved mute status after restart
     world.isMuted = isMuted;
     world.soundManager.isMuted = isMuted;
 
-    // Stelle sicher, dass alle Sounds den korrekten Mute-Status erhalten
+    // Ensure all sounds have the correct mute state
     world.soundManager.applyMuteState();
     world.interfaceRenderer.toggleObjectMute(world.character);
     world.interfaceRenderer.toggleGroupMute([...world.enemies, ...world.throwableObjects]);
     world.interfaceRenderer.toggleObjectMute(world.endboss);
     world.interfaceRenderer.toggleObjectMute(world.lastCollectible);
 
-    // Icon nach Restart aktualisieren
+    // Update icon after restart
     world.interfaceRenderer.updateSoundButtonIcon();
   }
 
   /**
-   * Startet das Spiel neu.
+   * Restarts the game.
    */
   restartGame() {
     this.stopGameProcesses();
@@ -189,7 +196,7 @@ class World {
   }
 
   /**
-   * Initialisiert die Kollisionsabfragen.
+   * Initializes collision checks.
    */
   setupCollisionChecks() {
     this.intervals.push(setInterval(() => {
@@ -214,7 +221,7 @@ class World {
   }
 
   /**
-   * Initialisiert die Sichtbarkeitsprüfung für das letzte Sammelobjekt.
+   * Initializes visibility checks for the last collectible.
    */
   setupVisibilityChecks() {
     this.intervals.push(setInterval(() => {
@@ -224,7 +231,7 @@ class World {
   }
 
   /**
-   * Initialisiert das Verhalten des Endbosses.
+   * Initializes the end boss's behavior.
    */
   setupEndbossBehavior() {
     this.intervals.push(setInterval(() => {
@@ -234,7 +241,7 @@ class World {
   }
 
   /**
-   * Initialisiert die Überprüfung von Wurfobjekten.
+   * Initializes throwable object checks.
    */
   setupThrowChecks() {
     this.intervals.push(setInterval(() => {
@@ -244,7 +251,7 @@ class World {
   }
 
   /**
-   * Initialisiert die Updates für Status- und Sammelleisten.
+   * Initializes updates for status and collectible bars.
    */
   setupStatusUpdates() {
     this.intervals.push(setInterval(() => {
@@ -256,7 +263,7 @@ class World {
   }
 
   /**
-   * Startet alle Animationen für Charakter, Gegner und Endboss.
+   * Starts all animations for the character, enemies, and end boss.
    */
   startAllAnimations() {
     this.character.startAnimation();
@@ -269,13 +276,13 @@ class World {
   }
 
   /**
-   * Pausiert das Spiel und stoppt alle Sounds und Animationen.
+   * Pauses the game and stops all sounds and animations.
    */
   pauseGame() {
     this.isGameRunning = false;
-    this.soundManager.stopAllSounds(); // Stoppt registrierte Sounds
+    this.soundManager.stopAllSounds(); // Stop registered sounds
     if (this.lastCollectible) {
-        this.lastCollectible.stopMusic(); // Stoppt explizit die Hintergrundmusik vom LastCollectible
+      this.lastCollectible.stopMusic(); // Explicitly stop LastCollectible's background music
     }
     if (this.endboss && typeof this.endboss.stopAnimation === 'function') {
       this.endboss.stopAnimation();
@@ -284,15 +291,14 @@ class World {
       this.character.stopAllCharacterSounds();
     }
     resetKeyboard();
-}
-
+  }
 
   /**
-   * Setzt das Spiel fort und startet alle Sounds und Animationen.
+   * Resumes the game and starts all sounds and animations.
    */
   resumeGame() {
     this.isGameRunning = true;
-    this.soundManager.resumeAllSounds(); // Verwende den SoundManager
+    this.soundManager.resumeAllSounds(); // Use the SoundManager
     if (this.endboss && typeof this.endboss.startAnimation === 'function') {
       this.endboss.startAnimation();
     }
@@ -300,7 +306,7 @@ class World {
   }
 
   /**
-   * Stoppt das Spiel und zeigt den Game-Over-Bildschirm an.
+   * Stops the game and shows the game-over screen.
    */
   stopGame() {
     this.isGameRunning = false;
@@ -310,7 +316,7 @@ class World {
   }
 
   /**
-   * Zeigt den Gewinnbildschirm an.
+   * Shows the win screen.
    */
   showWinScreen() {
     this.isGameRunning = false;
@@ -319,28 +325,28 @@ class World {
   }
 
   /**
-   * Aktualisiert die Statusleiste basierend auf der Lebensenergie des Charakters.
+   * Updates the status bar based on the character's health.
    */
   updateStatusBar() {
     this.statusBar.setPercentage(this.character.energy);
   }
 
   /**
-   * Aktualisiert die Sammelleiste für Bomben.
+   * Updates the collectible bar for bombs.
    */
   updateCollectibleBar() {
     this.collectibleBar.setBombs(this.characterBombs);
   }
 
   /**
-   * Aktualisiert die Sammelleiste für Kristalle.
+   * Updates the collectible bar for crystals.
    */
   updateCrystalBar() {
     this.crystalBar.setCrystals(this.characterCrystals);
   }
 
   /**
-   * Animiert die Kristalle im Level.
+   * Animates the crystals in the level.
    */
   animateCrystals() {
     const crystalInterval = setInterval(() => {
@@ -352,7 +358,7 @@ class World {
   }
 
   /**
-   * Schaltet die Bombenwarnung ein oder aus.
+   * Toggles the bomb warning on or off.
    */
   toggleAlertBomb() {
     if (!this.interfaceRenderer) return;
@@ -371,9 +377,9 @@ class World {
   }
 
   /**
-   * Entfernt einen Gegner aus der Spielwelt.
+   * Removes an enemy from the game world.
    *
-   * @param {Object} enemy - Der zu entfernende Gegner.
+   * @param {Object} enemy - The enemy to remove.
    */
   removeEnemy(enemy) {
     this.enemies = this.enemies.filter((e) => e !== enemy);
@@ -381,9 +387,9 @@ class World {
   }
 
   /**
-   * Entfernt eine Bombe aus der Spielwelt.
+   * Removes a bomb from the game world.
    *
-   * @param {Object} bomb - Die zu entfernende Bombe.
+   * @param {Object} bomb - The bomb to remove.
    */
   removeBomb(bomb) {
     this.throwableObjects = this.throwableObjects.filter((obj) => obj !== bomb);

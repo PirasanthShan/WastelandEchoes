@@ -1,7 +1,7 @@
 /**
- * Basisklasse für alle Objekte, die gezeichnet werden können.
- * Enthält Methoden zum Laden von Bildern, Zeichnen auf einem Canvas
- * und zum Verwalten eines Bild-Caches.
+ * Base class for all objects that can be drawn.
+ * Contains methods for loading images, drawing on a canvas,
+ * and managing an image cache.
  *
  * @class DrawableObject
  */
@@ -12,21 +12,21 @@ class DrawableObject {
   imageCache = {};
   /** @type {number} */
   currentImage = 0;
-  /** Horizontale Position des Objekts. @type {number} */
+  /** Horizontal position of the object. @type {number} */
   x = 80;
-  /** Vertikale Position des Objekts. @type {number} */
+  /** Vertical position of the object. @type {number} */
   y = 270;
-  /** Höhe des Objekts. @type {number} */
+  /** Height of the object. @type {number} */
   height = 150;
-  /** Breite des Objekts. @type {number} */
+  /** Width of the object. @type {number} */
   width = 150;
-  /** Debugging-Modus, standardmäßig deaktiviert. @type {boolean} */
+  /** Debugging mode, disabled by default. @type {boolean} */
   DEBUG_MODE = false;
 
   /**
-   * Lädt ein Bild aus dem angegebenen Pfad und speichert es in der Eigenschaft `img`.
+   * Loads an image from the specified path and stores it in the `img` property.
    *
-   * @param {string} path - Der Pfad zum Bild, das geladen werden soll.
+   * @param {string} path - The path to the image to be loaded.
    */
   loadImage(path) {
     this.img = new Image();
@@ -34,19 +34,19 @@ class DrawableObject {
   }
 
   /**
-   * Zeichnet das aktuell geladene Bild auf den übergebenen Canvas-Kontext.
+   * Draws the currently loaded image onto the provided canvas context.
    *
-   * @param {CanvasRenderingContext2D} ctx - Der Zeichenkontext des Canvas.
+   * @param {CanvasRenderingContext2D} ctx - The drawing context of the canvas.
    */
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
   /**
-   * Zeichnet einen Rahmen um das Objekt, wenn DEBUG_MODE aktiviert ist und das Objekt
-   * eine Instanz von Collectible2 oder Character ist.
+   * Draws a frame around the object if DEBUG_MODE is enabled and the object
+   * is an instance of Collectible2 or Character.
    *
-   * @param {CanvasRenderingContext2D} ctx - Der Zeichenkontext des Canvas.
+   * @param {CanvasRenderingContext2D} ctx - The drawing context of the canvas.
    */
   drawFrame(ctx) {
     if (this.DEBUG_MODE && (this instanceof Collectible || this instanceof Character)) {
@@ -59,9 +59,9 @@ class DrawableObject {
   }
 
   /**
-   * Lädt mehrere Bilder aus einem Array von Bildpfaden und speichert diese im imageCache.
+   * Loads multiple images from an array of image paths and stores them in the imageCache.
    *
-   * @param {string[]} arr - Ein Array von Bildpfaden, die geladen werden sollen.
+   * @param {string[]} arr - An array of image paths to be loaded.
    */
   loadImages(arr) {
     arr.forEach((path) => {

@@ -1,26 +1,26 @@
 /**
- * Klasse zur Verwaltung von Spielsounds.
- * Diese Klasse ermöglicht das Registrieren, Abspielen, Stoppen und Stummschalten von Audio-Objekten.
+ * Class for managing game sounds.
+ * This class allows registering, playing, stopping, and muting audio objects.
  */
 class SoundManager {
   /**
-   * Erstellt eine Instanz des `SoundManager`.
-   * @param {World} world - Die Spielwelt-Instanz, die den SoundManager verwendet.
+   * Creates an instance of `SoundManager`.
+   * @param {World} world - The game world instance using the SoundManager.
    */
   constructor(world) {
-    /** @type {Audio[]} Liste aller registrierten Audio-Objekte. */
+    /** @type {Audio[]} List of all registered audio objects. */
     this.sounds = [];
 
-    /** @type {boolean} Gibt an, ob der Sound stummgeschaltet ist. */
+    /** @type {boolean} Indicates whether the sound is muted. */
     this.isMuted = localStorage.getItem('isMuted') === 'true';
 
-    /** @type {World} Die Spielwelt-Instanz. */
+    /** @type {World} The game world instance. */
     this.world = world;
   }
 
   /**
-   * Registriert ein Audio-Objekt im SoundManager.
-   * @param {Audio} sound - Das zu registrierende Audio-Objekt.
+   * Registers an audio object in the SoundManager.
+   * @param {Audio} sound - The audio object to register.
    */
   registerSound(sound) {
     this.sounds.push(sound);
@@ -28,8 +28,8 @@ class SoundManager {
   }
 
   /**
-   * Schaltet den Stumm-Modus für alle registrierten Sounds um.
-   * Wenn der Sound stummgeschaltet ist, werden alle Sounds stummgeschaltet, andernfalls werden sie aktiviert.
+   * Toggles the mute state for all registered sounds.
+   * If the sound is muted, all sounds are muted; otherwise, they are unmuted.
    */
   toggleMute() {
     this.isMuted = !this.isMuted;
@@ -39,13 +39,13 @@ class SoundManager {
   }
 
   /**
-   * Stoppt alle Sounds, indem sie pausiert und auf den Anfang zurückgesetzt werden.
-   * Speichert den Zustand (ob der Sound abgespielt wurde), um ihn später fortsetzen zu können.
+   * Stops all sounds by pausing them and resetting to the beginning.
+   * Saves the state (whether the sound was playing) to resume later.
    */
   stopAllSounds() {
     this.sounds.forEach((sound) => {
       if (!sound.paused) {
-        sound.dataset.wasPlaying = "true"; // Speichert, dass der Sound lief
+        sound.dataset.wasPlaying = "true"; // Saves that the sound was playing
         sound.pause();
         sound.currentTime = 0;
       }
@@ -53,8 +53,8 @@ class SoundManager {
   }
 
   /**
-   * Setzt alle Sounds fort, die vor dem Stoppen abgespielt wurden.
-   * Nur Sounds, die vorher abgespielt wurden, werden fortgesetzt.
+   * Resumes all sounds that were playing before being stopped.
+   * Only sounds that were previously playing are resumed.
    */
   resumeAllSounds() {
     this.sounds.forEach((sound) => {
@@ -66,20 +66,11 @@ class SoundManager {
   }
 
   /**
-   * Stellt sicher, dass alle registrierten Sounds den aktuellen Mute-Status haben.
+   * Ensures all registered sounds have the current mute state.
    */
   applyMuteState() {
     this.sounds.forEach((sound) => {
       sound.muted = this.isMuted;
     });
-  }
-
-  /**
-   * Startet die Hintergrundmusik, wenn eine Taste gedrückt wird und die Musik pausiert ist.
-   */
-  startMusicOnKeyPress() {
-    if (!this.isMuted && this.world.backgroundMusic.paused) {
-      this.world.backgroundMusic.play().catch(() => {});
-    }
   }
 }

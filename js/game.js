@@ -1,20 +1,20 @@
 /** 
- * @type {HTMLCanvasElement} Das Canvas-Element, auf dem das Spiel gerendert wird.
+ * @type {HTMLCanvasElement} The canvas element on which the game is rendered.
  */
 let canvas;
 
 /**
- * @type {World} Die Spielwelt, die alle Objekte und Logik enthält.
+ * @type {World} The game world that contains all objects and logic.
  */
 let world;
 
 /**
- * @type {Object} Ein Objekt, das den Zustand der Tastatureingaben speichert.
- * @property {boolean} RIGHT - Gibt an, ob die rechte Pfeiltaste gedrückt ist.
- * @property {boolean} LEFT - Gibt an, ob die linke Pfeiltaste gedrückt ist.
- * @property {boolean} UP - Gibt an, ob die obere Pfeiltaste gedrückt ist.
- * @property {boolean} DOWN - Gibt an, ob die untere Pfeiltaste gedrückt ist.
- * @property {boolean} SPACE - Gibt an, ob die Leertaste gedrückt ist.
+ * @type {Object} An object that stores the state of keyboard inputs.
+ * @property {boolean} RIGHT - Indicates whether the right arrow key is pressed.
+ * @property {boolean} LEFT - Indicates whether the left arrow key is pressed.
+ * @property {boolean} UP - Indicates whether the up arrow key is pressed.
+ * @property {boolean} DOWN - Indicates whether the down arrow key is pressed.
+ * @property {boolean} SPACE - Indicates whether the space key is pressed.
  */
 let gameKeyboard = {
   RIGHT: false,
@@ -25,7 +25,7 @@ let gameKeyboard = {
 };
 
 /**
- * Setzt alle Tastenzustände im `gameKeyboard`-Objekt auf `false` zurück.
+ * Resets all key states in the `gameKeyboard` object to `false`.
  */
 function resetKeyboard() {
   gameKeyboard.RIGHT = false;
@@ -36,9 +36,9 @@ function resetKeyboard() {
 }
 
 /**
- * Initialisiert das Spiel:
- * - Holt das Canvas-Element aus dem DOM.
- * - Erstellt eine neue Spielwelt (`World`) und weist sie der Variable `world` zu.
+ * Initializes the game:
+ * - Retrieves the canvas element from the DOM.
+ * - Creates a new game world (`World`) and assigns it to the `world` variable.
  */
 function init() {
   canvas = document.getElementById("canvas");
@@ -46,14 +46,13 @@ function init() {
   window.world = new World(canvas, gameKeyboard);
 }
 
-
 /**
- * Event-Listener für Tastendruck-Ereignisse (`keydown`).
- * Aktualisiert den Zustand der Tasten im `gameKeyboard`-Objekt, wenn das Spiel läuft.
- * @param {KeyboardEvent} e - Das Tastatur-Ereignis.
+ * Event listener for keydown events.
+ * Updates the state of the keys in the `gameKeyboard` object when the game is running.
+ * @param {KeyboardEvent} e - The keyboard event.
  */
 window.addEventListener("keydown", (e) => {
-  // Verarbeite Tastendrücke nur, wenn das Spiel läuft
+  // Process key presses only if the game is running
   if (typeof world === "undefined" || !world?.isGameRunning) return;
 
   switch (e.key) {
@@ -76,9 +75,9 @@ window.addEventListener("keydown", (e) => {
 });
 
 /**
- * Event-Listener für Tastenloslassen-Ereignisse (`keyup`).
- * Setzt den Zustand der Tasten im `gameKeyboard`-Objekt zurück.
- * @param {KeyboardEvent} e - Das Tastatur-Ereignis.
+ * Event listener for keyup events.
+ * Resets the state of the keys in the `gameKeyboard` object.
+ * @param {KeyboardEvent} e - The keyboard event.
  */
 window.addEventListener("keyup", (e) => {
   if (typeof world === "undefined") return;
@@ -103,9 +102,9 @@ window.addEventListener("keyup", (e) => {
 });
 
 /**
- * Event-Listener für Touchstart-Ereignisse (mobile Steuerung).
- * Aktualisiert den Zustand der Tasten im `gameKeyboard`-Objekt basierend auf den berührten Buttons.
- * @param {TouchEvent} e - Das Touch-Ereignis.
+ * Event listener for touchstart events (mobile controls).
+ * Updates the state of the keys in the `gameKeyboard` object based on the touched buttons.
+ * @param {TouchEvent} e - The touch event.
  */
 document.addEventListener("touchstart", (e) => {
   if (typeof world === "undefined" || !world?.isGameRunning) return;
@@ -125,9 +124,9 @@ document.addEventListener("touchstart", (e) => {
 });
 
 /**
- * Event-Listener für Touchend-Ereignisse (mobile Steuerung).
- * Setzt den Zustand der Tasten im `gameKeyboard`-Objekt zurück, wenn die Berührung endet.
- * @param {TouchEvent} e - Das Touch-Ereignis.
+ * Event listener for touchend events (mobile controls).
+ * Resets the state of the keys in the `gameKeyboard` object when the touch ends.
+ * @param {TouchEvent} e - The touch event.
  */
 document.addEventListener("touchend", (e) => {
   if (typeof world === "undefined" || !world?.isGameRunning) return;

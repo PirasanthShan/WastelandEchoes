@@ -1,27 +1,27 @@
 /**
- * Repräsentiert die Spielfigur, die sich in der Spielwelt bewegen kann.
- * Erbt von der Klasse `MovableObject` und erweitert diese um spezifische Eigenschaften und Methoden für die Spielfigur.
+ * Represents the playable character that can move within the game world.
+ * Inherits from the `MovableObject` class and extends it with specific properties and methods for the character.
  */
 class Character extends MovableObject {
-  /** @type {number} Höhe der Spielfigur in Pixeln. */
+  /** @type {number} Height of the character in pixels. */
   height = 110;
 
-  /** @type {number} Breite der Spielfigur in Pixeln. */
+  /** @type {number} Width of the character in pixels. */
   width = 110;
 
-  /** @type {number} Y-Position der Spielfigur auf der Canvas. */
+  /** @type {number} Y-position of the character on the canvas. */
   y = 310;
 
-  /** @type {number} Geschwindigkeit der Spielfigur. */
+  /** @type {number} Speed of the character. */
   speed = 1;
 
-  /** @type {boolean} Gibt an, ob eine Animation aktuell abgespielt wird. */
+  /** @type {boolean} Indicates whether an animation is currently playing. */
   isAnimationPlaying = false;
 
-  /** @type {boolean} Gibt an, ob die Sounds der Spielfigur stummgeschaltet sind. */
+  /** @type {boolean} Indicates whether the character's sounds are muted. */
   isMuted = false;
 
-  /** @type {string[]} Liste der Bildpfade für die Geh-Animation. */
+  /** @type {string[]} List of image paths for the walking animation. */
   IMAGES_WALKING = [
     './img/hero.img/03_Walk/Walk_000.webp',
     './img/hero.img/03_Walk/Walk_001.webp',
@@ -37,7 +37,7 @@ class Character extends MovableObject {
     './img/hero.img/03_Walk/Walk_011.webp'
   ];
 
-  /** @type {string[]} Liste der Bildpfade für die Steh-Animation. */
+  /** @type {string[]} List of image paths for the standing animation. */
   IMAGES_STANDING = [
     './img/hero.img/01_Idle/idle_000.webp',
     './img/hero.img/01_Idle/idle_001.webp',
@@ -50,7 +50,7 @@ class Character extends MovableObject {
     './img/hero.img/01_Idle/idle_008.webp'
   ];
 
-  /** @type {string[]} Liste der Bildpfade für die Sprung-Animation. */
+  /** @type {string[]} List of image paths for the jumping animation. */
   IMAGES_JUMPING = [
     './img/hero.img/05_Jump/Jump_001_cropped_resized.webp',
     './img/hero.img/05_Jump/Jump_002_cropped_resized.webp',
@@ -66,7 +66,7 @@ class Character extends MovableObject {
     './img/hero.img/05_Jump/Jump_012_cropped_resized.webp'
   ];
 
-  /** @type {string[]} Liste der Bildpfade für die Todes-Animation. */
+  /** @type {string[]} List of image paths for the death animation. */
   IMAGES_DEAD = [
     './img/hero.img/13_Death/Death_000.webp',
     './img/hero.img/13_Death/Death_001.webp',
@@ -85,7 +85,7 @@ class Character extends MovableObject {
     './img/hero.img/13_Death/Death_014.webp'
   ];
 
-  /** @type {string[]} Liste der Bildpfade für die Verletzungs-Animation. */
+  /** @type {string[]} List of image paths for the hurt animation. */
   IMAGES_HURT = [
     './img/hero.img/04_Sit/Sit_000.webp',
     './img/hero.img/04_Sit/Sit_001.webp',
@@ -103,7 +103,7 @@ class Character extends MovableObject {
     './img/hero.img/04_Sit/Sit_014.webp'
   ];
 
-  /** @type {string[]} Liste der Bildpfade für die Angriffs-Animation. */
+  /** @type {string[]} List of image paths for the attack animation. */
   IMAGES_ATTACK = [
     './img/hero.img/06_Attack/Attack_000_resized_879x1157.webp',
     './img/hero.img/06_Attack/Attack_001_resized_879x1157.webp',
@@ -116,21 +116,21 @@ class Character extends MovableObject {
     './img/hero.img/06_Attack/Attack_008_resized_879x1157.webp'
   ];
 
-  /** @type {World} Referenz zur Spielwelt. */
+  /** @type {World} Reference to the game world. */
   world;
 
-  /** @type {Audio} Sound, der abgespielt wird, wenn die Spielfigur läuft. */
+  /** @type {Audio} Sound played when the character walks. */
   walking_sound = new Audio('./audio/robotwalk3.mp3');
 
-  /** @type {Audio} Sound, der abgespielt wird, wenn die Spielfigur springt. */
+  /** @type {Audio} Sound played when the character jumps. */
   jump_sound = new Audio('./audio/roboJump.mp3');
 
-  /** @type {Audio} Sound, der abgespielt wird, wenn die Spielfigur stirbt. */
+  /** @type {Audio} Sound played when the character dies. */
   death_sound = new Audio('./audio/deathrobot.mp3');
 
   /**
-   * Konstruktor der `Character`-Klasse.
-   * Lädt die initialen Bilder und Sounds für die Spielfigur.
+   * Constructor for the `Character` class.
+   * Loads initial images and sounds for the character.
    */
   constructor() {
     super().loadImage('./img/hero.img/02_Turn_to_walk/Turn_to_walk_003.webp');
@@ -146,7 +146,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Lädt die Sounds für die Spielfigur und konfiguriert deren Eigenschaften.
+   * Loads the sounds for the character and configures their properties.
    */
   loadSounds() {
     this.walking_sound = new Audio('./audio/robotwalk3.mp3');
@@ -160,8 +160,8 @@ class Character extends MovableObject {
   }
 
   /**
-   * Schaltet die Sounds der Spielfigur stumm oder aktiviert sie.
-   * @param {boolean} isMuted - Gibt an, ob die Sounds stummgeschaltet werden sollen.
+   * Mutes or unmutes the character's sounds.
+   * @param {boolean} isMuted - Indicates whether the sounds should be muted.
    */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
@@ -171,15 +171,15 @@ class Character extends MovableObject {
   }
 
   /**
-   * Startet die Animation der Spielfigur.
+   * Starts the character's animation.
    */
   startAnimation() {
     this.animate();
   }
 
   /**
-   * Spielt einen Sound ab, falls dieser nicht bereits läuft.
-   * @param {Audio} sound - Der Sound, der abgespielt werden soll.
+   * Plays a sound if it is not already playing.
+   * @param {Audio} sound - The sound to be played.
    */
   playSound(sound) {
     if (!this.world || !this.world.isGameRunning || this.isMuted) return;
@@ -189,18 +189,18 @@ class Character extends MovableObject {
   }
 
   /**
-   * Stoppt einen bestimmten Sound.
-   * @param {Audio} sound - Der Sound, der gestoppt werden soll.
+   * Stops a specific sound.
+   * @param {Audio} sound - The sound to be stopped.
    */
   stopSound(sound) {
     if (!sound.paused) {
       sound.pause();
-      sound.currentTime = 0; // Setzt den Sound auf den Anfang zurück.
+      sound.currentTime = 0; // Resets the sound to the beginning.
     }
   }
 
   /**
-   * Stoppt alle Sounds der Spielfigur.
+   * Stops all sounds of the character.
    */
   stopAllCharacterSounds() {
     this.stopSound(this.walking_sound);
@@ -209,8 +209,8 @@ class Character extends MovableObject {
   }
 
   /**
-   * Hauptfunktion für die Animation der Spielfigur.
-   * Steuert Bewegung, Sprung, Sound und Kamera-Position.
+   * Main function for the character's animation.
+   * Controls movement, jumping, sound, and camera position.
    */
   animate() {
     setInterval(() => {
@@ -218,11 +218,11 @@ class Character extends MovableObject {
       const isJumping = this.world.keyboard.UP && !this.isAboveGround();
       const isMovingRight = this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
       const isMovingLeft = this.world.keyboard.LEFT && this.x > 0;
-      // Falls die Taste für den Sprung gedrückt wird, wird der Sprung eingeleitet.
+      // If the jump key is pressed, the jump is initiated.
       if (isJumping) {
         this.handleJump();
       }
-    if (this.isAboveGround()) {
+      if (this.isAboveGround()) {
         this.handleAirborne();
       }
       this.handleMovement(isMovingRight, isMovingLeft);
@@ -230,9 +230,9 @@ class Character extends MovableObject {
     }, 1000 / 100);
     this.startAnimationLoop();
   }
-  
+
   /**
-   * Behandelt den Sprung der Spielfigur.
+   * Handles the character's jump.
    */
   handleJump() {
     this.playSound(this.jump_sound);
@@ -241,26 +241,26 @@ class Character extends MovableObject {
   }
 
   /**
-   * Behandelt den Zustand, wenn die Spielfigur in der Luft ist.
+   * Handles the state when the character is airborne.
    */
   handleAirborne() {
     this.stopSound(this.walking_sound);
   }
 
   /**
-   * Behandelt die seitliche Bewegung der Spielfigur.
-   * @param {boolean} isMovingRight - Gibt an, ob die Spielfigur nach rechts bewegt wird.
-   * @param {boolean} isMovingLeft - Gibt an, ob die Spielfigur nach links bewegt wird.
+   * Handles the character's lateral movement.
+   * @param {boolean} isMovingRight - Indicates whether the character is moving right.
+   * @param {boolean} isMovingLeft - Indicates whether the character is moving left.
    */
   handleMovement(isMovingRight, isMovingLeft) {
     if (this.isDead()) {
-        this.stopSound(this.walking_sound);
-        return;
-      }
+      this.stopSound(this.walking_sound);
+      return;
+    }
     if (isMovingRight) {
       this.moveRight();
       this.otherDirection = false;
-     if (!this.isAboveGround()) {
+      if (!this.isAboveGround()) {
         this.playSound(this.walking_sound);
       } else {
         this.stopSound(this.walking_sound);
@@ -277,10 +277,9 @@ class Character extends MovableObject {
       this.stopSound(this.walking_sound);
     }
   }
-  
 
   /**
-   * Aktualisiert die Kamera-Position basierend auf der Position der Spielfigur.
+   * Updates the camera position based on the character's position.
    */
   updateCameraPosition() {
     if (this.x < 2300) {
@@ -291,7 +290,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Startet die Animationsschleife für die Spielfigur.
+   * Starts the animation loop for the character.
    */
   startAnimationLoop() {
     setInterval(() => {
@@ -313,21 +312,21 @@ class Character extends MovableObject {
   }
 
   /**
-   * Behandelt die Todesanimation der Spielfigur.
+   * Handles the character's death animation.
    */
   handleDeathAnimation() {
     this.playDeathAnimation();
   }
 
   /**
-   * Behandelt die Verletzungsanimation der Spielfigur.
+   * Handles the character's hurt animation.
    */
   handleHurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
   }
 
   /**
-   * Behandelt die Sprunganimation der Spielfigur.
+   * Handles the character's jumping animation.
    */
   handleJumpingAnimation() {
     this.playAnimation(this.IMAGES_JUMPING);
@@ -336,7 +335,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Behandelt die Angriffsanimation der Spielfigur.
+   * Handles the character's attack animation.
    */
   handleAttackingAnimation() {
     this.height = 130;
@@ -344,7 +343,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Behandelt die Bewegungsanimation der Spielfigur.
+   * Handles the character's movement animation.
    */
   handleMovementAnimation() {
     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
@@ -359,8 +358,8 @@ class Character extends MovableObject {
   }
 
   /**
-   * Spielt die Todesanimation der Spielfigur ab.
-   * @param {function} callback - Callback-Funktion, die nach Abschluss der Animation aufgerufen wird.
+   * Plays the character's death animation.
+   * @param {function} callback - Callback function to be called after the animation completes.
    */
   playDeathAnimation(callback) {
     if (this.isAnimationPlaying) return;
@@ -371,19 +370,19 @@ class Character extends MovableObject {
   }
 
   /**
-   * Spielt den Todes-Sound ab.
+   * Plays the death sound.
    */
   playDeathSound() {
     if (this.death_sound) {
       this.death_sound.play().catch(() => {
-        // Fehler werden ignoriert (z.B. Autoplay-Blocker)
+        // Errors are ignored (e.g., autoplay blockers)
       });
     }
   }
 
   /**
-   * Führt die Todesanimationssequenz aus.
-   * @param {function} callback - Callback-Funktion, die nach Abschluss der Animation aufgerufen wird.
+   * Executes the death animation sequence.
+   * @param {function} callback - Callback function to be called after the animation completes.
    */
   runDeathAnimation(callback) {
     const deathImages = this.IMAGES_DEAD;
@@ -399,6 +398,6 @@ class Character extends MovableObject {
         this.isAnimationPlaying = false;
         if (callback) callback();
       }
-    }, 1000 / 25); // 25 FPS für die Todesanimation
+    }, 1000 / 25); // 25 FPS for the death animation
   }
 }

@@ -1,11 +1,24 @@
+/**
+ * Class representing a throwable object in the game, such as a bomb.
+ * Inherits from MovableObject.
+ */
 class ThrowableObject extends MovableObject {
+    /**
+     * @property {string[]} IMAGES_EXPLOSION - Array of image paths for the explosion animation.
+     */
     IMAGES_EXPLOSION = [
       './img/hero.img/Bomb/bomb_0003_Layer-7.webp',
-      './img/hero.img/Bomb/bomb_0003_Layer-7.webp', 
+      './img/hero.img/Bomb/bomb_0003_Layer-7.webp',
       './img/hero.img/Bomb/bomb_0003_Layer-7.webp',
       './img/hero.img/Bomb/bomb_0003_Layer-7.webp'
     ];
   
+    /**
+     * Creates an instance of ThrowableObject.
+     * @param {number} x - The initial x-coordinate of the throwable object.
+     * @param {number} y - The initial y-coordinate of the throwable object.
+     * @param {boolean} otherDirection - Determines if the object is thrown in the opposite direction.
+     */
     constructor(x, y, otherDirection) {
       super().loadImage('./img/hero.img/Bomb/bomb_0009_Layer-1.webp');
       this.loadImages(this.IMAGES_EXPLOSION);
@@ -16,18 +29,21 @@ class ThrowableObject extends MovableObject {
       this.otherDirection = otherDirection;
       this.throw();
   
-      // Erstelle den Explosionssound
+      // Create the explosion sound
       this.explosion_sound = new Audio('./audio/BombHit.mp3');
       this.explosion_sound.volume = 0.2;
-      
-      // Statt eines eigenen isMuted-Flags: 
-      // Greife direkt auf den globalen Mute-Zustand zu
+  
+      // Instead of a local isMuted flag:
+      // Access the global mute state directly
       if (window.world && window.world.soundManager) {
-        // Registriere den Sound im globalen SoundManager
+        // Register the sound in the global SoundManager
         window.world.soundManager.registerSound(this.explosion_sound);
       }
     }
   
+    /**
+     * Throws the object by applying gravity and horizontal movement.
+     */
     throw() {
       this.speedY = 7;
       this.applyGravity();
@@ -36,33 +52,39 @@ class ThrowableObject extends MovableObject {
       }, 35);
     }
   
+    /**
+     * Plays the explosion animation and sound.
+     * @param {Function} onComplete - Callback function to execute after the explosion completes.
+     */
     playExplosion(onComplete) {
-        if (this.hasExploded) return; // Verhindert mehrfaches Auslösen
-        this.hasExploded = true;
-      
-        let frameIndex = 0;
-        this.speedY = 0;
-        this.applyGravity = () => {};
-      
-        // Prüfe direkt den globalen Mute-Zustand
-        if (!window.world.soundManager.isMuted) {
-          this.explosion_sound.play();
-        }
-      
-        const explosionInterval = setInterval(() => {
-          this.img = this.imageCache[this.IMAGES_EXPLOSION[frameIndex++]];
-          if (frameIndex >= this.IMAGES_EXPLOSION.length) {
-            clearInterval(explosionInterval);
-            if (onComplete) onComplete();
-          }
-        }, 1200 / 120);
-      }
-      
+      if (this.hasExploded) return; // Prevents multiple triggers
+      this.hasExploded = true;
   
-    // Optional: Falls du diese Methode aufrufst, um den lokalen Sound zu steuern
+      let frameIndex = 0;
+      this.speedY = 0;
+      this.applyGravity = () => {};
+  
+      // Check the global mute state directly
+      if (!window.world.soundManager.isMuted) {
+        this.explosion_sound.play();
+      }
+  
+      const explosionInterval = setInterval(() => {
+        this.img = this.imageCache[this.IMAGES_EXPLOSION[frameIndex++]];
+        if (frameIndex >= this.IMAGES_EXPLOSION.length) {
+          clearInterval(explosionInterval);
+          if (onComplete) onComplete();
+        }
+      }, 1200 / 120);
+    }
+  
+    /**
+     * Toggles the mute state of the explosion sound.
+     * @param {boolean} isMuted - The new mute state (true = muted, false = unmuted).
+     */
     toggleMute(isMuted) {
-      // Diese Methode ist dann eher überflüssig, wenn der SoundManager die Steuerung übernimmt.
-      // Solltest du sie dennoch nutzen, könnte sie so aussehen:
+      // This method is somewhat redundant if the SoundManager handles the control.
+      // If you still use it, it could look like this:
       this.explosion_sound.muted = isMuted;
       if (isMuted) {
         this.explosion_sound.pause();
@@ -70,4 +92,3 @@ class ThrowableObject extends MovableObject {
       }
     }
   }
-  

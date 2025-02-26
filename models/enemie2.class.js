@@ -1,6 +1,9 @@
 /**
  * Represents an enemy character in the game.
  * This class extends the `MovableObject` class and includes functionality for movement, animation, and sound.
+ *
+ * @class Enemie2
+ * @extends {MovableObject}
  */
 class Enemie2 extends MovableObject {
   /** @type {number} The y-coordinate of the enemy on the canvas. */
@@ -151,6 +154,7 @@ class Enemie2 extends MovableObject {
 
   /**
    * Toggles the mute state of the enemy's sounds.
+   *
    * @param {boolean} isMuted - Whether the sounds should be muted.
    */
   toggleMute(isMuted) {
@@ -171,6 +175,7 @@ class Enemie2 extends MovableObject {
 
   /**
    * Plays the dead animation and removes the enemy from the game after completion.
+   *
    * @param {Function} onComplete - Callback function to execute after the animation finishes.
    */
   playDeadAnimation(onComplete) {

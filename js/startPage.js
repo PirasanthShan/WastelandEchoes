@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Element-Referenzen
+  // Element references
   const startGameButton = document.querySelector('#startGame');
   const controlsButton = document.querySelector('#controls');
   const storyButton = document.querySelector('#Story');
@@ -10,36 +10,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const musicButton = document.querySelector('#toggleMusic');
 
   // ─────────────────────────────
-  // Musikfunktionen
+  // Music functions
   // ─────────────────────────────
 
   /**
-   * Spielt die Hintergrundmusik ab.
+   * Plays the background music.
    */
   function playBackgroundMusic() {
     if (backgroundMusic) {
       backgroundMusic.volume = 0.5;
       backgroundMusic.play().catch(() => {
-        // Fehler werden ignoriert (z. B. wegen Autoplay-Blockern)
+        // Errors are ignored (e.g., due to autoplay blockers)
       });
     }
   }
 
   /**
-   * Schaltet die Hintergrundmusik um und passt den Button-Text an.
+   * Toggles the background music and updates the button text.
    */
   function toggleBackgroundMusic() {
     if (backgroundMusic.paused) {
       backgroundMusic.play();
-      musicButton.innerText = 'Musik stoppen 🔇';
+      musicButton.innerText = 'Stop Music 🔇';
     } else {
       backgroundMusic.pause();
-      musicButton.innerText = 'Musik starten 🎵';
+      musicButton.innerText = 'Play Music 🎵';
     }
   }
 
   /**
-   * Initialisiert die Musik: startet sie und richtet den Musik-Button ein.
+   * Initializes the music: starts it and sets up the music button.
    */
   function initMusic() {
     playBackgroundMusic();
@@ -49,14 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─────────────────────────────
-  // Startspiel-Funktionalitäten
+  // Start game functionalities
   // ─────────────────────────────
 
   /**
-   * Behandelt den Start des Spiels:
-   * - Blendet die Startseite aus (Fade-Out)
-   * - Pausiert die Hintergrundmusik
-   * - Leitet nach kurzer Verzögerung zu "game.html" weiter.
+   * Handles the start of the game:
+   * - Fades out the start page
+   * - Pauses the background music
+   * - Redirects to "game.html" after a short delay.
    */
   function handleStartGame() {
     startPage.classList.add('fade-out');
@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   }
 
+  /**
+   * Initializes the start game button.
+   */
   function initStartGameButton() {
     if (startGameButton) {
       startGameButton.addEventListener('click', handleStartGame);
@@ -73,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─────────────────────────────
-  // Container-Funktionen (zum Anzeigen und Verstecken von Inhalten)
+  // Container functions (for showing and hiding content)
   // ─────────────────────────────
 
   /**
-   * Zeigt den Container an und fügt den übergebenen HTML-Inhalt ein.
-   * Gleichzeitig wird die Startseite ausgeblendet.
-   * @param {string} content - HTML-Inhalt, der im Container angezeigt werden soll.
+   * Displays the container and inserts the provided HTML content.
+   * Simultaneously hides the start page.
+   * @param {string} content - HTML content to be displayed in the container.
    */
   function showContainer(content) {
     containerStartPage.innerHTML = content;
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Blendet den Container aus und zeigt anschließend wieder die Startseite an.
+   * Hides the container and then shows the start page again.
    */
   function hideContainer() {
     containerStartPage.classList.remove('show-container');
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Fügt einen globalen Event-Listener hinzu, der auf Klicks auf ein Element mit der ID "back" reagiert.
+   * Adds a global event listener that reacts to clicks on an element with the ID "back".
    */
   function initBackButtonListener() {
     document.addEventListener('click', (event) => {
@@ -111,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─────────────────────────────
-  // Inhaltliche Buttons (Controls, Story, Mission Info)
+  // Content buttons (Controls, Story, Mission Info)
   // ─────────────────────────────
 
   /**
-   * Richtet den "Controls"-Button ein.
+   * Initializes the "Controls" button.
    */
   function initControlsButton() {
     if (controlsButton) {
@@ -135,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Richtet den "Story"-Button ein und startet den Typewriter-Effekt.
+   * Initializes the "Story" button and starts the typewriter effect.
    */
   function initStoryButton() {
     if (storyButton) {
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Richtet den "Mission Info"-Button ein.
+   * Initializes the "Mission Info" button.
    */
   function initMissionInfoButton() {
     if (missionInfoButton) {
@@ -173,11 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─────────────────────────────
-  // Typewriter-Effekt
+  // Typewriter effect
   // ─────────────────────────────
 
   /**
-   * Startet den Typewriter-Effekt für den Storytext.
+   * Starts the typewriter effect for the story text.
    */
   function startTypewriterEffect() {
     const storyText = `
@@ -215,41 +218,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
- * Richtet den "Impressum"-Button ein.
- */
-function initImpressumButton() {
-  const impressumButton = document.querySelector('#Impressum');
+   * Initializes the "Impressum" button.
+   */
+  function initImpressumButton() {
+    const impressumButton = document.querySelector('#Impressum');
 
-  if (impressumButton) {
-    impressumButton.addEventListener('click', () => {
-      showContainer(`
-        <button id="back">Back</button>
-        <div class="impressum">
-          <h4>Impressum</h4>
-          <p><strong>Angaben gemäß § 5 TMG</strong></p>
-          <p>WASTELAND ECHOES<br>Georg-Friedrich-Händel-Str.5<br>Deutschland</p>
-          <p><strong>Vertreten durch:</strong><br>Pirasanth (Geschäftsführer)</p>
+    if (impressumButton) {
+      impressumButton.addEventListener('click', () => {
+        showContainer(`
+          <button id="back">Back</button>
+          <div class="impressum">
+            <h4>Impressum</h4>
+            <p><strong>Angaben gemäß § 5 TMG</strong></p>
+            <p>WASTELAND ECHOES<br>Georg-Friedrich-Händel-Str.5<br>Deutschland</p>
+            <p><strong>Vertreten durch:</strong><br>Pirasanth (Geschäftsführer)</p>
 
-          <h5>Kontakt</h5>
-          <p>E-Mail: <a href="mailto:Pirasanth@live.de">Pirasanth@live.de</a></p>
+            <h5>Kontakt</h5>
+            <p>E-Mail: <a href="mailto:Pirasanth@live.de">Pirasanth@live.de</a></p>
 
-          <h5>Haftungsausschluss</h5>
-          <p>Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+            <h5>Haftungsausschluss</h5>
+            <p>Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
 
-          <h5>Urheberrecht</h5>
-          <p>Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
-        </div>
-      `);
-    });
+            <h5>Urheberrecht</h5>
+            <p>Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+          </div>
+        `);
+      });
+    }
   }
-}
 
-// Füge die Initialisierung zur Startfunktion hinzu
-initImpressumButton();
-
+  // Add initialization to the start function
+  initImpressumButton();
 
   // ─────────────────────────────
-  // Initialisierung
+  // Initialization
   // ─────────────────────────────
 
   initMusic();

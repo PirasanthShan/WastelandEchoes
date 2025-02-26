@@ -1,23 +1,23 @@
 /**
- * Verwaltet alle Kollisionsprüfungen im Spiel.
- * Diese Klasse überprüft Kollisionen zwischen dem Charakter und Gegnern, dem Endboss, Bomben, Sammelobjekten sowie dem Raumschiff.
+ * Manages all collision checks in the game.
+ * This class checks collisions between the character and enemies, the end boss, bombs, collectibles, and the spaceship.
  *
  * @class CollisionManager
  */
 class CollisionManager {
   /**
-   * Erstellt eine Instanz des CollisionManager.
+   * Creates an instance of CollisionManager.
    *
-   * @param {World} world - Die Instanz der Spielwelt, die alle relevanten Objekte enthält.
+   * @param {World} world - The instance of the game world containing all relevant objects.
    */
   constructor(world) {
-    this.world = world; // Referenz zur `World`-Instanz
+    this.world = world; // Reference to the `World` instance
   }
 
   /**
-   * Überprüft alle relevanten Kollisionen im Spiel.
-   * Durchläuft die Liste der Gegner und prüft Kollisionen zwischen dem Charakter und den Gegnern,
-   * sowie Kollisionen mit dem Raumschiff und Kristallen.
+   * Checks all relevant collisions in the game.
+   * Iterates through the list of enemies and checks collisions between the character and enemies,
+   * as well as collisions with the spaceship and crystals.
    */
   checkCollision() {
     this.world.enemies.forEach((enemy) => {
@@ -32,13 +32,12 @@ class CollisionManager {
       }
     });
     this.checkShipCollision();
-    this.checkCrystalCollision(); // Stelle sicher, dass dies existiert!
-  }
+   }
 
   /**
-   * Wird aufgerufen, wenn der Charakter tot ist.
-   * Falls der Endboss noch lebt, wird dieser in seinen Idle-Zustand versetzt.
-   * Anschließend wird die Todesanimation des Charakters abgespielt und das Spiel gestoppt.
+   * Called when the character is dead.
+   * If the end boss is still alive, it is reset to its idle state.
+   * Then, the character's death animation is played, and the game is stopped.
    */
   handleCharacterDeath() {
     if (this.world.endboss && !this.world.endboss.isDead) {
@@ -50,8 +49,8 @@ class CollisionManager {
   }
 
   /**
-   * Setzt den Endboss in seinen neutralen Idle-Zustand zurück.
-   * Resettet alle Angriffszustände, spielt die Idle-Animation ab und stoppt sowie setzt vorhandene Endboss-Sounds zurück.
+   * Resets the end boss to its neutral idle state.
+   * Resets all attack states, plays the idle animation, and stops and resets any end boss sounds.
    */
   resetEndbossState() {
     this.world.endboss.isAttacking = false;
@@ -69,10 +68,10 @@ class CollisionManager {
   }
 
   /**
-   * Prüft die Kollision zwischen dem Charakter und dem Raumschiff.
-   * Wenn der Charakter mit dem Raumschiff kollidiert, wird geprüft, ob alle Kristalle eingesammelt wurden.
-   * Bei vollständiger Sammlung wird der "You Win"-Screen angezeigt und das Spiel beendet,
-   * andernfalls wird ein Hinweis angezeigt, dass noch Kristalle fehlen.
+   * Checks the collision between the character and the spaceship.
+   * If the character collides with the spaceship, it checks if all crystals have been collected.
+   * If the collection is complete, the "You Win" screen is displayed, and the game ends.
+   * Otherwise, a hint is displayed indicating that crystals are still missing.
    */
   checkShipCollision() {
     if (this.world.character.isCollidingShip(this.world.lastCollectible)) {
@@ -86,8 +85,8 @@ class CollisionManager {
   }
 
   /**
-   * Überprüft, ob keine Bomben mehr vorhanden sind und der Endboss noch lebt.
-   * Zeigt in diesem Fall einen Warnhinweis an, andernfalls werden alle Warnmeldungen ausgeblendet.
+   * Checks if no bombs are left and the end boss is still alive.
+   * Displays a warning in this case; otherwise, all warnings are hidden.
    */
   checkRemainingBombs() {
     const noBombsLeft = this.world.level.collectible.length === 0;
@@ -100,12 +99,12 @@ class CollisionManager {
   }
 
   /**
-   * Behandelt einen Angriff eines Zombies auf den Charakter.
-   * Setzt die Geschwindigkeit des Gegners auf 0, spielt die Angriffsanimation ab,
-   * lässt den Charakter Schaden erleiden und aktualisiert die Statusanzeige.
-   * Sollte die Energie des Charakters aufgebraucht sein, wird die Todesanimation abgespielt.
+   * Handles a zombie's attack on the character.
+   * Sets the enemy's speed to 0, plays the attack animation,
+   * causes the character to take damage, and updates the status bar.
+   * If the character's energy is depleted, the death animation is played.
    *
-   * @param {Enemy} enemy - Das Gegnerobjekt, das den Angriff ausführt.
+   * @param {Enemy} enemy - The enemy object performing the attack.
    */
   handleZombieAttack(enemy) {
     enemy.speed = 0;
@@ -122,10 +121,10 @@ class CollisionManager {
   }
 
   /**
-   * Behandelt das Standardverhalten eines Zombies, wenn keine Kollision mit dem Charakter vorliegt.
-   * Setzt die Geschwindigkeit des Gegners und bewegt ihn nach links, während die Walking-Animation abgespielt wird.
+   * Handles the default behavior of a zombie when no collision with the character occurs.
+   * Sets the enemy's speed and moves it to the left while playing the walking animation.
    *
-   * @param {Enemy} enemy - Das Gegnerobjekt.
+   * @param {Enemy} enemy - The enemy object.
    */
   handleDefaultZombieBehavior(enemy) {
     enemy.speed = 0.20;
@@ -134,8 +133,8 @@ class CollisionManager {
   }
 
   /**
-   * Prüft die Kollision zwischen dem Endboss und dem Charakter.
-   * Falls beide Objekte vorhanden sind, wird die Kollisionsbehandlung zwischen dem Endboss und dem Charakter durchgeführt.
+   * Checks the collision between the end boss and the character.
+   * If both objects exist, the collision handling between the end boss and the character is performed.
    */
   checkEndbossCollision() {
     if (this.world.endboss && this.world.character) {
@@ -144,10 +143,10 @@ class CollisionManager {
   }
 
   /**
-   * Behandelt die Kollision zwischen dem Endboss und dem Charakter.
-   * Falls der Endboss noch lebt, wird überprüft, ob der Charakter kollidiert.
-   * Bei einer Kollision wird der Endboss in den Angriffsmodus versetzt, der Charakter erleidet Schaden und die Statusanzeige wird aktualisiert.
-   * Sollte der Charakter keine Energie mehr haben, wird die Todesanimation abgespielt.
+   * Handles the collision between the end boss and the character.
+   * If the end boss is still alive, it checks if the character collides.
+   * On collision, the end boss enters attack mode, the character takes damage, and the status bar is updated.
+   * If the character's energy is depleted, the death animation is played.
    */
   handleCollisionEndboss() {
     if (this.world.endboss.isDead) {
@@ -173,8 +172,8 @@ class CollisionManager {
   }
 
   /**
-   * Prüft die Kollision zwischen Bomben (ThrowableObjects) und dem Endboss.
-   * Durchläuft alle Wurfobjekte und prüft, ob eine Bombe den Endboss trifft.
+   * Checks the collision between bombs (ThrowableObjects) and the end boss.
+   * Iterates through all throwable objects and checks if a bomb hits the end boss.
    */
   checkEndbossCollisionBomb() {
     if (this.world.endboss && Array.isArray(this.world.throwableObjects)) {
@@ -187,11 +186,11 @@ class CollisionManager {
   }
 
   /**
-   * Behandelt die Kollision zwischen einer Bombe und dem Endboss.
-   * Spielt die Explosion der Bombe ab, entfernt die Bombe und löst beim Endboss die Hurt-Animation aus.
-   * Nach einer kurzen Verzögerung wird der Endboss wieder in Bewegung gesetzt.
+   * Handles the collision between a bomb and the end boss.
+   * Plays the bomb's explosion, removes the bomb, and triggers the hurt animation for the end boss.
+   * After a short delay, the end boss is set back in motion.
    *
-   * @param {ThrowableObject} bomb - Die Bombe, die mit dem Endboss kollidiert ist.
+   * @param {ThrowableObject} bomb - The bomb that collided with the end boss.
    */
   handleEndbossBomb(bomb) {
     bomb.playExplosion(() => this.world.removeBomb(bomb));
@@ -207,38 +206,39 @@ class CollisionManager {
   }
 
   /**
-   * Prüft die Kollision zwischen dem Charakter und Sammelobjekten (Bomben).
-   * Wird eine Kollision festgestellt und hat der Charakter noch Platz für Bomben,
-   * erhöht sich dessen Bombenzahl, die Anzeige wird aktualisiert und das eingesammelte Objekt entfernt.
-   */
-  checkCollectibleCollision() {
-    this.world.level.collectible.forEach((collectible) => {
-      if (this.world.character.isCollidingCollectible(collectible)) {
-        if (this.world.characterBombs < this.world.maxBombs) {
-          this.world.characterBombs++;
-          this.world.collectibleBar.setBombs(this.world.characterBombs);
-          this.world.level.collectible.splice(this.world.level.collectible.indexOf(collectible), 1);
-          this.world.toggleAlertBomb();
-        }
+ * Checks collisions between the character and collectible items (bombs and asteroids).
+ * 
+ * For bombs (first type of collectibles), if a collision is detected and the character can carry more bombs,
+ * the bomb count is incremented, the collectible bar is updated, and the collected object is removed.
+ * 
+ * For Echoes (second type of collectibles), a modified collision detection factor is used.
+ * If a collision is detected and the character can collect more crystals,
+ * the crystal count is incremented, the collectible is removed, and the crystal bar is updated.
+ */
+checkCollectibleCollision() {
+  // For bombs (first collectibles) using the standard collision detection:
+  this.world.level.collectible.forEach((collectible) => {
+    if (this.world.character.isCollidingCollectible(collectible)) {
+      if (this.world.characterBombs < this.world.maxBombs) {
+        this.world.characterBombs++;
+        this.world.collectibleBar.setBombs(this.world.characterBombs);
+        this.world.level.collectible.splice(this.world.level.collectible.indexOf(collectible), 1);
+        this.world.toggleAlertBomb();
       }
-    });
-  }
+    }
+  });
 
-  /**
-   * Prüft die Kollision zwischen dem Charakter und Kristallen.
-   * Wird eine Kollision festgestellt und hat der Charakter noch Platz für weitere Kristalle,
-   * erhöht sich dessen Kristallanzahl, das Kristall-Objekt wird entfernt und die Kristallanzeige aktualisiert.
-   */
-  checkCrystalCollision() {
-    this.world.level.collectible2.forEach((crystal, index) => {
-      if (this.world.character.isCollidingCollectible(crystal)) {
-        if (this.world.characterCrystals < this.world.maxCrystals) {
-          this.world.characterCrystals++;
-          this.world.level.collectible2.splice(index, 1);
-          this.world.crystalBar.setCrystals(this.world.characterCrystals);
-        }
+  // For asteroids (second collectibles) using the modified collision factor:
+  this.world.level.collectible2.forEach((crystal, index) => {
+    if (CollisionHandler.isCollidingCollectibleEchoes(this.world.character, crystal)) {
+      if (this.world.characterCrystals < this.world.maxCrystals) {
+        this.world.characterCrystals++;
+        this.world.level.collectible2.splice(index, 1);
+        this.world.crystalBar.setCrystals(this.world.characterCrystals);
       }
-    });
-    this.world.updateCrystalBar();
-  }
+    }
+  });
+  this.world.updateCrystalBar();
+ }
+
 }

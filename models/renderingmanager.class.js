@@ -1,23 +1,23 @@
 /**
- * Klasse, die für das Rendern des Spielframes und die Verwaltung der Anzeige von Objekten verantwortlich ist.
- * Diese Klasse kümmert sich um das Zeichnen aller Objekte auf dem Canvas und die Verwaltung der Kamera.
+ * Class responsible for rendering the game frame and managing the display of objects.
+ * This class handles drawing all objects on the canvas and managing the camera.
  */
 class RenderingManager {
   /**
-   * Erstellt eine Instanz des `RenderingManager`.
-   * @param {World} world - Die Spielwelt-Instanz, die gerendert werden soll.
+   * Creates an instance of `RenderingManager`.
+   * @param {World} world - The game world instance to be rendered.
    */
   constructor(world) {
-    /** @type {World} Referenz zur Spielwelt. */
+    /** @type {World} Reference to the game world. */
     this.world = world;
 
-    /** @type {CanvasRenderingContext2D} Der Canvas-Kontext, auf dem gerendert wird. */
+    /** @type {CanvasRenderingContext2D} The canvas context on which rendering occurs. */
     this.ctx = world.ctx;
   }
 
   /**
-   * Rendert einen einzelnen Frame des Spiels.
-   * Stoppt die Sounds, wenn das Spiel nicht läuft.
+   * Renders a single frame of the game.
+   * Stops sounds if the game is not running.
    */
   renderFrame() {
     if (!this.world.isGameRunning) {
@@ -25,10 +25,10 @@ class RenderingManager {
       return;
     }
 
-    // Lösche den vorherigen Frame
+    // Clear the previous frame
     this.ctx.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
 
-    // Verschiebe die Kamera basierend auf der Charakterposition
+    // Move the camera based on the character's position
     this.ctx.translate(this.world.camera_x, 0);
     this.addObjectsToMap(this.world.level.backgroundObjects);
     this.ctx.translate(-this.world.camera_x, 0);
@@ -42,29 +42,29 @@ class RenderingManager {
       this.addToMapEndboss(this.world.endboss);
     }
 
-    // Zeichne Feinde
+    // Draw enemies
     this.world.enemies.forEach((enemy) => {
       if (!enemy.isRemoved) {
         this.addToMap(enemy);
       }
     });
 
-    // Zeichne weitere Objekte (Vögel, Wurfobjekte, Sammelobjekte)
+    // Draw additional objects (birds, throwable objects, collectibles)
     this.addObjectsToMap(this.world.level.birds);
     this.addObjectsToMap(this.world.throwableObjects);
     this.addObjectsToMap(this.world.level.collectible);
     this.addObjectsToMap(this.world.level.collectible2);
     this.addToMap(this.world.level.lastCollectible);
 
-    // Setze die Kamera zurück
+    // Reset the camera
     this.ctx.translate(-this.world.camera_x, 0);
 
-    // Speichere die requestAnimationFrame-ID in der Welt (zum späteren Abbruch)
+    // Save the requestAnimationFrame ID in the world (for later cancellation)
     this.world.renderRequestId = requestAnimationFrame(() => this.renderFrame());
   }
 
   /**
-   * Setzt alle Sounds im Spiel fort, einschließlich der Musik des letzten sammelbaren Objekts, falls zutreffend.
+   * Resumes all sounds in the game, including the music of the last collectible, if applicable.
    */
   resumeAllSounds() {
     this.world.soundManager.resumeAllSounds();
@@ -74,7 +74,7 @@ class RenderingManager {
   }
 
   /**
-   * Stoppt alle Sounds im Spiel, einschließlich der Musik des letzten sammelbaren Objekts, falls zutreffend.
+   * Stops all sounds in the game, including the music of the last collectible, if applicable.
    */
   stopAllSounds() {
     this.world.soundManager.stopAllSounds();
@@ -84,8 +84,8 @@ class RenderingManager {
   }
 
   /**
-   * Fügt mehrere Objekte zur Canvas-Karte hinzu.
-   * @param {Object[]} objects - Ein Array von Objekten, die hinzugefügt werden sollen.
+   * Adds multiple objects to the canvas map.
+   * @param {Object[]} objects - An array of objects to be added.
    */
   addObjectsToMap(objects) {
     if (!Array.isArray(objects)) return;
@@ -95,28 +95,28 @@ class RenderingManager {
   }
 
   /**
-   * Fügt ein einzelnes Objekt zur Canvas-Karte hinzu.
-   * @param {MovableObject} mo - Das hinzuzufügende Objekt.
+   * Adds a single object to the canvas map.
+   * @param {MovableObject} mo - The object to be added.
    */
   addToMap(mo) {
     if (!mo) return;
 
-    // Spiegele das Bild, falls notwendig
+    // Flip the image if necessary
     if (mo.otherDirection) this.flipImage(mo);
 
-    // Zeichne das Objekt und seinen Rahmen (falls vorhanden)
+    // Draw the object and its frame (if applicable)
     if (mo.img) mo.draw(this.ctx);
     if (mo.img) mo.drawFrame(this.ctx);
 
-    // Stelle das gespiegelte Bild wieder her
+    // Restore the flipped image
     if (mo.otherDirection) this.flipImageBack(mo);
   }
 
   /**
-   * Fügt den Endboss gesondert zur Canvas hinzu.
-   * Diese Methode nutzt die custom drawEndboss()-Methode des Endboss, um ihn korrekt (mit Flip) zu zeichnen.
+   * Adds the endboss separately to the canvas.
+   * This method uses the custom drawEndboss() method of the endboss to draw it correctly (with flip).
    *
-   * @param {Endboss} endboss - Die Endboss-Instanz, die gezeichnet werden soll.
+   * @param {Endboss} endboss - The endboss instance to be drawn.
    */
   addToMapEndboss(endboss) {
     if (!endboss) return;
@@ -127,8 +127,8 @@ class RenderingManager {
   }
 
   /**
-   * Spiegelt ein Bild horizontal vor dem Rendern.
-   * @param {MovableObject} mo - Das Objekt, dessen Bild gespiegelt werden soll.
+   * Flips an image horizontally before rendering.
+   * @param {MovableObject} mo - The object whose image should be flipped.
    */
   flipImage(mo) {
     this.ctx.save();
@@ -138,8 +138,8 @@ class RenderingManager {
   }
 
   /**
-   * Stellt das gespiegelte Bild in seine ursprüngliche Ausrichtung zurück.
-   * @param {MovableObject} mo - Das Objekt, dessen Bild wiederhergestellt werden soll.
+   * Restores the flipped image to its original orientation.
+   * @param {MovableObject} mo - The object whose image should be restored.
    */
   flipImageBack(mo) {
     mo.x *= -1;

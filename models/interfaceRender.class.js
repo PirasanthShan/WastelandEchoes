@@ -1,16 +1,16 @@
 /**
- * Repräsentiert die Benutzeroberfläche (UI) des Spiels.
- * Diese Klasse ist verantwortlich für das Rendern von Steuerungselementen, das Handhaben von Benutzerinteraktionen
- * und das Anzeigen von Spielzuständen wie Game Over oder You Win.
+ * Represents the user interface (UI) of the game.
+ * This class is responsible for rendering controls, handling user interactions,
+ * and displaying game states such as Game Over or You Win.
  *
  * @class InterfaceRender
  */
 class InterfaceRender {
   /**
-   * Erzeugt eine neue Instanz von InterfaceRender.
+   * Creates an instance of InterfaceRender.
    *
-   * @param {Object} world - Die Welt, in der das Spiel stattfindet.
-   * @param {string} [containerSelector='#Container'] - Der CSS-Selektor für den Container, in dem die UI gerendert wird.
+   * @param {Object} world - The world in which the game takes place.
+   * @param {string} [containerSelector='#Container'] - The CSS selector for the container where the UI is rendered.
    */
   constructor(world, containerSelector = '#Container') {
     this.world = world;
@@ -19,7 +19,7 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt Event-Listener zu allen Steuerungsbuttons hinzu.
+   * Adds event listeners to all control buttons.
    */
   addControlButtonListeners() {
     this.addPlayButtonListener();
@@ -30,8 +30,8 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt einen Event-Listener zum Play-Button hinzu.
-   * Der Button pausiert oder setzt das Spiel fort und aktualisiert das Button-Icon.
+   * Adds an event listener to the play button.
+   * The button pauses or resumes the game and updates the button icon.
    */
   addPlayButtonListener() {
     document.getElementById('playButton').addEventListener('click', () => {
@@ -43,15 +43,15 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt einen Event-Listener zum Sound-Button hinzu.
-   * Der Button schaltet den Sound aller Objekte im Spiel stumm oder aktiviert ihn.
+   * Adds an event listener to the sound button.
+   * The button mutes or unmutes the sound of all objects in the game.
    */
   addSoundButtonListener() {
     document.getElementById('soundButton').addEventListener('click', () => {
-      // Verwende den SoundManager, um den Mute-Zustand umzuschalten
+      // Use the SoundManager to toggle the mute state
       this.world.soundManager.toggleMute();
 
-      // Aktualisiere den Mute-Zustand für alle relevanten Objekte
+      // Update the mute state for all relevant objects
       this.toggleBackgroundMusic();
       this.toggleObjectMute(this.world.character);
       this.toggleGroupMute(this.world.enemies);
@@ -59,51 +59,51 @@ class InterfaceRender {
       this.toggleObjectMute(this.world.endboss);
       this.toggleObjectMute(this.world.lastCollectible);
 
-      // Aktualisiere das Sound-Button-Icon
+      // Update the sound button icon
       this.updateSoundButtonIcon();
     });
   }
 
   /**
-   * Schaltet die Hintergrundmusik stumm oder aktiviert sie.
+   * Toggles the background music on or off.
    */
   toggleBackgroundMusic() {
     if (this.world.backgroundMusic) {
-      this.world.backgroundMusic.muted = this.world.soundManager.isMuted; // Verwende den Mute-Zustand aus dem SoundManager
+      this.world.backgroundMusic.muted = this.world.soundManager.isMuted; // Use the mute state from the SoundManager
     }
   }
 
   /**
-   * Schaltet den Sound eines bestimmten Objekts stumm oder aktiviert ihn.
+   * Toggles the sound of a specific object on or off.
    *
-   * @param {Object} object - Das Objekt, dessen Sound gesteuert werden soll.
+   * @param {Object} object - The object whose sound should be toggled.
    */
   toggleObjectMute(object) {
     if (object && typeof object.toggleMute === 'function') {
-      object.toggleMute(this.world.soundManager.isMuted); // Verwende den Mute-Zustand aus dem SoundManager
+      object.toggleMute(this.world.soundManager.isMuted); // Use the mute state from the SoundManager
     }
   }
 
   /**
-   * Schaltet den Sound einer Gruppe von Objekten stumm oder aktiviert ihn.
+   * Toggles the sound of a group of objects on or off.
    *
-   * @param {Array} group - Die Gruppe von Objekten, deren Sound gesteuert werden soll.
+   * @param {Array} group - The group of objects whose sound should be toggled.
    */
   toggleGroupMute(group) {
     group.forEach(item => this.toggleObjectMute(item));
   }
 
   /**
-   * Aktualisiert das Icon des Sound-Buttons basierend auf dem aktuellen Stumm-Schaltzustand.
+   * Updates the sound button icon based on the current mute state.
    */
   updateSoundButtonIcon() {
-    const isMuted = this.world.soundManager.isMuted; // Hole den Mute-Zustand aus dem SoundManager
+    const isMuted = this.world.soundManager.isMuted; // Get the mute state from the SoundManager
     document.getElementById('soundButton').src = isMuted ? './img/soundoff.webp' : './img/soundon.webp';
   }
 
   /**
-   * Fügt einen Event-Listener zum Fullscreen-Button hinzu.
-   * Der Button schaltet den Vollbildmodus ein oder aus.
+   * Adds an event listener to the fullscreen button.
+   * The button toggles fullscreen mode on or off.
    */
   addFullscreenButtonListener() {
     const fullscreenButton = document.getElementById('fullscreenButton');
@@ -115,7 +115,7 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt Event-Listener zu allen Restart-Buttons hinzu.
+   * Adds event listeners to all restart buttons.
    */
   addRestartButtonListeners() {
     document.getElementById('restartButton')?.addEventListener('click', () => {
@@ -132,17 +132,17 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt einen Event-Listener zum Home-Button hinzu.
+   * Adds an event listener to the home button.
    */
   addHomeButtonListener() {
     document.getElementById('homeButton')?.addEventListener('click', () => {
-      localStorage.setItem('isMuted', JSON.stringify(false)); // Setze Mute-Status zurück
-      window.location.href = 'startPage.html'; // Zur Startseite weiterleiten
+      localStorage.setItem('isMuted', JSON.stringify(false)); // Reset mute state
+      window.location.href = 'startPage.html'; // Redirect to the start page
     });
   }
 
   /**
-   * Schaltet den Vollbildmodus ein oder aus.
+   * Toggles fullscreen mode on or off.
    */
   toggleFullscreen() {
     const canvas = document.querySelector('canvas');
@@ -156,7 +156,7 @@ class InterfaceRender {
   }
 
   /**
-   * Aktualisiert die Position des Alert-Bomb-Elements im Vollbildmodus.
+   * Updates the position of the alert bomb element in fullscreen mode.
    */
   updateAlertBomb() {
     const alertBomb = document.querySelector('.alertBomb');
@@ -166,7 +166,7 @@ class InterfaceRender {
   }
 
   /**
-   * Beobachtet Änderungen im DOM, um das Alert-Bomb-Element zu aktualisieren.
+   * Observes changes in the DOM to update the alert bomb element.
    */
   observeAlertBomb() {
     new MutationObserver(() => {
@@ -175,7 +175,7 @@ class InterfaceRender {
   }
 
   /**
-   * Entfernt das Alert-Bomb-Element aus dem DOM.
+   * Removes the alert bomb element from the DOM.
    */
   hideAlertsBomb() {
     const alertBomb = document.querySelector('.alertBomb');
@@ -183,7 +183,7 @@ class InterfaceRender {
   }
 
   /**
-   * Initialisiert die Gewinnmusik.
+   * Initializes the win music.
    */
   setupWinMusic() {
     this.winMusic = new Audio('./audio/YouWin.mp3');
@@ -192,7 +192,7 @@ class InterfaceRender {
   }
 
   /**
-   * Spielt die Gewinnmusik ab.
+   * Plays the win music.
    */
   playWinMusic() {
     if (this.winMusic) {
@@ -201,7 +201,7 @@ class InterfaceRender {
   }
 
   /**
-   * Stoppt die Gewinnmusik.
+   * Stops the win music.
    */
   stopWinMusic() {
     if (this.winMusic) {
@@ -211,7 +211,7 @@ class InterfaceRender {
   }
 
   /**
-   * Zeigt den Game-Over-Bildschirm an.
+   * Displays the game over screen.
    */
   showGameOver() {
     if (this.world.backgroundMusic) {
@@ -222,7 +222,7 @@ class InterfaceRender {
   }
 
   /**
-   * Rendert die Steuerungsbuttons im Spiel.
+   * Renders the control buttons in the game.
    */
   renderControllButtons() {
     this.container.innerHTML += `
@@ -239,12 +239,15 @@ class InterfaceRender {
   }
 
   /**
-   * Rendert den You-Win-Bildschirm.
+   * Renders the You Win screen.
    */
   renderYouWin() {
     this.world.soundManager.applyMuteState();
     if (this.world.character && typeof this.world.character.toggleMute === 'function') {
       this.world.character.toggleMute(true);
+    }
+    if (this.world.endboss && typeof this.world.endboss.toggleMute === 'function') {
+      this.world.endboss.toggleMute(true);
     }
 
     this.setupWinMusic();
@@ -259,7 +262,7 @@ class InterfaceRender {
     `;
     this.playWinMusic();
 
-    setTimeout(() => { // Verzögerung, um sicherzustellen, dass das Element existiert
+    setTimeout(() => { // Delay to ensure the element exists
       document.getElementById('restartButtonWin')?.addEventListener('click', () => {
         if (window.world) window.world.restartGame();
       });
@@ -267,7 +270,7 @@ class InterfaceRender {
   }
 
   /**
-   * Rendert den Game-Over-Bildschirm.
+   * Renders the Game Over screen.
    */
   renderGameOver() {
     if (this.container.querySelector('.gameOver')) return;
@@ -284,9 +287,9 @@ class InterfaceRender {
   }
 
   /**
-   * Rendert eine Warnmeldung für Bomben oder Kristalle.
+   * Renders a warning message for bombs or crystals.
    *
-   * @param {string} [type='bomb'] - Der Typ der Warnmeldung ('bomb' oder 'crystals').
+   * @param {string} [type='bomb'] - The type of warning message ('bomb' or 'crystals').
    */
   renderAlertBomb(type = 'bomb') {
     let alertDiv = this.container.querySelector('.alertBomb');
@@ -311,7 +314,7 @@ class InterfaceRender {
   }
 
   /**
-   * Rendert die Steuerungsbuttons für Mobilgeräte.
+   * Renders the control buttons for mobile devices.
    */
   renderPhoneControlButtons() {
     this.container.innerHTML += `
@@ -331,7 +334,7 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt Event-Listener zu den Mobilgeräte-Steuerungsbuttons hinzu.
+   * Adds event listeners to the mobile control buttons.
    */
   addPhoneControlButtonListeners() {
     this.preventContextMenuOnImages();
@@ -340,7 +343,7 @@ class InterfaceRender {
   }
 
   /**
-   * Verhindert das Kontextmenü auf den Steuerungsbuttons.
+   * Prevents the context menu on control buttons.
    */
   preventContextMenuOnImages() {
     document.querySelectorAll('.phoneControllBtn img').forEach(img => {
@@ -349,7 +352,7 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt Event-Listener zu den Bewegungsbuttons hinzu.
+   * Adds event listeners to the movement buttons.
    */
   addMovementButtonListeners() {
     this.addButtonListener('.phoneControllBtn .ctrimg[src="./img/leftarrow.webp"]', 'LEFT');
@@ -358,21 +361,21 @@ class InterfaceRender {
   }
 
   /**
-   * Fügt Event-Listener zu den Aktionsbuttons hinzu.
+   * Adds event listeners to the action buttons.
    */
   addActionButtonListeners() {
     this.addButtonListener('.phoneControllBtn .bombimg[src="./img/bomb2.webp"]', 'SPACE');
   }
 
   /**
-   * Fügt einen Event-Listener zu einem Button hinzu.
+   * Adds an event listener to a button.
    *
-   * @param {string} selector - Der CSS-Selektor für den Button.
-   * @param {string} key - Die Taste, die simuliert werden soll.
+   * @param {string} selector - The CSS selector for the button.
+   * @param {string} key - The key to simulate.
    */
   addButtonListener(selector, key) {
     const button = document.querySelector(selector);
-    if (!button) return; // Falls der Button nicht existiert, abbrechen
+    if (!button) return; // If the button doesn't exist, abort
     const setKeyState = (state) => {
       button.addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -388,7 +391,7 @@ class InterfaceRender {
     setKeyState(true); // Touchstart
     setKeyState(false); // Touchend
 
-    // Verhindere das Kontextmenü (Rechtsklick auf Touch-Geräten)
+    // Prevent the context menu (right-click on touch devices)
     button.addEventListener('contextmenu', (e) => e.preventDefault(), { passive: true });
   }
 }

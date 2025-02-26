@@ -1,28 +1,49 @@
 /**
- * Repräsentiert den Endboss im Spiel.
- * Der Endboss kann angreifen, sich bewegen, Schaden nehmen und sterben.
- * Zudem reagiert er auf den Charakter, indem er ihm folgt oder angreift.
+ * Represents the end boss in the game.
+ * The end boss can attack, move, take damage, and die.
+ * It also reacts to the character by following or attacking them.
  *
  * @class Endboss
  * @extends {MovableObject}
  */
 class Endboss extends MovableObject {
-  // Positionierung und Dimensionen
+  /** @type {number} Vertical position of the end boss. */
   y = 220;
+
+  /** @type {number} Height of the end boss. */
   height = 220;
+
+  /** @type {number} Width of the end boss. */
   width = 250;
-  // Zustände
+
+  /** @type {boolean} Indicates whether the end boss is attacking. */
   isAttacking = false;
+
+  /** @type {boolean} Indicates whether the end boss is moving left. */
   isMovingLeft = false;
+
+  /** @type {boolean} Indicates whether the end boss is moving right. */
   isMovingRight = false;
+
+  /** @type {number} Range within which the end boss detects the character. */
   sightRange = 500;
+
+  /** @type {boolean} Indicates whether the end boss is hurt. */
   isHurt = false;
+
+  /** @type {boolean} Indicates whether the end boss is dead. */
   isDead = false;
+
+  /** @type {number} Count of hits the end boss has taken. */
   hitCount = 0;
+
+  /** @type {boolean} Indicates whether the death animation has been played. */
   deadAnimationPlayed = false;
+
+  /** @type {boolean} Indicates whether the character is in sight. */
   isCharacterInSight = false;
-  
-  // Bilder
+
+  /** @type {string[]} Image paths for the standing animation. */
   IMAGES_STANDING = [
     'img/boss.img/Idle_000_mirrored.webp',
     'img/boss.img/Idle_001_mirrored.webp',
@@ -35,6 +56,8 @@ class Endboss extends MovableObject {
     'img/boss.img/Idle_008_mirrored.webp',
     'img/boss.img/Idle_009_mirrored.webp'
   ];
+
+  /** @type {string[]} Image paths for the walking animation. */
   IMAGES_WALKING = [
     './img/boss.img/Flipped_Walk_000.webp',
     './img/boss.img/Flipped_Walk_001.webp',
@@ -47,6 +70,8 @@ class Endboss extends MovableObject {
     './img/boss.img/Flipped_Walk_008.webp',
     './img/boss.img/Flipped_Walk_009.webp'
   ];
+
+  /** @type {string[]} Image paths for the attack animation. */
   IMAGES_ATTACK = [
     './img/boss.img/Processed_Attack_1.webp',
     './img/boss.img/Processed_Attack_2.webp',
@@ -55,6 +80,8 @@ class Endboss extends MovableObject {
     './img/boss.img/Processed_Attack_8.webp',
     './img/boss.img/Processed_Attack_9.webp'
   ];
+
+  /** @type {string[]} Image paths for the hurt animation. */
   IMAGES_HURT = [
     './img/boss.img/Hurt_000_flipped.webp',
     './img/boss.img/Hurt_001_flipped.webp',
@@ -67,6 +94,8 @@ class Endboss extends MovableObject {
     './img/boss.img/Hurt_008_flipped.webp',
     './img/boss.img/Hurt_009_flipped.webp'
   ];
+
+  /** @type {string[]} Image paths for the death animation. */
   IMAGES_DEAD = [
     './img/boss.img/Dead_000.webp',
     './img/boss.img/Dead_001.webp',
@@ -80,6 +109,10 @@ class Endboss extends MovableObject {
     './img/boss.img/Dead_009.webp'
   ];
 
+  /**
+   * Creates an instance of Endboss.
+   * Loads the initial image and all animation frames.
+   */
   constructor() {
     super().loadImage('./img/boss.img/Idle_000_mirrored.webp');
     this.loadImages(this.IMAGES_STANDING);
@@ -92,6 +125,13 @@ class Endboss extends MovableObject {
     this.loadSounds();
   }
 
+  /**
+   * Draws the end boss on the canvas.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   * @param {number} [x=this.x] - The x-coordinate of the end boss.
+   * @param {number} [y=this.y] - The y-coordinate of the end boss.
+   */
   drawEndboss(ctx, x = this.x, y = this.y) {
     ctx.save();
     if (this.otherDirection) {
@@ -104,10 +144,16 @@ class Endboss extends MovableObject {
     ctx.restore();
   }
 
+  /**
+   * Starts the animation loop for the end boss.
+   */
   startAnimation() {
     this.animate();
   }
 
+  /**
+   * Handles the animation logic for the end boss.
+   */
   animate() {
     this.animationInterval = setInterval(() => {
       if (this.world && !this.world.isGameRunning) return;
@@ -120,6 +166,9 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
+  /**
+   * Handles the state when the end boss is dead.
+   */
   handleDeadState() {
     if (!this.deadAnimationPlayed) {
       this.playDeadAnimation();
@@ -129,37 +178,58 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Handles the state when the end boss is hurt.
+   */
   handleHurtState() {
     this.playAnimation(this.IMAGES_HURT);
     this.playSound(this.attackSound);
   }
 
+  /**
+   * Handles the state when the end boss is attacking.
+   */
   handleAttackingState() {
     this.playAnimation(this.IMAGES_ATTACK);
     this.playSound(this.attackSound);
   }
 
+  /**
+   * Handles the state when the end boss is moving left.
+   */
   handleMovingLeftState() {
     this.playAnimation(this.IMAGES_WALKING);
     this.moveLeft();
     this.playSound(this.walkSound);
   }
 
+  /**
+   * Handles the state when the end boss is moving right.
+   */
   handleMovingRightState() {
     this.playAnimation(this.IMAGES_WALKING);
     this.moveRight();
     this.playSound(this.walkSound);
   }
 
+  /**
+   * Handles the state when the end boss is standing still.
+   */
   handleStandingState() {
     this.playAnimation(this.IMAGES_STANDING);
   }
 
+  /**
+   * Stops the animation and all sounds.
+   */
   stopAnimation() {
     this.clearAnimationInterval();
     this.stopAllSounds();
   }
 
+  /**
+   * Clears the animation interval.
+   */
   clearAnimationInterval() {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
@@ -167,12 +237,20 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Stops all sounds associated with the end boss.
+   */
   stopAllSounds() {
     this.stopSoundIfExists(this.walkSound);
     this.stopSoundIfExists(this.attackSound);
     this.stopSoundIfExists(this.deadSound);
   }
 
+  /**
+   * Stops a specific sound if it exists.
+   *
+   * @param {HTMLAudioElement} sound - The sound to stop.
+   */
   stopSoundIfExists(sound) {
     if (sound) {
       sound.pause();
@@ -180,6 +258,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Handles the end boss taking damage.
+   */
   handleHurt() {
     if (this.isDead || this.isHurt) return;
     this.hitCount++;
@@ -187,16 +268,28 @@ class Endboss extends MovableObject {
     this.activateHurtState();
   }
 
+  /**
+   * Marks the end boss as dead and deactivates the hurt state.
+   */
   markAsDead() {
     this.isDead = true;
     this.isHurt = false;
   }
 
+  /**
+   * Activates the hurt state and plays the hurt animation.
+   */
   activateHurtState() {
     this.isHurt = true;
     this.playAnimationOnce(this.IMAGES_HURT, () => { this.isHurt = false; });
   }
 
+  /**
+   * Plays an animation once and calls a callback when complete.
+   *
+   * @param {string[]} animationFrames - The frames of the animation.
+   * @param {Function} onComplete - Callback executed after the animation.
+   */
   playAnimationOnce(animationFrames, onComplete) {
     let frameIndex = 0;
     const animationInterval = setInterval(() => {
@@ -208,6 +301,9 @@ class Endboss extends MovableObject {
     }, 30);
   }
 
+  /**
+   * Plays the death animation and sound.
+   */
   playDeadAnimation() {
     if (this.deadAnimationPlayed) return;
     this.deadAnimationPlayed = true;
@@ -215,6 +311,11 @@ class Endboss extends MovableObject {
     this.playAnimationOnce(this.IMAGES_DEAD);
   }
 
+  /**
+   * Makes the end boss follow the character.
+   *
+   * @param {Character} character - The character to follow.
+   */
   followCharacter(character) {
     if (this.isDead || this.isHurt) return;
     let attackPoint = this.otherDirection 
@@ -231,11 +332,17 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Handles the state when the character is out of sight.
+   */
   handleOutOfSight() {
     this.stopAllActions();
     this.stopWalkSound();
   }
 
+  /**
+   * Stops the walking sound if it is playing.
+   */
   stopWalkSound() {
     if (!this.walkSound.paused) {
       this.walkSound.pause();
@@ -243,6 +350,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Starts moving the end boss to the left.
+   */
   startMovingLeft() {
     this.isMovingLeft = true;
     this.isMovingRight = false;
@@ -250,6 +360,9 @@ class Endboss extends MovableObject {
     this.otherDirection = false;
   }
 
+  /**
+   * Starts moving the end boss to the right.
+   */
   startMovingRight() {
     this.isMovingRight = true;
     this.isMovingLeft = false;
@@ -257,17 +370,26 @@ class Endboss extends MovableObject {
     this.otherDirection = true;
   }
 
+  /**
+   * Starts the attack animation.
+   */
   startAttacking() {
     this.isAttacking = true;
     this.isMovingLeft = false;
     this.isMovingRight = false;
   }
 
+  /**
+   * Stops all actions (moving and attacking).
+   */
   stopAllActions() {
     this.isMovingLeft = false;
     this.isAttacking = false;
   }
 
+  /**
+   * Loads the sounds for the end boss.
+   */
   loadSounds() {
     this.walkSound = new Audio('./audio/GolemWalk.mp3');
     this.attackSound = new Audio('./audio/GolemHit.mp3');
@@ -278,6 +400,11 @@ class Endboss extends MovableObject {
     this.walkSound.loop = true;
   }
 
+  /**
+   * Plays a specific sound and pauses all other sounds.
+   *
+   * @param {HTMLAudioElement} activeSound - The sound to play.
+   */
   playSound(activeSound) {
     if (!this.isCharacterInSight) return;
     const allSounds = [this.walkSound, this.attackSound, this.deadSound];
@@ -287,6 +414,11 @@ class Endboss extends MovableObject {
     if (activeSound.paused) { activeSound.play().catch(() => {}); }
   }
 
+  /**
+   * Toggles the mute state of all sounds.
+   *
+   * @param {boolean} isMuted - Whether to mute the sounds.
+   */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
     this.walkSound.muted = isMuted;

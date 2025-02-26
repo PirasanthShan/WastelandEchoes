@@ -1,15 +1,15 @@
 /**
- * Klasse, die ein bewegliches Objekt im Spiel repräsentiert.
- * Erbt von DrawableObject.
+ * Class representing a movable object in the game.
+ * Inherits from DrawableObject.
  */
 class MovableObject extends DrawableObject {
     /**
-     * @property {number} speed - Die Geschwindigkeit des Objekts.
-     * @property {boolean} otherDirection - Bestimmt, ob sich das Objekt in die entgegengesetzte Richtung bewegt.
-     * @property {number} speedY - Vertikale Geschwindigkeit für Sprünge.
-     * @property {number} acceleration - Beschleunigung, die die vertikale Bewegung beeinflusst.
-     * @property {number} energy - Der Energiewert des Objekts.
-     * @property {number} lastHit - Zeitstempel des letzten erlittenen Treffers.
+     * @property {number} speed - The speed of the object.
+     * @property {boolean} otherDirection - Determines if the object is moving in the opposite direction.
+     * @property {number} speedY - Vertical speed for jumping.
+     * @property {number} acceleration - Acceleration affecting vertical movement.
+     * @property {number} energy - The energy value of the object.
+     * @property {number} lastHit - Timestamp of the last hit taken.
      */
     speed = 0.20;
     otherDirection = false;
@@ -17,17 +17,17 @@ class MovableObject extends DrawableObject {
     acceleration = 2;
     energy = 100;
     lastHit = 0;
-  
+
     /**
-     * Erstellt eine Instanz von MovableObject.
+     * Creates an instance of MovableObject.
      */
     constructor() {
         super();
         this.currentImage = 0;
     }
-  
+
     /**
-     * Wendet die Schwerkraft auf das Objekt an.
+     * Applies gravity to the object.
      */
     applyGravity() {
         setInterval(() => {
@@ -40,10 +40,10 @@ class MovableObject extends DrawableObject {
             }
         }, 1000 / 35);
     }
-  
+
     /**
-     * Überprüft, ob sich das Objekt über dem Boden befindet.
-     * @returns {boolean} True, wenn das Objekt über dem Boden ist, sonst false.
+     * Checks if the object is above the ground.
+     * @returns {boolean} True if the object is above the ground, otherwise false.
      */
     isAboveGround() {
         if (this instanceof ThrowableObject) {
@@ -52,73 +52,73 @@ class MovableObject extends DrawableObject {
             return this.y < 310;
         }
     }
-  
+
     /**
-     * Überprüft eine Kollision mit einem anderen Objekt.
-     * @param {Object} mo - Das andere Objekt.
-     * @returns {boolean} True, wenn eine Kollision vorliegt, sonst false.
+     * Checks for a collision with another object.
+     * @param {Object} mo - The other object.
+     * @returns {boolean} True if a collision occurs, otherwise false.
      */
     isColliding(mo) {
         return CollisionHandler.isCollidingDefault(this, mo);
     }
-  
+
     /**
-     * Überprüft eine Kollision mit einer Bombe.
-     * @param {Object} mo - Das andere Objekt.
-     * @returns {boolean} True, wenn eine Kollision vorliegt, sonst false.
+     * Checks for a collision with a bomb.
+     * @param {Object} mo - The other object.
+     * @returns {boolean} True if a collision occurs, otherwise false.
      */
     isCollidingBomb(mo) {
         return CollisionHandler.isCollidingBomb(this, mo);
     }
-  
+
     /**
-     * Überprüft eine Kollision mit dem Boss-Gegner.
-     * @param {Object} mo - Das andere Objekt.
-     * @param {number} [overlapThreshold=0.7] - Die Überlappungsschwelle für die Kollisionsprüfung.
-     * @returns {boolean} True, wenn eine Kollision vorliegt, sonst false.
+     * Checks for a collision with the boss enemy.
+     * @param {Object} mo - The other object.
+     * @param {number} [overlapThreshold=0.7] - The overlap threshold for collision detection.
+     * @returns {boolean} True if a collision occurs, otherwise false.
      */
     isCollidingBoss(mo, overlapThreshold = 0.7) {
         return CollisionHandler.isCollidingBoss(this, mo, overlapThreshold);
     }
-  
+
     /**
-     * Überprüft eine Kollision mit einer Endboss-Bombe.
-     * @param {Object} mo - Das andere Objekt.
-     * @returns {boolean} True, wenn eine Kollision vorliegt, sonst false.
+     * Checks for a collision with an endboss bomb.
+     * @param {Object} mo - The other object.
+     * @returns {boolean} True if a collision occurs, otherwise false.
      */
     isCollidingBombEndboss(mo) {
         return CollisionHandler.isCollidingBombEndboss(this, mo);
     }
-  
+
     /**
-     * Überprüft eine Kollision mit einem sammelbaren Objekt.
-     * @param {Object} mo - Das andere Objekt.
-     * @returns {boolean} True, wenn eine Kollision vorliegt, sonst false.
+     * Checks for a collision with a collectible object.
+     * @param {Object} mo - The other object.
+     * @returns {boolean} True if a collision occurs, otherwise false.
      */
     isCollidingCollectible(mo) {
-        return CollisionHandler.isCollidingCollectible(this, mo);
+        return CollisionHandler.isCollidingCollectibleEchoes(this, mo);
     }
-  
+
     /**
-     * Überprüft eine Kollision mit einem Schiff.
-     * @param {Object} mo - Das andere Objekt.
-     * @returns {boolean} True, wenn eine Kollision vorliegt, sonst false.
+     * Checks for a collision with a ship.
+     * @param {Object} mo - The other object.
+     * @returns {boolean} True if a collision occurs, otherwise false.
      */
     isCollidingShip(mo) {
         return CollisionHandler.isCollidingShip(this, mo);
     }
-  
+
     /**
-     * Überprüft, ob das Objekt kürzlich Schaden erlitten hat.
-     * @returns {boolean} True, wenn das Objekt kürzlich getroffen wurde, sonst false.
+     * Checks if the object has recently taken damage.
+     * @returns {boolean} True if the object was recently hit, otherwise false.
      */
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         return timePassed / 1000 < 0.5;
     }
-  
+
     /**
-     * Reduziert die Energie des Objekts, wenn es getroffen wird.
+     * Reduces the object's energy when hit.
      */
     hit() {
         this.energy -= 10;
@@ -128,18 +128,18 @@ class MovableObject extends DrawableObject {
             this.lastHit = new Date().getTime();
         }
     }
-  
+
     /**
-     * Überprüft, ob das Objekt tot ist.
-     * @returns {boolean} True, wenn die Energie null ist, sonst false.
+     * Checks if the object is dead.
+     * @returns {boolean} True if the energy is zero, otherwise false.
      */
     isDead() {
         return this.energy === 0;
     }
-  
+
     /**
-     * Spielt eine Animation ab, indem es durch die Bilder wechselt.
-     * @param {string[]} images - Array mit Bildpfaden.
+     * Plays an animation by cycling through the images.
+     * @param {string[]} images - Array of image paths.
      */
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -147,26 +147,25 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
         this.currentImage++;
     }
-  
+
     /**
-     * Bewegt das Objekt nach rechts.
+     * Moves the object to the right.
      */
     moveRight() {
         this.x += this.speed;
     }
-  
+
     /**
-     * Bewegt das Objekt nach links.
+     * Moves the object to the left.
      */
     moveLeft() {
         this.x -= this.speed;
     }
-  
+
     /**
-     * Lässt das Objekt springen.
+     * Makes the object jump.
      */
     jump() {
         this.speedY = 25;
     }
-  }
-  
+}

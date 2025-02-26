@@ -1,15 +1,15 @@
 /**
- * Klasse, die ein Level im Spiel repräsentiert.
+ * Class representing a level in the game.
  */
 class Level {
   /**
-   * @property {Object[]} enemies - Die Liste der Gegnerobjekte im Level.
-   * @property {Object[]} birds - Die Liste der Vogelobjekte im Level.
-   * @property {Object[]} backgroundObjects - Die Liste der Hintergrundobjekte.
-   * @property {number} level_end_x - Die x-Koordinate, an der das Level endet.
-   * @property {Object} collectible - Das erste sammelbare Objekt.
-   * @property {Object} collectible2 - Das zweite sammelbare Objekt.
-   * @property {Object} lastCollectible - Das letzte sammelbare Objekt.
+   * @property {Object[]} enemies - The list of enemy objects in the level.
+   * @property {Object[]} birds - The list of bird objects in the level.
+   * @property {Object[]} backgroundObjects - The list of background objects.
+   * @property {number} level_end_x - The x-coordinate where the level ends.
+   * @property {Object} collectible - The first collectible object.
+   * @property {Object} collectible2 - The second collectible object.
+   * @property {Object} lastCollectible - The final collectible object.
    */
   enemies;
   birds;
@@ -20,13 +20,13 @@ class Level {
   lastCollectible;
 
   /**
-   * Erstellt eine Instanz von Level.
-   * @param {Object[]} enemies - Das Array der Gegner im Level.
-   * @param {Object[]} birds - Das Array der Vögel im Level.
-   * @param {Object[]} backgroundObjects - Das Array der Hintergrundobjekte im Level.
-   * @param {Object} collectible - Das erste sammelbare Objekt.
-   * @param {Object} collectible2 - Das zweite sammelbare Objekt.
-   * @param {Object} lastCollectible - Das letzte sammelbare Objekt.
+   * Creates an instance of Level.
+   * @param {Object[]} enemies - The array of enemies in the level.
+   * @param {Object[]} birds - The array of birds in the level.
+   * @param {Object[]} backgroundObjects - The array of background objects in the level.
+   * @param {Object} collectible - The first collectible object.
+   * @param {Object} collectible2 - The second collectible object.
+   * @param {Object} lastCollectible - The final collectible object.
    */
   constructor(enemies, birds, backgroundObjects, collectible, collectible2, lastCollectible) {
       this.enemies = enemies;

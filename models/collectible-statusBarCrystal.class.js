@@ -1,8 +1,8 @@
 /**
- * Repräsentiert die Anzeige für die gesammelten Kristalle.
- * Diese Klasse aktualisiert das Bild, das den Status der Kristallsammlung visualisiert.
+ * Represents the display for collected crystals.
+ * This class updates the image that visualizes the status of crystal collection.
  *
- * @class CollectibleBar2
+ * @class CollectibleBarCrystal
  * @extends {MovableObject}
  */
 class CollectibleBarCrystal extends MovableObject {
@@ -22,8 +22,8 @@ class CollectibleBarCrystal extends MovableObject {
   ];
 
   /**
-   * Erzeugt eine neue Instanz von CollectibleBar2.
-   * Lädt das Standardbild und alle Statusbilder für die Kristallanzeige.
+   * Creates a new instance of CollectibleBarCrystal.
+   * Loads the default image and all status images for the crystal display.
    */
   constructor() {
     super().loadImage('./img/crystalstatus.img/healthbar_0.webp');
@@ -33,15 +33,15 @@ class CollectibleBarCrystal extends MovableObject {
   }
 
   /**
-   * Aktualisiert die Anzeige basierend auf der Anzahl der gesammelten Kristalle.
+   * Updates the display based on the number of collected crystals.
    *
-   * @param {number} count - Die Anzahl der gesammelten Kristalle.
-   * Der Wert muss größer als 0 und kleiner oder gleich der Anzahl der verfügbaren Bilder sein.
-   * Wird ein gültiger Wert übergeben, so wird das entsprechende Bild geladen.
+   * @param {number} count - The number of collected crystals.
+   * The value must be greater than 0 and less than or equal to the number of available images.
+   * If a valid value is passed, the corresponding image is loaded.
    */
   setCrystals(count) {
     if (count > 0 && count <= this.IMAGES.length) {
-      this.loadImage(this.IMAGES[count - 1]); // Lade das passende Bild
+      this.loadImage(this.IMAGES[count - 1]); // Load the appropriate image
     }
   }
 }

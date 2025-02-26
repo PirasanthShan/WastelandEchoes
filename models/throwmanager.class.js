@@ -1,19 +1,19 @@
 /**
- * Verwaltet das Werfen von Bomben in der Spielwelt.
- * Diese Klasse ist für die Logik des Bombenwerfens, die Kollisionserkennung und die Animationen zuständig.
+ * Manages the throwing of bombs in the game world.
+ * This class is responsible for the logic of bomb throwing, collision detection, and animations.
  */
 class ThrowManager {
   /**
-   * Erstellt eine neue Instanz des `ThrowManager`.
-   * @param {World} world - Die Spielwelt, in der das Bombenwerfen stattfindet.
+   * Creates a new instance of `ThrowManager`.
+   * @param {World} world - The game world where bomb throwing occurs.
    */
   constructor(world) {
-    /** @type {World} Referenz zur Spielwelt. */
+    /** @type {World} Reference to the game world. */
     this.world = world;
   }
 
   /**
-   * Überprüft, ob eine Bombe geworfen werden kann, und führt den Wurf aus oder zeigt eine Warnung an.
+   * Checks if a bomb can be thrown and either executes the throw or shows a warning.
    */
   checkThrowObjects() {
     if (this.canThrowBomb()) {
@@ -24,8 +24,8 @@ class ThrowManager {
   }
 
   /**
-   * Prüft, ob der Charakter eine Bombe werfen kann.
-   * @returns {boolean} True, wenn der Charakter eine Bombe werfen kann.
+   * Checks if the character can throw a bomb.
+   * @returns {boolean} True if the character can throw a bomb.
    */
   canThrowBomb() {
     return (
@@ -37,8 +37,8 @@ class ThrowManager {
   }
 
   /**
-   * Erstellt eine neue Bombe und fügt sie der Spielwelt hinzu.
-   * @returns {ThrowableObject} Die erstellte Bombe.
+   * Creates a new bomb and adds it to the game world.
+   * @returns {ThrowableObject} The created bomb.
    */
   createBomb() {
     const bomb = new ThrowableObject(
@@ -47,7 +47,7 @@ class ThrowManager {
       this.world.character.otherDirection
     );
 
-    // Übernimmt den Mute-Status aus der Spielwelt
+    // Inherits the mute state from the game world
     bomb.toggleMute(this.world.isMuted);
 
     this.world.throwableObjects.push(bomb);
@@ -55,11 +55,11 @@ class ThrowManager {
   }
 
   /**
-   * Führt das Werfen einer Bombe aus:
-   * - Setzt den Angriffsstatus des Charakters.
-   * - Verringert die Anzahl der verfügbaren Bomben.
-   * - Erstellt eine Bombe und behandelt deren Kollision.
-   * - Spielt die Angriffsanimation des Charakters ab.
+   * Executes the throwing of a bomb:
+   * - Sets the character's attack state.
+   * - Decreases the number of available bombs.
+   * - Creates a bomb and handles its collision.
+   * - Plays the character's attack animation.
    */
   executeBombThrow() {
     this.world.character.isAttacking = true;
@@ -75,15 +75,15 @@ class ThrowManager {
   }
 
   /**
-   * Zeigt eine Warnung an, wenn keine Bomben mehr verfügbar sind.
+   * Shows a warning if no bombs are available.
    */
   showAlertBomb() {
     this.world.toggleAlertBomb(true);
   }
 
   /**
-   * Behandelt die Kollision einer Bombe mit Feinden.
-   * @param {ThrowableObject} bomb - Die geworfene Bombe.
+   * Handles the collision of a bomb with enemies.
+   * @param {ThrowableObject} bomb - The thrown bomb.
    */
   handleBombCollision(bomb) {
     const collisionInterval = setInterval(() => {
@@ -98,20 +98,19 @@ class ThrowManager {
   }
 
   /**
-   * Löst die Explosion einer Bombe aus.
-   * @param {ThrowableObject} bomb - Die explodierende Bombe.
+   * Triggers the explosion of a bomb.
+   * @param {ThrowableObject} bomb - The exploding bomb.
    */
   triggerBombExplosion(bomb) {
-    // Der Sound wird bereits in playExplosion() abgespielt, wenn nicht stummgeschaltet.
+    // The sound is already played in playExplosion() if not muted.
     bomb.playExplosion(() => {
       this.world.removeBomb(bomb);
     });
   }
-  
 
   /**
-   * Behandelt das Treffen eines Feindes durch eine Bombe.
-   * @param {Enemy} enemy - Der getroffene Feind.
+   * Handles an enemy being hit by a bomb.
+   * @param {Enemy} enemy - The hit enemy.
    */
   handleEnemyHit(enemy) {
     enemy.playDeadAnimation(() => {
@@ -121,17 +120,17 @@ class ThrowManager {
   }
 
   /**
-   * Überprüft, ob eine Bombe einen Feind trifft.
-   * @param {ThrowableObject} bomb - Die geworfene Bombe.
-   * @param {Enemy} enemy - Der Feind, der überprüft wird.
-   * @returns {boolean} True, wenn die Bombe den Feind trifft.
+   * Checks if a bomb hits an enemy.
+   * @param {ThrowableObject} bomb - The thrown bomb.
+   * @param {Enemy} enemy - The enemy being checked.
+   * @returns {boolean} True if the bomb hits the enemy.
    */
   isBombHittingEnemy(bomb, enemy) {
     return bomb.isCollidingBomb(enemy) && !enemy.isDead;
   }
 
   /**
-   * Spielt die Angriffsanimation des Charakters ab.
+   * Plays the character's attack animation.
    */
   animateCharacterAttack() {
     const images = this.world.character.IMAGES_ATTACK;

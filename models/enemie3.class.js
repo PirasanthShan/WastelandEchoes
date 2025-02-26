@@ -1,37 +1,24 @@
 /**
- * Klasse Enemie3, die einen beweglichen Feind im Spiel darstellt.
- * Diese Klasse erweitert MovableObject und beinhaltet Animationen,
- * Sounds sowie Methoden zur Bewegung und Statusverwaltung.
+ * Represents a moving enemy in the game.
+ * This class extends MovableObject and includes animations, sounds, and methods for movement and status management.
+ *
+ * @class Enemie3
+ * @extends {MovableObject}
  */
 class Enemie3 extends MovableObject {
-  /**
-   * Vertikale Position des Gegners.
-   * @type {number}
-   */
+  /** @type {number} Vertical position of the enemy. */
   y = 260;
 
-  /**
-   * Höhe des Gegners.
-   * @type {number}
-   */
+  /** @type {number} Height of the enemy. */
   height = 160;
 
-  /**
-   * Breite des Gegners.
-   * @type {number}
-   */
+  /** @type {number} Width of the enemy. */
   width = 160;
 
-  /**
-   * Gibt an, ob der Gegner tot ist.
-   * @type {boolean}
-   */
+  /** @type {boolean} Indicates whether the enemy is dead. */
   isDead = false;
 
-  /**
-   * Bilder für die Laufanimation.
-   * @type {string[]}
-   */
+  /** @type {string[]} Image paths for the walking animation. */
   IMAGES_WALKING = [
     './img/enemies.img/enemie4.img/walk/walk2.webp',
     './img/enemies.img/enemie4.img/walk/walk3.webp',
@@ -41,10 +28,7 @@ class Enemie3 extends MovableObject {
     './img/enemies.img/enemie4.img/walk/walk7.webp',
   ];
 
-  /**
-   * Bilder für die Angriffsanimation.
-   * @type {string[]}
-   */
+  /** @type {string[]} Image paths for the attack animation. */
   IMAGES_ATTACK = [
     './img/enemies.img/enemie4.img/attack/Attack_3_Left_Frame_1.webp',
     './img/enemies.img/enemie4.img/attack/Attack_3_Left_Frame_2.webp',
@@ -53,10 +37,7 @@ class Enemie3 extends MovableObject {
     './img/enemies.img/enemie4.img/attack/Attack_3_Left_Frame_5.webp',
   ];
 
-  /**
-   * Bilder für die Todesanimation.
-   * @type {string[]}
-   */
+  /** @type {string[]} Image paths for the death animation. */
   IMAGES_DEAD = [
     './img/enemies.img/enemie4.img/dead/Dead_Left_Frame_1.webp',
     './img/enemies.img/enemie4.img/dead/Dead_Left_Frame_2.webp',
@@ -65,8 +46,15 @@ class Enemie3 extends MovableObject {
     './img/enemies.img/enemie4.img/dead/Dead_Left_Frame_5.webp',
   ];
 
+  /** @type {HTMLAudioElement} Sound played when the enemy is walking. */
+  walking_sound;
+
+  /** @type {HTMLAudioElement} Sound played when the enemy dies. */
+  dead_sound;
+
   /**
-   * Erstellt eine neue Instanz von Enemie3.
+   * Creates an instance of Enemie3.
+   * Initializes the enemy with default position, speed, and animations.
    */
   constructor() {
     super().loadImage('./img/enemies.img/enemie4.img/walk/walk1.webp');
@@ -74,30 +62,17 @@ class Enemie3 extends MovableObject {
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
 
-    /**
-     * Horizontale Startposition des Gegners.
-     * @type {number}
-     */
+    /** @type {number} Horizontal starting position of the enemy. */
     this.x = 1500;
 
-    /**
-     * Bewegungsgeschwindigkeit des Gegners.
-     * @type {number}
-     */
+    /** @type {number} Movement speed of the enemy. */
     this.speed = 1;
 
-    /**
-     * 🔉 Lauf-Soundeffekt.
-     * @type {HTMLAudioElement}
-     */
+    // Initialize sounds
     this.walking_sound = new Audio('./audio/Zombie.mp3');
     this.walking_sound.volume = 0.02;
     this.walking_sound.loop = true;
 
-    /**
-     * 🔉 Soundeffekt für den Tod des Gegners.
-     * @type {HTMLAudioElement}
-     */
     this.dead_sound = new Audio('./audio/zombieDead.mp3');
     this.dead_sound.volume = 0.05;
 
@@ -105,7 +80,7 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * Startet die Animationen des Gegners.
+   * Starts the animations of the enemy.
    */
   animate() {
     this.startMovementLoop();
@@ -113,7 +88,7 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * Startet die Bewegungsschleife des Gegners.
+   * Starts the movement loop of the enemy.
    */
   startMovementLoop() {
     setInterval(() => {
@@ -126,7 +101,7 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * Startet die Animationsschleife des Gegners.
+   * Starts the animation loop of the enemy.
    */
   startAnimationLoop() {
     setInterval(() => {
@@ -137,15 +112,16 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * Überprüft, ob das Spiel aktiv ist.
-   * @returns {boolean} True, wenn das Spiel läuft, sonst false.
+   * Checks if the game is active.
+   *
+   * @returns {boolean} True if the game is running, otherwise false.
    */
   isGameActive() {
     return this.world && this.world.isGameRunning;
   }
 
   /**
-   * Steuert die Bewegung des Gegners.
+   * Handles the movement of the enemy.
    */
   handleMovement() {
     if (!this.isDead) {
@@ -157,7 +133,7 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * 🔉 Spielt den Lauf-Sound ab.
+   * Plays the walking sound if the game is running.
    */
   playSound() {
     if (!this.world || !this.world.isGameRunning) {
@@ -171,7 +147,7 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * 🔇 Stoppt den Lauf-Sound.
+   * Stops the walking sound.
    */
   stopSound() {
     if (!this.walking_sound.paused) {
@@ -182,6 +158,7 @@ class Enemie3 extends MovableObject {
 
   /**
    * Toggles the mute state of the enemy's sounds.
+   *
    * @param {boolean} isMuted - Whether the sounds should be muted.
    */
   toggleMute(isMuted) {
@@ -191,8 +168,9 @@ class Enemie3 extends MovableObject {
   }
 
   /**
-   * Spielt die Todesanimation ab und entfernt den Gegner nach Abschluss.
-   * @param {Function} onComplete - Callback-Funktion nach Abschluss der Animation.
+   * Plays the death animation and removes the enemy after completion.
+   *
+   * @param {Function} onComplete - Callback function to execute after the animation.
    */
   playDeadAnimation(onComplete) {
     this.isDead = true;

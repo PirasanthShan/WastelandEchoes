@@ -1,6 +1,6 @@
 /**
- * Repräsentiert ein Sammelobjekt im Spiel (z. B. Bomben oder Kristalle).
- * Diese Objekte erben von MovableObject und besitzen definierte Positionen und Größen.
+ * Represents a collectible object in the game (e.g., bombs or crystals).
+ * These objects inherit from MovableObject and have defined positions and sizes.
  *
  * @class Collectible
  * @extends {MovableObject}
@@ -10,13 +10,13 @@ class Collectible extends MovableObject {
   height = 30;
 
   /**
-   * Erzeugt eine neue Instanz von Collectible.
+   * Creates a new instance of Collectible.
    *
-   * @param {string} imagePath - Der Pfad zum Bild des Sammelobjekts.
-   * @param {number} y - Die vertikale Position des Objekts.
-   * @param {number} x - Die horizontale Position des Objekts.
-   * @param {number} width - Die Breite des Objekts.
-   * @param {number} height - Die Höhe des Objekts.
+   * @param {string} imagePath - The path to the image of the collectible object.
+   * @param {number} y - The vertical position of the object.
+   * @param {number} x - The horizontal position of the object.
+   * @param {number} width - The width of the object.
+   * @param {number} height - The height of the object.
    */
   constructor(imagePath, y, x, width, height) {
     super().loadImage(imagePath);

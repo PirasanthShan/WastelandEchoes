@@ -1,47 +1,47 @@
 /**
- * Repräsentiert einen Vogel, der über die Leinwand (Canvas) fliegt.
- * Der Vogel startet außerhalb des sichtbaren Bereichs auf der rechten Seite
- * und bewegt sich nach links. Sobald er den Canvas verlässt, wird seine Position zurückgesetzt.
+ * Represents a bird that flies across the canvas.
+ * The bird starts outside the visible area on the right side
+ * and moves to the left. Once it leaves the canvas, its position is reset.
  */
 class Bird extends MovableObject {
   height = 300;
   width = 300;
-  
+
   /**
-   * Erzeugt eine neue Instanz von Bird.
-   * Lädt das Bild des Vogels, setzt die Startposition und startet die Animation.
+   * Creates a new instance of Bird.
+   * Loads the bird image, sets the starting position, and starts the animation.
    */
   constructor() {
     super();
     this.loadImage('./img/bird1.webp');
-    this.resetPosition(); // Setzt die Startposition des Vogels
-    this.animate();       // Startet die Animation (Bewegung) des Vogels
+    this.resetPosition(); // Resets the bird's starting position
+    this.animate();       // Starts the bird's animation (movement)
   }
 
   /**
-   * Setzt die Position des Vogels zurück.
-   * Der Vogel startet außerhalb der Canvas (rechts) mit einer zufälligen vertikalen Position
-   * und einer zufälligen Geschwindigkeit.
+   * Resets the bird's position.
+   * The bird starts outside the canvas (right) with a random vertical position
+   * and a random speed.
    */
   resetPosition() {
-    this.x = 3000; // Start außerhalb der Canvas (rechts)
-    this.y = 20 + Math.random() * 60; // Zufällige Höhe innerhalb eines Bereichs (zwischen 20 und 80)
-    this.speed = 1 + Math.random() * 2; // Zufällige Geschwindigkeit zwischen 1 und 3
+    this.x = 3000; // Starts outside the canvas (right)
+    this.y = 20 + Math.random() * 60; // Random height within a range (between 20 and 80)
+    this.speed = 1 + Math.random() * 2; // Random speed between 1 and 3
   }
 
   /**
-   * Animiert den Vogel, indem er kontinuierlich nach links fliegt.
-   * Wird der Vogel komplett aus dem sichtbaren Bereich entfernt (links),
-   * wird seine Position zurückgesetzt.
+   * Animates the bird by continuously moving it to the left.
+   * If the bird completely leaves the visible area (left),
+   * its position is reset.
    */
   animate() {
     setInterval(() => {
-      this.x -= this.speed; // Bewegt den Vogel nach links
+      this.x -= this.speed; // Moves the bird to the left
 
-      // Überprüft, ob der Vogel die Canvas verlassen hat (links)
+      // Checks if the bird has left the canvas (left)
       if (this.x + this.width < 0) {
-        this.resetPosition(); // Position zurücksetzen, wenn der Vogel nicht mehr sichtbar ist
+        this.resetPosition(); // Resets the position if the bird is no longer visible
       }
-    }, 1000 / 60); // Animationsintervall: 60 FPS für flüssige Bewegung
+    }, 1000 / 60); // Animation interval: 60 FPS for smooth movement
   }
 }
