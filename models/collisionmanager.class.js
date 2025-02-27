@@ -205,17 +205,7 @@ class CollisionManager {
     }, 700);
   }
 
-  /**
- * Checks collisions between the character and collectible items (bombs and asteroids).
- * 
- * For bombs (first type of collectibles), if a collision is detected and the character can carry more bombs,
- * the bomb count is incremented, the collectible bar is updated, and the collected object is removed.
- * 
- * For Echoes (second type of collectibles), a modified collision detection factor is used.
- * If a collision is detected and the character can collect more crystals,
- * the crystal count is incremented, the collectible is removed, and the crystal bar is updated.
- */
-// Prüft die Kollision zwischen dem Charakter und Bomben-Collectibles
+ 
 checkBombCollectibleCollision() {
   for (let i = this.world.level.collectible.length - 1; i >= 0; i--) {
     let collectible = this.world.level.collectible[i];
@@ -231,7 +221,6 @@ checkBombCollectibleCollision() {
 }
 
 
-// Prüft die Kollision zwischen dem Charakter und Kristall-/Asteroiden-Collectibles
 checkCrystalCollectibleCollision() {
   for (let i = this.world.level.collectible2.length - 1; i >= 0; i--) {
     const echo = this.world.level.collectible2[i];

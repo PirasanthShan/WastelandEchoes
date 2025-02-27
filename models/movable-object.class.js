@@ -99,6 +99,12 @@ class MovableObject extends DrawableObject {
         return CollisionHandler.isCollidingCollectibleEchoes(this, mo);
     }
 
+
+    /**
+     * Checks for a collision with a collectible object.
+     * @param {Object} mo - The other object.
+     * @returns {boolean} True if a collision occurs, otherwise false.
+     */
     isCollidingBombCollectible(collectible) {
         return CollisionHandler.isCollidingBombCollectible(this, collectible);
       }

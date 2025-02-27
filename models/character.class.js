@@ -325,6 +325,12 @@ class Character extends MovableObject {
   this.isAttacking = true;
   this.width = 170;
   this.height = 130;
+  setTimeout(() => {
+    this.isAttacking = false;
+    this.attackAnimationStarted = false;
+    this.width = 110;
+    this.height = 110;
+    }, 700);
  }
   /**
    * Handles the character's movement animation.
