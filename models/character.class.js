@@ -21,6 +21,11 @@ class Character extends MovableObject {
   /** @type {boolean} Indicates whether the character's sounds are muted. */
   isMuted = false;
 
+  // Feste Hitbox-Maße für die Kollisionsprüfung
+  hitboxWidth = 110;
+  hitboxHeight = 110;
+  isAttacking = false; // Muss während eines Angriffs auf true gesetzt werden
+
   /** @type {string[]} List of image paths for the walking animation. */
   IMAGES_WALKING = [
     './img/hero.img/03_Walk/Walk_000.webp',
@@ -145,6 +150,45 @@ class Character extends MovableObject {
     this.loadSounds();
   }
 
+ /**
+   * Überschriebene allgemeine Kollisionsprüfung, die die feste Hitbox verwendet.
+   * Dadurch wird sichergestellt, dass visuelle Größenänderungen (z. B. während eines Angriffs)
+   * nicht die Kollisionslogik beeinflussen.
+   */
+ isColliding(mo) {
+  const characterHitbox = {
+    x: this.x,
+    y: this.y,
+    width: this.hitboxWidth,
+    height: this.hitboxHeight
+  };
+  
+  return CollisionHandler.isColliding(characterHitbox, mo, 0.5, 0.5);
+}
+
+/**
+ * Kollisionsprüfung für Bomben-Collectibles.
+ * Wird während eines Angriffs nicht ausgeführt.
+ */
+isCollidingBombCollectible(collectible) {
+  if (this.isAttacking) {
+    // Während des Angriffs soll keine Kollision registriert werden
+    return false;
+  }
+  return CollisionHandler.isCollidingBombCollectible(this, collectible);
+}
+
+/**
+ * Kollisionsprüfung für Echo-Collectibles.
+ * Wird während eines Angriffs nicht ausgeführt.
+ */
+isCollidingEchoCollectible(mo) {
+  if (this.isAttacking) {
+    return false;
+  }
+  return CollisionHandler.isCollidingCollectibleEchoes(this, mo);
+}
+
   /**
    * Loads the sounds for the character and configures their properties.
    */
@@ -218,8 +262,7 @@ class Character extends MovableObject {
       const isJumping = this.world.keyboard.UP && !this.isAboveGround();
       const isMovingRight = this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
       const isMovingLeft = this.world.keyboard.LEFT && this.x > 0;
-      // If the jump key is pressed, the jump is initiated.
-      if (isJumping) {
+     if (isJumping) {
         this.handleJump();
       }
       if (this.isAboveGround()) {
@@ -338,10 +381,10 @@ class Character extends MovableObject {
    * Handles the character's attack animation.
    */
   handleAttackingAnimation() {
-    this.height = 130;
-    this.width = 170;
-  }
-
+  this.isAttacking = true;
+  this.width = 170;
+  this.height = 130;
+ }
   /**
    * Handles the character's movement animation.
    */

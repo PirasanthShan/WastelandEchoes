@@ -99,6 +99,11 @@ class MovableObject extends DrawableObject {
         return CollisionHandler.isCollidingCollectibleEchoes(this, mo);
     }
 
+    isCollidingBombCollectible(collectible) {
+        return CollisionHandler.isCollidingBombCollectible(this, collectible);
+      }
+    
+
     /**
      * Checks for a collision with a ship.
      * @param {Object} mo - The other object.

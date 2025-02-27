@@ -4,7 +4,6 @@
   src: url('./fonts/SixtyfourConvergence-Regular-VariableFont_BLED,SCAN,XELA,YELA.ttf')
 }
 
-
 html{
   font-family: "Sixtyfour Convergence";
   font-weight: bolder;
@@ -436,7 +435,6 @@ img {
   right: 150px;
 }
 
-
 /* ### Keyframe-Animationen ### */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -457,11 +455,6 @@ img {
   0% { transform: translateY(0); }
   100% { transform: translateY(-30px); }
 }
-
-
-
-
-
 
 /* Overlay nur anzeigen, wenn die Bildschirmbreite <= 768px und im Portrait-Modus */
 @media only screen and (max-width: 1024px) and (orientation: portrait) {
@@ -488,9 +481,6 @@ img {
   body::before {
     display: none;
   }
-
-
-
 }
 
 /* ### Responsive Styles für Smartphones ### */
@@ -576,7 +566,6 @@ img {
   canvas {
     width: 100vw;
   }
-
 }
 
 @media only screen and (max-height: 480px) {
@@ -597,16 +586,15 @@ img {
    }
 
   
-.ctrimg{
-  width: 40px;
-  height: 40px;
-}
+  .ctrimg{
+    width: 40px;
+    height: 40px;
+  }
 
-.bombimg{
-  width: 40px;
-  height: 40px;
-}
-
+  .bombimg{
+    width: 40px;
+    height: 40px;
+  }
 
   #restart{
     display: flex
@@ -624,8 +612,6 @@ img {
 .controls, .story, .missionInfo {
    margin-top: 0px;
   }
-
-
 
  .controllBtn img {
   max-width: 35px;
@@ -677,7 +663,6 @@ img {
     margin: 10px;
   }
   
-
   .impressum p {
     font-size: 7px;
   }
@@ -708,13 +693,13 @@ img {
     padding: 2px;
     position: fixed;
     top: 70px;
-}
+ }
 
 .alertBomb img {
   width: 30px;
   height: 30px;
-}
-}
+  }
+ }
 
 @media(max-height: 414px){
   .gameOverBtn {

@@ -215,30 +215,44 @@ class CollisionManager {
  * If a collision is detected and the character can collect more crystals,
  * the crystal count is incremented, the collectible is removed, and the crystal bar is updated.
  */
-checkCollectibleCollision() {
-  // For bombs (first collectibles) using the standard collision detection:
-  this.world.level.collectible.forEach((collectible) => {
-    if (this.world.character.isCollidingCollectible(collectible)) {
+// Prüft die Kollision zwischen dem Charakter und Bomben-Collectibles
+checkBombCollectibleCollision() {
+  for (let i = this.world.level.collectible.length - 1; i >= 0; i--) {
+    let collectible = this.world.level.collectible[i];
+    if (this.world.character.isCollidingBombCollectible(collectible)) {
       if (this.world.characterBombs < this.world.maxBombs) {
         this.world.characterBombs++;
         this.world.collectibleBar.setBombs(this.world.characterBombs);
-        this.world.level.collectible.splice(this.world.level.collectible.indexOf(collectible), 1);
+        this.world.level.collectible.splice(i, 1);
         this.world.toggleAlertBomb();
       }
     }
-  });
+  }
+}
 
-  // For asteroids (second collectibles) using the modified collision factor:
-  this.world.level.collectible2.forEach((crystal, index) => {
-    if (CollisionHandler.isCollidingCollectibleEchoes(this.world.character, crystal)) {
+
+// Prüft die Kollision zwischen dem Charakter und Kristall-/Asteroiden-Collectibles
+checkCrystalCollectibleCollision() {
+  for (let i = this.world.level.collectible2.length - 1; i >= 0; i--) {
+    const echo = this.world.level.collectible2[i];
+    if (this.world.character.isCollidingEchoCollectible(echo)) {
       if (this.world.characterCrystals < this.world.maxCrystals) {
         this.world.characterCrystals++;
-        this.world.level.collectible2.splice(index, 1);
+        this.world.level.collectible2.splice(i, 1);
         this.world.crystalBar.setCrystals(this.world.characterCrystals);
       }
     }
-  });
+  }
   this.world.updateCrystalBar();
- }
+}
+
+
+
+// Diese Methode ruft beide Funktionen auf
+checkCollectibleCollision() {
+  this.checkBombCollectibleCollision();
+  this.checkCrystalCollectibleCollision();
+}
+
 
 }

@@ -5,52 +5,22 @@
  * @class World
  */
 class World {
-  /** @type {boolean} Indicates whether the game is running. */
+ 
   isGameRunning = true;
-
-  /** @type {Character} The player character. */
   character = new Character();
-
-  /** @type {Endboss} The end boss of the game. */
   endboss = new Endboss();
-
-  /** @type {Array} A list of all enemies in the current level. */
   enemies = [];
-
-  /** @type {Array} A list of all thrown objects (e.g., bombs). */
   throwableObjects = [];
-
-  /** @type {HTMLCanvasElement} The canvas element on which the game is rendered. */
   canvas;
-
-  /** @type {CanvasRenderingContext2D} The 2D rendering context of the canvas. */
   ctx;
-
-  /** @type {Object} The keyboard object that manages keyboard inputs. */
   keyboard;
-
-  /** @type {number} The camera position on the X-axis. */
   camera_x = 0;
-
-  /** @type {Statusbar} The status bar for the character's health. */
   statusBar = new Statusbar();
-
-  /** @type {CollectibleBar} The collectible bar for bombs. */
   collectibleBar = new CollectibleBar();
-
-  /** @type {CollectibleBar2} The collectible bar for crystals. */
   crystalBar = new CollectibleBarCrystal();
-
-  /** @type {number} The number of bombs the character possesses. */
   characterBombs = 5;
-
-  /** @type {number} The maximum number of bombs the character can carry. */
   maxBombs = 10;
-
-  /** @type {number} The number of crystals the character has collected. */
   characterCrystals = 0;
-
-  /** @type {number} The maximum number of crystals the character can collect. */
   maxCrystals = 10;
 
   /**
@@ -280,9 +250,9 @@ class World {
    */
   pauseGame() {
     this.isGameRunning = false;
-    this.soundManager.stopAllSounds(); // Stop registered sounds
+    this.soundManager.stopAllSounds(); 
     if (this.lastCollectible) {
-      this.lastCollectible.stopMusic(); // Explicitly stop LastCollectible's background music
+      this.lastCollectible.stopMusic(); 
     }
     if (this.endboss && typeof this.endboss.stopAnimation === 'function') {
       this.endboss.stopAnimation();
@@ -298,7 +268,7 @@ class World {
    */
   resumeGame() {
     this.isGameRunning = true;
-    this.soundManager.resumeAllSounds(); // Use the SoundManager
+    this.soundManager.resumeAllSounds(); 
     if (this.endboss && typeof this.endboss.startAnimation === 'function') {
       this.endboss.startAnimation();
     }

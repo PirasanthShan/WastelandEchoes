@@ -29,7 +29,7 @@ class CollisionHandler {
    * @returns {boolean} true if the objects collide, otherwise false.
    */
   static isCollidingDefault(obj1, obj2) {
-    return this.isColliding(obj1, obj2, 0.6, 0.6);
+    return this.isColliding(obj1, obj2, 0.5, 0.6);
   }
 
   /**
@@ -55,8 +55,21 @@ class CollisionHandler {
    * @returns {boolean} true if the objects collide, otherwise false.
    */
   static isCollidingCollectibleEchoes(obj1, obj2) {
-    return this.isColliding(obj1, obj2, 0.9, 0.6);
+    return this.isColliding(obj1, obj2, 0.5, 0.5);
   }
+
+   /**
+   * Checks the collision between two collectible objects.
+   * 
+   *
+   * @param {Object} obj1 - The first object.
+   * @param {Object} obj2 - The second object.
+   * @returns {boolean} true if the objects collide, otherwise false.
+   */
+   static isCollidingBombCollectible(obj1, obj2) {
+   return this.isColliding(obj1, obj2, 0.3, 0.7);
+  }
+
 
   /**
    * Checks the collision between an object and a spaceship.
