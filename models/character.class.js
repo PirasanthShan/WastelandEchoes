@@ -3,31 +3,16 @@
  * Inherits from the `MovableObject` class and extends it with specific properties and methods for the character.
  */
 class Character extends MovableObject {
-  /** @type {number} Height of the character in pixels. */
-  height = 110;
-
-  /** @type {number} Width of the character in pixels. */
-  width = 110;
-
-  /** @type {number} Y-position of the character on the canvas. */
-  y = 310;
-
-  /** @type {number} Speed of the character. */
-  speed = 1;
-
-  /** @type {boolean} Indicates whether an animation is currently playing. */
-  isAnimationPlaying = false;
-
-  /** @type {boolean} Indicates whether the character's sounds are muted. */
-  isMuted = false;
-
-  // Feste Hitbox-Maße für die Kollisionsprüfung
-  hitboxWidth = 110;
-  hitboxHeight = 110;
-  isAttacking = false; // Muss während eines Angriffs auf true gesetzt werden
-
-  /** @type {string[]} List of image paths for the walking animation. */
-  IMAGES_WALKING = [
+ height = 110;
+ width = 110;
+ y = 310;
+ speed = 1;
+ isAnimationPlaying = false;
+ isMuted = false;
+ hitboxWidth = 110;
+ hitboxHeight = 110;
+ isAttacking = false; 
+ IMAGES_WALKING = [
     './img/hero.img/03_Walk/Walk_000.webp',
     './img/hero.img/03_Walk/Walk_001.webp',
     './img/hero.img/03_Walk/Walk_002.webp',
@@ -41,8 +26,6 @@ class Character extends MovableObject {
     './img/hero.img/03_Walk/Walk_010.webp',
     './img/hero.img/03_Walk/Walk_011.webp'
   ];
-
-  /** @type {string[]} List of image paths for the standing animation. */
   IMAGES_STANDING = [
     './img/hero.img/01_Idle/idle_000.webp',
     './img/hero.img/01_Idle/idle_001.webp',
@@ -54,9 +37,7 @@ class Character extends MovableObject {
     './img/hero.img/01_Idle/idle_007.webp',
     './img/hero.img/01_Idle/idle_008.webp'
   ];
-
-  /** @type {string[]} List of image paths for the jumping animation. */
-  IMAGES_JUMPING = [
+ IMAGES_JUMPING = [
     './img/hero.img/05_Jump/Jump_001_cropped_resized.webp',
     './img/hero.img/05_Jump/Jump_002_cropped_resized.webp',
     './img/hero.img/05_Jump/Jump_003_cropped_resized.webp',
@@ -70,8 +51,6 @@ class Character extends MovableObject {
     './img/hero.img/05_Jump/Jump_011_cropped_resized.webp',
     './img/hero.img/05_Jump/Jump_012_cropped_resized.webp'
   ];
-
-  /** @type {string[]} List of image paths for the death animation. */
   IMAGES_DEAD = [
     './img/hero.img/13_Death/Death_000.webp',
     './img/hero.img/13_Death/Death_001.webp',
@@ -89,8 +68,6 @@ class Character extends MovableObject {
     './img/hero.img/13_Death/Death_013.webp',
     './img/hero.img/13_Death/Death_014.webp'
   ];
-
-  /** @type {string[]} List of image paths for the hurt animation. */
   IMAGES_HURT = [
     './img/hero.img/04_Sit/Sit_000.webp',
     './img/hero.img/04_Sit/Sit_001.webp',
@@ -107,8 +84,6 @@ class Character extends MovableObject {
     './img/hero.img/04_Sit/Sit_013.webp',
     './img/hero.img/04_Sit/Sit_014.webp'
   ];
-
-  /** @type {string[]} List of image paths for the attack animation. */
   IMAGES_ATTACK = [
     './img/hero.img/06_Attack/Attack_000_resized_879x1157.webp',
     './img/hero.img/06_Attack/Attack_001_resized_879x1157.webp',
@@ -120,17 +95,8 @@ class Character extends MovableObject {
     './img/hero.img/06_Attack/Attack_007_resized_879x1157.webp',
     './img/hero.img/06_Attack/Attack_008_resized_879x1157.webp'
   ];
-
-  /** @type {World} Reference to the game world. */
-  world;
-
-  /** @type {Audio} Sound played when the character walks. */
   walking_sound = new Audio('./audio/robotwalk3.mp3');
-
-  /** @type {Audio} Sound played when the character jumps. */
   jump_sound = new Audio('./audio/roboJump.mp3');
-
-  /** @type {Audio} Sound played when the character dies. */
   death_sound = new Audio('./audio/deathrobot.mp3');
 
   /**
@@ -150,44 +116,19 @@ class Character extends MovableObject {
     this.loadSounds();
   }
 
- /**
-   * Überschriebene allgemeine Kollisionsprüfung, die die feste Hitbox verwendet.
-   * Dadurch wird sichergestellt, dass visuelle Größenänderungen (z. B. während eines Angriffs)
-   * nicht die Kollisionslogik beeinflussen.
-   */
- isColliding(mo) {
-  const characterHitbox = {
-    x: this.x,
-    y: this.y,
-    width: this.hitboxWidth,
-    height: this.hitboxHeight
-  };
-  
-  return CollisionHandler.isColliding(characterHitbox, mo, 0.5, 0.5);
-}
-
-/**
- * Kollisionsprüfung für Bomben-Collectibles.
- * Wird während eines Angriffs nicht ausgeführt.
- */
-isCollidingBombCollectible(collectible) {
-  if (this.isAttacking) {
-    // Während des Angriffs soll keine Kollision registriert werden
+  isCollidingBombCollectible(collectible) {
+    if (this.isAttacking) {
     return false;
+    }
+    return CollisionHandler.isCollidingBombCollectible(this, collectible);
   }
-  return CollisionHandler.isCollidingBombCollectible(this, collectible);
-}
 
-/**
- * Kollisionsprüfung für Echo-Collectibles.
- * Wird während eines Angriffs nicht ausgeführt.
- */
-isCollidingEchoCollectible(mo) {
-  if (this.isAttacking) {
-    return false;
+  isCollidingEchoCollectible(mo) {
+    if (this.isAttacking) {
+      return false;
+    }
+    return CollisionHandler.isCollidingCollectibleEchoes(this, mo);
   }
-  return CollisionHandler.isCollidingCollectibleEchoes(this, mo);
-}
 
   /**
    * Loads the sounds for the character and configures their properties.

@@ -67,7 +67,7 @@ class CollisionHandler {
    * @returns {boolean} true if the objects collide, otherwise false.
    */
    static isCollidingBombCollectible(obj1, obj2) {
-   return this.isColliding(obj1, obj2, 0.3, 0.7);
+   return this.isColliding(obj1, obj2, 0.5, 0.5);
   }
 
 
