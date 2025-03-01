@@ -39,6 +39,13 @@ class World {
     this.enemies = this.level.enemies;
 
     this.initializeManagers();
+    this.backgroundMusic = document.querySelector('#backgroundMusic');
+    if (this.backgroundMusic) {
+    this.soundManager.registerSound(this.backgroundMusic);
+    }
+    console.log('SoundManager.isMuted:', this.soundManager.isMuted);
+
+
     this.initializeUIElements();
 
     // Synchronize the UI with the initial mute state
@@ -92,6 +99,7 @@ class World {
       enemy.world = this;
     });
     this.character.world = this;
+    this.endboss.world = this;
   }
 
   /**

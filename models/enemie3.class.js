@@ -136,13 +136,12 @@ class Enemie3 extends MovableObject {
    * Plays the walking sound if the game is running.
    */
   playSound() {
-    if (!this.world || !this.world.isGameRunning) {
+    if (!this.world || !this.world.isGameRunning || window.world.soundManager.isMuted) {
       this.stopSound();
       return;
     }
-
     if (this.walking_sound.paused) {
-      this.walking_sound.play().catch(err => {});
+      this.walking_sound.play().catch(() => {});
     }
   }
 
@@ -163,8 +162,14 @@ class Enemie3 extends MovableObject {
    */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
-    this.walking_sound.muted = isMuted;
-    this.dead_sound.muted = isMuted;
+    // Setze die muted-Eigenschaft anhand des globalen Mute-Zustands
+    this.walking_sound.muted = window.world.soundManager.isMuted;
+    this.dead_sound.muted = window.world.soundManager.isMuted;
+    if (window.world.soundManager.isMuted) {
+      this.stopSound();
+      this.dead_sound.pause();
+      this.dead_sound.currentTime = 0;
+    }
   }
 
   /**
@@ -175,7 +180,9 @@ class Enemie3 extends MovableObject {
   playDeadAnimation(onComplete) {
     this.isDead = true;
     this.stopSound();
-    this.dead_sound.play();
+    if (!window.world.soundManager.isMuted) {
+      this.dead_sound.play().catch(() => {});
+    }
     let frameIndex = 0;
     const deadAnimationInterval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_DEAD[frameIndex++]];

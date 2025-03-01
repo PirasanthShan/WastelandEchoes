@@ -167,7 +167,7 @@ class Character extends MovableObject {
    * @param {Audio} sound - The sound to be played.
    */
   playSound(sound) {
-    if (!this.world || !this.world.isGameRunning || this.isMuted) return;
+    if (!this.world || !this.world.isGameRunning || window.world.soundManager.isMuted) return;
     if (sound.paused) {
       sound.play().catch();
     }

@@ -14,29 +14,43 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─────────────────────────────
 
   /**
-   * Plays the background music.
+   * Plays the background music muted to allow autoplay.
    */
   function playBackgroundMusic() {
     if (backgroundMusic) {
       backgroundMusic.volume = 0.5;
-      backgroundMusic.play().catch(() => {
-        // Errors are ignored (e.g., due to autoplay blockers)
-      });
+      const isMuted = localStorage.getItem('isMuted') === 'true';
+      backgroundMusic.muted = isMuted;
+      musicButton.innerHTML = isMuted 
+        ? '<img src="img/soundoff.webp" alt="Sound Off">'
+        : '<img src="img/soundon.webp" alt="Sound On">';
+      
+      if (!isMuted) {
+        backgroundMusic.play().catch(() => {});
+      } else {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+      }
+    }
+  }
+  
+  /**
+   * Schaltet die Hintergrundmusik um und speichert den aktuellen Status im localStorage.
+   */
+  function toggleBackgroundMusic() {
+    const isMuted = localStorage.getItem('isMuted') === 'true';
+    if (isMuted) {
+      localStorage.setItem('isMuted', 'false');
+      backgroundMusic.muted = false;
+      backgroundMusic.play().catch(() => {});
+      musicButton.innerHTML = '<img src="img/soundon.webp" alt="Sound On">';
+    } else {
+      localStorage.setItem('isMuted', 'true');
+      backgroundMusic.pause();
+      musicButton.innerHTML = '<img src="img/soundoff.webp" alt="Sound Off">';
     }
   }
 
-  /**
-   * Toggles the background music and updates the button text.
-   */
-  function toggleBackgroundMusic() {
-    if (backgroundMusic.paused) {
-      backgroundMusic.play();
-      musicButton.innerText = 'Stop Music 🔇';
-    } else {
-      backgroundMusic.pause();
-      musicButton.innerText = 'Play Music 🎵';
-    }
-  }
 
   /**
    * Initializes the music: starts it and sets up the music button.

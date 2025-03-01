@@ -406,13 +406,19 @@ class Endboss extends MovableObject {
    * @param {HTMLAudioElement} activeSound - The sound to play.
    */
   playSound(activeSound) {
-    if (!this.isCharacterInSight) return;
+    if (!this.world || !this.world.isGameRunning || window.world.soundManager.isMuted) return;
     const allSounds = [this.walkSound, this.attackSound, this.deadSound];
     allSounds.forEach(sound => {
-      if (sound !== activeSound) { sound.pause(); sound.currentTime = 0; }
+      if (sound !== activeSound) {
+        sound.pause();
+        sound.currentTime = 0;
+      }
     });
-    if (activeSound.paused) { activeSound.play().catch(() => {}); }
+    if (activeSound.paused) {
+      activeSound.play().catch(() => {});
+    }
   }
+  
 
   /**
    * Toggles the mute state of all sounds.
@@ -421,8 +427,19 @@ class Endboss extends MovableObject {
    */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
-    this.walkSound.muted = isMuted;
-    this.attackSound.muted = isMuted;
-    this.deadSound.muted = isMuted;
-  }
+    // Verwende den globalen Zustand – wenn global gemutet, werden die Sounds gestoppt.
+    this.walkSound.muted = window.world.soundManager.isMuted;
+    this.attackSound.muted = window.world.soundManager.isMuted;
+    this.deadSound.muted = window.world.soundManager.isMuted;
+    
+    if (window.world.soundManager.isMuted) {
+      this.walkSound.pause();
+      this.walkSound.currentTime = 0;
+      this.attackSound.pause();
+      this.attackSound.currentTime = 0;
+      this.deadSound.pause();
+      this.deadSound.currentTime = 0;
+    }
+ }
+
 }

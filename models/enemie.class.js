@@ -155,17 +155,18 @@ class Enemie extends MovableObject {
   }
 
   /**
-   * Plays the walking sound if sound is enabled and the game is running.
-   */
+ * Plays the walking sound if sound is enabled, the game is running, and global mute is off.
+ */
   playSound() {
-    if (!this.world || !this.world.isGameRunning) {
+    if (!this.world || !this.world.isGameRunning || window.world.soundManager.isMuted) {
       this.stopSound();
       return;
     }
     if (this.soundEnabled && this.walking_sound.paused) {
-      this.walking_sound.play();
+      this.walking_sound.play().catch(() => {});
     }
   }
+
 
   /**
    * Stops the walking sound.
@@ -194,9 +195,8 @@ class Enemie extends MovableObject {
    * Plays the death sound if sound is enabled.
    */
   playDeathSound() {
-    if (this.soundEnabled) {
-      this.dead_sound.play();
-    }
+    if (!window.world || window.world.soundManager.isMuted) return;
+    this.dead_sound.play().catch(() => {});
   }
 
   /**

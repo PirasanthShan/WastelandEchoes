@@ -136,10 +136,11 @@ class InterfaceRender {
    */
   addHomeButtonListener() {
     document.getElementById('homeButton')?.addEventListener('click', () => {
-      localStorage.setItem('isMuted', JSON.stringify(false)); // Reset mute state
-      window.location.href = 'startPage.html'; // Redirect to the start page
+    window.location.href = 'startPage.html'; 
     });
   }
+  
+  
 
   /**
    * Toggles fullscreen mode on or off.
