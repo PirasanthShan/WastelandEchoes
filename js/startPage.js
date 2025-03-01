@@ -228,20 +228,31 @@ document.addEventListener('DOMContentLoaded', () => {
         showContainer(`
           <button id="back">Back</button>
           <div class="impressum">
-            <h4>Impressum</h4>
-            <p><strong>Angaben gemäß § 5 TMG</strong></p>
-            <p>WASTELAND ECHOES<br>Georg-Friedrich-Händel-Str.5<br>Deutschland</p>
-            <p><strong>Vertreten durch:</strong><br>Pirasanth (Geschäftsführer)</p>
+            <h4>Imprint</h4>
+            <p><strong>Information according to § 5 TMG</strong></p>
+            <p>WASTELAND ECHOES<br>  
+              Pirasanth Shanmuganathan<br>  
+              Georg-Friedrich-Händel-Str. 5<br>  
+              59075 Hamm, Germany  
+            </p>
 
-            <h5>Kontakt</h5>
-            <p>E-Mail: <a href="mailto:Pirasanth@live.de">Pirasanth@live.de</a></p>
+            <h5>Contact</h5>
+            <p>Phone: <a href="tel:+491765878962">+49 176 5878962</a></p>
+            <p>Email: <a href="mailto:Pirasanth@live.de">Pirasanth@live.de</a></p>
 
-            <h5>Haftungsausschluss</h5>
-            <p>Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+            <h5>Responsible for content according to § 55 Abs. 2 RStV</h5>
+            <p>Pirasanth Shanmuganathan<br>  
+              Georg-Friedrich-Händel-Str. 5<br>  
+              59075 Hamm, Germany  
+            </p>
 
-            <h5>Urheberrecht</h5>
-            <p>Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+            <h5>Liability Disclaimer</h5>
+            <p>The content of this website has been created with the utmost care. However, no guarantee can be given for the accuracy, completeness, or timeliness of the content.</p>
+
+            <h5>Copyright Notice</h5>
+            <p>The content published on this website is subject to German copyright law. Any reproduction, editing, distribution, or any kind of utilization outside the limits of copyright law requires prior written consent from the respective author or creator.</p>
           </div>
+
         `);
       });
     }
