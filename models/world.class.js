@@ -33,27 +33,15 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
-
-    // Create level and assign enemies
     this.level = createLevel1();
     this.enemies = this.level.enemies;
-
     this.initializeManagers();
     this.backgroundMusic = document.querySelector('#backgroundMusic');
     if (this.backgroundMusic) {
-    this.soundManager.registerSound(this.backgroundMusic);
-    }
-    console.log('SoundManager.isMuted:', this.soundManager.isMuted);
-
-
+    this.soundManager.registerSound(this.backgroundMusic);}
     this.initializeUIElements();
-
-    // Synchronize the UI with the initial mute state
-    // (updateSoundButtonIcon ensures the button icon matches the SoundManager state)
     this.interfaceRenderer.updateSoundButtonIcon();
-
     this.startGameProcesses();
-
     window.world = this;
     world = this;
   }
@@ -146,22 +134,15 @@ class World {
   restartGameInstance() {
     const storedMuteStatus = localStorage.getItem('isMuted');
     const isMuted = storedMuteStatus !== null ? JSON.parse(storedMuteStatus) : false;
-
     window.world = new World(this.canvas, this.keyboard);
     world = window.world;
-
-    // Reapply the saved mute status after restart
     world.isMuted = isMuted;
     world.soundManager.isMuted = isMuted;
-
-    // Ensure all sounds have the correct mute state
     world.soundManager.applyMuteState();
     world.interfaceRenderer.toggleObjectMute(world.character);
     world.interfaceRenderer.toggleGroupMute([...world.enemies, ...world.throwableObjects]);
     world.interfaceRenderer.toggleObjectMute(world.endboss);
     world.interfaceRenderer.toggleObjectMute(world.lastCollectible);
-
-    // Update icon after restart
     world.interfaceRenderer.updateSoundButtonIcon();
   }
 
@@ -225,7 +206,7 @@ class World {
     this.intervals.push(setInterval(() => {
       if (!this.isGameRunning) return;
       this.throwManager.checkThrowObjects();
-    }, 50));
+    }, 100));
   }
 
   /**

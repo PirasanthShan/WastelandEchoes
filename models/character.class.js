@@ -140,7 +140,6 @@ class Character extends MovableObject {
     this.death_sound.volume = 0.1;
     this.walking_sound.volume = 0.4;
     this.walking_sound.loop = true;
-
     this.jump_sound.volume = 0.1;
   }
 
@@ -180,7 +179,7 @@ class Character extends MovableObject {
   stopSound(sound) {
     if (!sound.paused) {
       sound.pause();
-      sound.currentTime = 0; // Resets the sound to the beginning.
+      sound.currentTime = 0; 
     }
   }
 
@@ -318,20 +317,14 @@ class Character extends MovableObject {
     this.width = 90;
   }
 
-  /**
-   * Handles the character's attack animation.
-   */
-  handleAttackingAnimation() {
-  this.isAttacking = true;
-  this.width = 170;
-  this.height = 130;
-  setTimeout(() => {
-    this.isAttacking = false;
-    this.attackAnimationStarted = false;
-    this.width = 110;
-    this.height = 110;
-    }, 700);
- }
+    /**
+     * Handles the character's attack animation.
+     */
+    handleAttackingAnimation() {
+    this.isAttacking = true;
+    this.width = 170;
+    this.height = 130;
+    }
   /**
    * Handles the character's movement animation.
    */

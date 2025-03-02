@@ -28,16 +28,10 @@ class ThrowableObject extends MovableObject {
       this.width = 100;
       this.otherDirection = otherDirection;
       this.throw();
-  
-      // Create the explosion sound
       this.explosion_sound = new Audio('./audio/BombHit.mp3');
       this.explosion_sound.volume = 0.2;
-  
-      // Instead of a local isMuted flag:
-      // Access the global mute state directly
       if (window.world && window.world.soundManager) {
-        // Register the sound in the global SoundManager
-        window.world.soundManager.registerSound(this.explosion_sound);
+      window.world.soundManager.registerSound(this.explosion_sound);
       }
     }
   
@@ -59,16 +53,12 @@ class ThrowableObject extends MovableObject {
     playExplosion(onComplete) {
       if (this.hasExploded) return; // Prevents multiple triggers
       this.hasExploded = true;
-  
-      let frameIndex = 0;
+       let frameIndex = 0;
       this.speedY = 0;
       this.applyGravity = () => {};
-  
-      // Check the global mute state directly
       if (!window.world.soundManager.isMuted) {
         this.explosion_sound.play();
       }
-  
       const explosionInterval = setInterval(() => {
         this.img = this.imageCache[this.IMAGES_EXPLOSION[frameIndex++]];
         if (frameIndex >= this.IMAGES_EXPLOSION.length) {
@@ -83,9 +73,7 @@ class ThrowableObject extends MovableObject {
      * @param {boolean} isMuted - The new mute state (true = muted, false = unmuted).
      */
     toggleMute(isMuted) {
-      // This method is somewhat redundant if the SoundManager handles the control.
-      // If you still use it, it could look like this:
-      this.explosion_sound.muted = isMuted;
+     this.explosion_sound.muted = isMuted;
       if (isMuted) {
         this.explosion_sound.pause();
         this.explosion_sound.currentTime = 0;

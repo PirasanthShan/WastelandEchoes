@@ -46,10 +46,7 @@ class ThrowManager {
       this.world.character.y,
       this.world.character.otherDirection
     );
-
-    // Inherits the mute state from the game world
     bomb.toggleMute(this.world.isMuted);
-
     this.world.throwableObjects.push(bomb);
     return bomb;
   }
@@ -102,7 +99,6 @@ class ThrowManager {
    * @param {ThrowableObject} bomb - The exploding bomb.
    */
   triggerBombExplosion(bomb) {
-    // The sound is already played in playExplosion() if not muted.
     bomb.playExplosion(() => {
       this.world.removeBomb(bomb);
     });
