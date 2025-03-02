@@ -363,12 +363,12 @@ class Character extends MovableObject {
    * Plays the death sound.
    */
   playDeathSound() {
+    if (!window.world || window.world.soundManager.isMuted) return;
     if (this.death_sound) {
-      this.death_sound.play().catch(() => {
-        // Errors are ignored (e.g., autoplay blockers)
-      });
+      this.death_sound.play().catch(() => {});
     }
   }
+  
 
   /**
    * Executes the death animation sequence.

@@ -243,15 +243,30 @@ class InterfaceRender {
    * Renders the You Win screen.
    */
   renderYouWin() {
+    // Wendet den aktuellen globalen Mute-Zustand an
     this.world.soundManager.applyMuteState();
     if (this.world.character && typeof this.world.character.toggleMute === 'function') {
       this.world.character.toggleMute(true);
     }
     if (this.world.endboss && typeof this.world.endboss.toggleMute === 'function') {
       this.world.endboss.toggleMute(true);
+      if (typeof this.world.endboss.stopAllSounds === 'function') {
+        this.world.endboss.stopAllSounds();
+      }
     }
-
-    this.setupWinMusic();
+  
+    // Nur die Win-Musik initialisieren und abspielen, wenn global nicht gemutet ist.
+    if (!window.world.soundManager.isMuted) {
+      this.setupWinMusic();
+      this.playWinMusic();
+    } else {
+      // Falls gemutet, sicherstellen, dass Win-Musik gestoppt bleibt
+      if (this.winMusic) {
+        this.winMusic.pause();
+        this.winMusic.currentTime = 0;
+      }
+    }
+  
     this.container.innerHTML += `
       <div class="youWin">
         <h3>Congratulations, You Win!</h3>
@@ -261,14 +276,14 @@ class InterfaceRender {
         </div>
       </div>
     `;
-    this.playWinMusic();
-
+  
     setTimeout(() => { // Delay to ensure the element exists
       document.getElementById('restartButtonWin')?.addEventListener('click', () => {
         if (window.world) window.world.restartGame();
       });
     }, 100);
   }
+  
 
   /**
    * Renders the Game Over screen.

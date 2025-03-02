@@ -7,44 +7,19 @@
  * @extends {MovableObject}
  */
 class Endboss extends MovableObject {
-  /** @type {number} Vertical position of the end boss. */
-  y = 220;
-
-  /** @type {number} Height of the end boss. */
-  height = 220;
-
-  /** @type {number} Width of the end boss. */
-  width = 250;
-
-  /** @type {boolean} Indicates whether the end boss is attacking. */
-  isAttacking = false;
-
-  /** @type {boolean} Indicates whether the end boss is moving left. */
-  isMovingLeft = false;
-
-  /** @type {boolean} Indicates whether the end boss is moving right. */
-  isMovingRight = false;
-
-  /** @type {number} Range within which the end boss detects the character. */
-  sightRange = 500;
-
-  /** @type {boolean} Indicates whether the end boss is hurt. */
-  isHurt = false;
-
-  /** @type {boolean} Indicates whether the end boss is dead. */
-  isDead = false;
-
-  /** @type {number} Count of hits the end boss has taken. */
-  hitCount = 0;
-
-  /** @type {boolean} Indicates whether the death animation has been played. */
-  deadAnimationPlayed = false;
-
-  /** @type {boolean} Indicates whether the character is in sight. */
-  isCharacterInSight = false;
-
-  /** @type {string[]} Image paths for the standing animation. */
-  IMAGES_STANDING = [
+ y = 220;
+ height = 220;
+ width = 250;
+ isAttacking = false;
+ isMovingLeft = false;
+ isMovingRight = false;
+ sightRange = 500;
+ isHurt = false;
+ isDead = false;
+ hitCount = 0;
+ deadAnimationPlayed = false;
+ isCharacterInSight = false;
+ IMAGES_STANDING = [
     'img/boss.img/Idle_000_mirrored.webp',
     'img/boss.img/Idle_001_mirrored.webp',
     'img/boss.img/Idle_002_mirrored.webp',
@@ -56,8 +31,6 @@ class Endboss extends MovableObject {
     'img/boss.img/Idle_008_mirrored.webp',
     'img/boss.img/Idle_009_mirrored.webp'
   ];
-
-  /** @type {string[]} Image paths for the walking animation. */
   IMAGES_WALKING = [
     './img/boss.img/Flipped_Walk_000.webp',
     './img/boss.img/Flipped_Walk_001.webp',
@@ -70,8 +43,6 @@ class Endboss extends MovableObject {
     './img/boss.img/Flipped_Walk_008.webp',
     './img/boss.img/Flipped_Walk_009.webp'
   ];
-
-  /** @type {string[]} Image paths for the attack animation. */
   IMAGES_ATTACK = [
     './img/boss.img/Processed_Attack_1.webp',
     './img/boss.img/Processed_Attack_2.webp',
@@ -80,8 +51,6 @@ class Endboss extends MovableObject {
     './img/boss.img/Processed_Attack_8.webp',
     './img/boss.img/Processed_Attack_9.webp'
   ];
-
-  /** @type {string[]} Image paths for the hurt animation. */
   IMAGES_HURT = [
     './img/boss.img/Hurt_000_flipped.webp',
     './img/boss.img/Hurt_001_flipped.webp',
@@ -94,8 +63,6 @@ class Endboss extends MovableObject {
     './img/boss.img/Hurt_008_flipped.webp',
     './img/boss.img/Hurt_009_flipped.webp'
   ];
-
-  /** @type {string[]} Image paths for the death animation. */
   IMAGES_DEAD = [
     './img/boss.img/Dead_000.webp',
     './img/boss.img/Dead_001.webp',
@@ -419,7 +386,6 @@ class Endboss extends MovableObject {
     }
   }
   
-
   /**
    * Toggles the mute state of all sounds.
    *
@@ -427,7 +393,6 @@ class Endboss extends MovableObject {
    */
   toggleMute(isMuted) {
     this.isMuted = isMuted;
-    // Verwende den globalen Zustand – wenn global gemutet, werden die Sounds gestoppt.
     this.walkSound.muted = window.world.soundManager.isMuted;
     this.attackSound.muted = window.world.soundManager.isMuted;
     this.deadSound.muted = window.world.soundManager.isMuted;
