@@ -3,16 +3,10 @@
  * This class handles drawing all objects on the canvas and managing the camera.
  */
 class RenderingManager {
-  /**
-   * Creates an instance of `RenderingManager`.
-   * @param {World} world - The game world instance to be rendered.
-   */
+ 
   constructor(world) {
-    /** @type {World} Reference to the game world. */
-    this.world = world;
-
-    /** @type {CanvasRenderingContext2D} The canvas context on which rendering occurs. */
-    this.ctx = world.ctx;
+  this.world = world;
+  this.ctx = world.ctx;
   }
 
   /**
@@ -24,11 +18,8 @@ class RenderingManager {
       this.world.soundManager.stopAllSounds();
       return;
     }
-
-    // Clear the previous frame
+    
     this.ctx.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
-
-    // Move the camera based on the character's position
     this.ctx.translate(this.world.camera_x, 0);
     this.addObjectsToMap(this.world.level.backgroundObjects);
     this.ctx.translate(-this.world.camera_x, 0);
@@ -37,29 +28,15 @@ class RenderingManager {
     this.addToMap(this.world.crystalBar);
     this.ctx.translate(this.world.camera_x, 0);
     this.addToMap(this.world.character);
-
-    if (!this.world.endboss.isRemoved) {
-      this.addToMapEndboss(this.world.endboss);
-    }
-
-    // Draw enemies
-    this.world.enemies.forEach((enemy) => {
-      if (!enemy.isRemoved) {
-        this.addToMap(enemy);
-      }
-    });
-
-    // Draw additional objects (birds, throwable objects, collectibles)
+    if (!this.world.endboss.isRemoved) {this.addToMapEndboss(this.world.endboss);}
+    this.world.enemies.forEach((enemy) => {if (!enemy.isRemoved) {
+    this.addToMap(enemy);}});
     this.addObjectsToMap(this.world.level.birds);
     this.addObjectsToMap(this.world.throwableObjects);
     this.addObjectsToMap(this.world.level.collectible);
     this.addObjectsToMap(this.world.level.collectible2);
     this.addToMap(this.world.level.lastCollectible);
-
-    // Reset the camera
     this.ctx.translate(-this.world.camera_x, 0);
-
-    // Save the requestAnimationFrame ID in the world (for later cancellation)
     this.world.renderRequestId = requestAnimationFrame(() => this.renderFrame());
   }
 
@@ -100,15 +77,9 @@ class RenderingManager {
    */
   addToMap(mo) {
     if (!mo) return;
-
-    // Flip the image if necessary
     if (mo.otherDirection) this.flipImage(mo);
-
-    // Draw the object and its frame (if applicable)
     if (mo.img) mo.draw(this.ctx);
     if (mo.img) mo.drawFrame(this.ctx);
-
-    // Restore the flipped image
     if (mo.otherDirection) this.flipImageBack(mo);
   }
 

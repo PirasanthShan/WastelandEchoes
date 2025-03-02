@@ -2,15 +2,6 @@
  * Class representing a level in the game.
  */
 class Level {
-  /**
-   * @property {Object[]} enemies - The list of enemy objects in the level.
-   * @property {Object[]} birds - The list of bird objects in the level.
-   * @property {Object[]} backgroundObjects - The list of background objects.
-   * @property {number} level_end_x - The x-coordinate where the level ends.
-   * @property {Object} collectible - The first collectible object.
-   * @property {Object} collectible2 - The second collectible object.
-   * @property {Object} lastCollectible - The final collectible object.
-   */
   enemies;
   birds;
   backgroundObjects;

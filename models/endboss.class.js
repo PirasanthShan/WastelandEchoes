@@ -88,7 +88,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.x = 2200;
-    this.speed = 13;
+    this.speed = 8;
     this.loadSounds();
   }
 
@@ -261,10 +261,8 @@ class Endboss extends MovableObject {
     let frameIndex = 0;
     const animationInterval = setInterval(() => {
       this.img = this.imageCache[animationFrames[frameIndex++]];
-      if (frameIndex >= animationFrames.length) {
-        clearInterval(animationInterval);
-        if (onComplete) onComplete();
-      }
+      if (frameIndex >= animationFrames.length) {clearInterval(animationInterval);
+      if (onComplete) onComplete();}
     }, 30);
   }
 
@@ -376,14 +374,8 @@ class Endboss extends MovableObject {
     if (!this.world || !this.world.isGameRunning || window.world.soundManager.isMuted) return;
     const allSounds = [this.walkSound, this.attackSound, this.deadSound];
     allSounds.forEach(sound => {
-      if (sound !== activeSound) {
-        sound.pause();
-        sound.currentTime = 0;
-      }
-    });
-    if (activeSound.paused) {
-      activeSound.play().catch(() => {});
-    }
+      if (sound !== activeSound) {sound.pause();sound.currentTime = 0;}});
+      if (activeSound.paused) { activeSound.play().catch(() => {});}
   }
   
   /**
@@ -396,7 +388,6 @@ class Endboss extends MovableObject {
     this.walkSound.muted = window.world.soundManager.isMuted;
     this.attackSound.muted = window.world.soundManager.isMuted;
     this.deadSound.muted = window.world.soundManager.isMuted;
-    
     if (window.world.soundManager.isMuted) {
       this.walkSound.pause();
       this.walkSound.currentTime = 0;
@@ -406,5 +397,4 @@ class Endboss extends MovableObject {
       this.deadSound.currentTime = 0;
     }
  }
-
 }

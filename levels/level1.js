@@ -10,9 +10,9 @@ function createLevel1() {
       new Enemie(),
       new Enemie(),
       new Enemie(),
-      new Enemie1(),
-      new Enemie2(),
-      new Enemie3(),
+      new EnemieSnakePurple(),
+      new EnemieSnakeYellow(),
+      new EnemieZombie(),
     ],
 
     /**

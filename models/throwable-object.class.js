@@ -3,9 +3,7 @@
  * Inherits from MovableObject.
  */
 class ThrowableObject extends MovableObject {
-    /**
-     * @property {string[]} IMAGES_EXPLOSION - Array of image paths for the explosion animation.
-     */
+   
     IMAGES_EXPLOSION = [
       './img/hero.img/Bomb/bomb_0003_Layer-7.webp',
       './img/hero.img/Bomb/bomb_0003_Layer-7.webp',
@@ -51,19 +49,17 @@ class ThrowableObject extends MovableObject {
      * @param {Function} onComplete - Callback function to execute after the explosion completes.
      */
     playExplosion(onComplete) {
-      if (this.hasExploded) return; // Prevents multiple triggers
+      if (this.hasExploded) return; 
       this.hasExploded = true;
-       let frameIndex = 0;
+      let frameIndex = 0;
       this.speedY = 0;
       this.applyGravity = () => {};
       if (!window.world.soundManager.isMuted) {
-        this.explosion_sound.play();
-      }
+      this.explosion_sound.play();}
       const explosionInterval = setInterval(() => {
         this.img = this.imageCache[this.IMAGES_EXPLOSION[frameIndex++]];
-        if (frameIndex >= this.IMAGES_EXPLOSION.length) {
-          clearInterval(explosionInterval);
-          if (onComplete) onComplete();
+        if (frameIndex >= this.IMAGES_EXPLOSION.length) {clearInterval(explosionInterval);
+        if (onComplete) onComplete();
         }
       }, 1200 / 120);
     }

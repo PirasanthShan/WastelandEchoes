@@ -8,13 +8,8 @@ class SoundManager {
    * @param {World} world - The game world instance using the SoundManager.
    */
   constructor(world) {
-    /** @type {Audio[]} List of all registered audio objects. */
     this.sounds = [];
-
-    /** @type {boolean} Indicates whether the sound is muted. */
     this.isMuted = localStorage.getItem('isMuted') === 'true';
-
-    /** @type {World} The game world instance. */
     this.world = world;
   }
 
@@ -45,7 +40,7 @@ class SoundManager {
   stopAllSounds() {
     this.sounds.forEach((sound) => {
       if (!sound.paused) {
-        sound.dataset.wasPlaying = "true"; // Saves that the sound was playing
+        sound.dataset.wasPlaying = "true"; 
         sound.pause();
         sound.currentTime = 0;
       }

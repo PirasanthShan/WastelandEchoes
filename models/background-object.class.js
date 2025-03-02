@@ -13,7 +13,6 @@ class BackgroundObject extends MovableObject {
     this.x = x;
     this.width = width;
     this.height = height;
-    // Positions the object at the bottom edge (at y = 480):
     this.y = 480 - this.height;
   }
 }

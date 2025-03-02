@@ -5,24 +5,13 @@
  * @class Enemie1
  * @extends {MovableObject}
  */
-class Enemie1 extends MovableObject {
-  /** @type {number} Vertical position of the enemy. */
-  y = 220;
-
-  /** @type {number} Height of the enemy. */
-  height = 200;
-
-  /** @type {number} Width of the enemy. */
-  width = 200;
-
-  /** @type {boolean} Indicates whether the enemy is dead. */
-  isDead = false;
-
-  /** @type {boolean} Indicates whether sound is muted. */
-  isMuted = false;
-
-  /** @type {string[]} Image paths for the walking animation. */
-  IMAGES_WALKING = [
+class EnemieZombie extends MovableObject {
+ y = 220;
+ height = 200;
+ width = 200;
+ isDead = false;
+ isMuted = false;
+ IMAGES_WALKING = [
     './img/enemies.img/enemie2.img/walk/Run_Left_Frame_2.webp',
     './img/enemies.img/enemie2.img/walk/Run_Left_Frame_3.webp',
     './img/enemies.img/enemie2.img/walk/Run_Left_Frame_4.webp',
@@ -30,9 +19,7 @@ class Enemie1 extends MovableObject {
     './img/enemies.img/enemie2.img/walk/Run_Left_Frame_6.webp',
     './img/enemies.img/enemie2.img/walk/Run_Left_Frame_7.webp',
   ];
-
-  /** @type {string[]} Image paths for the attack animation. */
-  IMAGES_ATTACK = [
+ IMAGES_ATTACK = [
     './img/enemies.img/enemie2.img/attack/Attack_2_Left_Frame_1.webp',
     './img/enemies.img/enemie2.img/attack/Attack_2_Left_Frame_2.webp',
     './img/enemies.img/enemie2.img/attack/Attack_2_Left_Frame_3.webp',
@@ -41,18 +28,12 @@ class Enemie1 extends MovableObject {
     './img/enemies.img/enemie2.img/attack/Attack_2_Left_Frame_6.webp',
     './img/enemies.img/enemie2.img/attack/Attack_2_Left_Frame_7.webp',
   ];
-
-  /** @type {string[]} Image paths for the death animation. */
-  IMAGES_DEAD = [
+ IMAGES_DEAD = [
     './img/enemies.img/enemie2.img/dead/Dead_Left_Frame_1.webp',
     './img/enemies.img/enemie2.img/dead/Dead_Left_Frame_2.webp',
     './img/enemies.img/enemie2.img/dead/Dead_Left_Frame_3.webp',
   ];
-
-  /** @type {HTMLAudioElement} Sound played when the enemy is walking. */
   walking_sound;
-
-  /** @type {HTMLAudioElement} Sound played when the enemy dies. */
   dead_sound;
 
   /**
@@ -66,18 +47,14 @@ class Enemie1 extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.x = 2100;
     this.speed = 1;
-
     this.walking_sound = new Audio('./audio/snakeWalk.mp3');
     this.walking_sound.volume = 0.02;
     this.walking_sound.loop = true;
-
     this.dead_sound = new Audio('./audio/snakeDead.mp3');
     this.dead_sound.volume = 0.05;
-
     document.addEventListener("click", () => {
       this.userInteracted = true;
     }, { once: true });
-
     this.animate();
   }
 
@@ -165,19 +142,15 @@ class Enemie1 extends MovableObject {
   playDeadAnimation(onComplete) {
     this.isDead = true;
     this.stopSound();
-    if (!window.world.soundManager.isMuted) {
-      this.dead_sound.play().catch(() => {});
-    }
+    if (!window.world.soundManager.isMuted) {this.dead_sound.play().catch(() => {});}
     let frameIndex = 0;
     const deadAnimationInterval = setInterval(() => {
-      this.img = this.imageCache[this.IMAGES_DEAD[frameIndex++]];
-      if (frameIndex >= this.IMAGES_DEAD.length) {
-        clearInterval(deadAnimationInterval);
-        setTimeout(() => {
-          if (onComplete) onComplete();
-          if (this.world) this.world.removeEnemy(this);
-        }, 2000);
-      }
-    }, 1000 / 7);
-  }
+    this.img = this.imageCache[this.IMAGES_DEAD[frameIndex++]];
+    if (frameIndex >= this.IMAGES_DEAD.length) { clearInterval(deadAnimationInterval);
+    setTimeout(() => { if (onComplete) onComplete();
+    if (this.world) this.world.removeEnemy(this);
+      }, 2000);
+    }
+  }, 1000 / 7);
+ }
 }  

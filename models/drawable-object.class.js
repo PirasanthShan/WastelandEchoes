@@ -6,21 +6,13 @@
  * @class DrawableObject
  */
 class DrawableObject {
-  /** @type {HTMLImageElement} */
   img;
-  /** @type {Object<string, HTMLImageElement>} */
   imageCache = {};
-  /** @type {number} */
   currentImage = 0;
-  /** Horizontal position of the object. @type {number} */
   x = 80;
-  /** Vertical position of the object. @type {number} */
   y = 270;
-  /** Height of the object. @type {number} */
   height = 150;
-  /** Width of the object. @type {number} */
   width = 150;
-  /** Debugging mode, disabled by default. @type {boolean} */
   DEBUG_MODE = false;
 
   /**

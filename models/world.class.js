@@ -110,20 +110,14 @@ class World {
   stopGameProcesses() {
     for (const id of this.intervals) clearInterval(id);
     this.intervals = [];
-
-    if (this.renderRequestId) {
-      cancelAnimationFrame(this.renderRequestId);
-      this.renderRequestId = null;
-    }
-
+    if (this.renderRequestId) {cancelAnimationFrame(this.renderRequestId);
+    this.renderRequestId = null;}
     this.interfaceRenderer?.winMusic?.pause();
     if (this.interfaceRenderer?.winMusic)
-      this.interfaceRenderer.winMusic.currentTime = 0;
-
+    this.interfaceRenderer.winMusic.currentTime = 0;
     this.pauseGame();
     document.querySelectorAll('.gameOver, .youWin, .alertBomb').forEach(el => el.remove());
     const cont = document.querySelector('#Container');
-
     if (cont) cont.innerHTML = '';
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
@@ -166,7 +160,7 @@ class World {
     this.intervals.push(setInterval(() => {
       if (!this.isGameRunning) return;
       this.collisionManager.checkEndbossCollision();
-    }, 600));
+    }, 500));
 
     this.intervals.push(setInterval(() => {
       if (!this.isGameRunning) return;
@@ -206,7 +200,7 @@ class World {
     this.intervals.push(setInterval(() => {
       if (!this.isGameRunning) return;
       this.throwManager.checkThrowObjects();
-    }, 100));
+    }, 150));
   }
 
   /**
@@ -240,15 +234,11 @@ class World {
   pauseGame() {
     this.isGameRunning = false;
     this.soundManager.stopAllSounds(); 
-    if (this.lastCollectible) {
-      this.lastCollectible.stopMusic(); 
-    }
+    if (this.lastCollectible) {this.lastCollectible.stopMusic();}
     if (this.endboss && typeof this.endboss.stopAnimation === 'function') {
-      this.endboss.stopAnimation();
-    }
+    this.endboss.stopAnimation();}
     if (this.character && typeof this.character.stopAllCharacterSounds === 'function') {
-      this.character.stopAllCharacterSounds();
-    }
+    this.character.stopAllCharacterSounds();}
     resetKeyboard();
   }
 
@@ -259,8 +249,7 @@ class World {
     this.isGameRunning = true;
     this.soundManager.resumeAllSounds(); 
     if (this.endboss && typeof this.endboss.startAnimation === 'function') {
-      this.endboss.startAnimation();
-    }
+    this.endboss.startAnimation();}
     this.renderingManager.renderFrame();
   }
 
@@ -323,16 +312,12 @@ class World {
     if (!this.interfaceRenderer) return;
     const alertBomb = document.querySelector('.alertBomb');
     if (this.characterBombs === 0 && this.isGameRunning) {
-      if (alertBomb) {
-        alertBomb.style.display = 'flex';
-      } else {
-        this.interfaceRenderer.renderAlertBomb();
-      }
-    } else {
-      if (alertBomb) {
-        alertBomb.style.display = 'none';
-      }
+    if (alertBomb) {alertBomb.style.display = 'flex';} 
+    else {this.interfaceRenderer.renderAlertBomb();}} 
+    else { if (alertBomb) {
+    alertBomb.style.display = 'none';
     }
+   }
   }
 
   /**

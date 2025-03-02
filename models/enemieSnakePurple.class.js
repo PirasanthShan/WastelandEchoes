@@ -5,20 +5,12 @@
  * @class Enemie2
  * @extends {MovableObject}
  */
-class Enemie2 extends MovableObject {
-  /** @type {number} The y-coordinate of the enemy on the canvas. */
+class EnemieSnakePurple extends MovableObject {
+  
   y = 220;
-
-  /** @type {number} The height of the enemy. */
   height = 200;
-
-  /** @type {number} The width of the enemy. */
   width = 200;
-
-  /** @type {boolean} Indicates whether the enemy is dead. */
   isDead = false;
-
-  /** @type {string[]} Array of image paths for the walking animation. */
   IMAGES_WALKING = [
     './img/enemies.img/enemie3.img/walk/Walk_Left_Frame_2.webp',
     './img/enemies.img/enemie3.img/walk/Walk_Left_Frame_3.webp',
@@ -33,8 +25,6 @@ class Enemie2 extends MovableObject {
     './img/enemies.img/enemie3.img/walk/Walk_Left_Frame_12.webp',
     './img/enemies.img/enemie3.img/walk/Walk_Left_Frame_13.webp',
   ];
-
-  /** @type {string[]} Array of image paths for the attack animation. */
   IMAGES_ATTACK = [
     './img/enemies.img/enemie3.img/attack/Attack_3_Left_Frame_1.webp',
     './img/enemies.img/enemie3.img/attack/Attack_3_Left_Frame_2.webp',
@@ -43,18 +33,12 @@ class Enemie2 extends MovableObject {
     './img/enemies.img/enemie3.img/attack/Attack_3_Left_Frame_6.webp',
     './img/enemies.img/enemie3.img/attack/Attack_3_Left_Frame_7.webp',
   ];
-
-  /** @type {string[]} Array of image paths for the dead animation. */
   IMAGES_DEAD = [
     './img/enemies.img/enemie3.img/dead/Dead_Left_Frame_1.webp',
     './img/enemies.img/enemie3.img/dead/Dead_Left_Frame_2.webp',
     './img/enemies.img/enemie3.img/dead/Dead_Left_Frame_3.webp',
   ];
-
-  /** @type {Audio} The sound played when the enemy is walking. */
   walking_sound;
-
-  /** @type {Audio} The sound played when the enemy dies. */
   dead_sound;
 
   /**

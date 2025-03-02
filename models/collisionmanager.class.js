@@ -142,32 +142,42 @@ class CollisionManager {
     }
   }
 
-  /**
-   * Handles the collision between the end boss and the character.
-   * If the end boss is still alive, it checks if the character collides.
-   * On collision, the end boss enters attack mode, the character takes damage, and the status bar is updated.
-   * If the character's energy is depleted, the death animation is played.
+    /**
+   * Checks for collision between the character and the endboss.
+   * If the endboss is dead, the level end position is unlocked.
+   * If a collision occurs, the character takes damage.
    */
   handleCollisionEndboss() {
     if (this.world.endboss.isDead) {
-      this.world.level.level_end_x = 2500;
-      return;
+        this.world.level.level_end_x = 2500;
+        return;
     }
+
     if (this.world.character.isCollidingBoss(this.world.endboss, 0.45)) {
-      this.world.endboss.isAttacking = true;
-      this.world.character.isHurt();
-      this.world.character.hit();
-      this.world.updateStatusBar();
-      if (this.world.character.energy <= 0) {
-        this.world.character.playDeathAnimation(() => {
-          this.world.stopGame();
-        });
-      }
+        this.handleCharacterHitByEndboss();
     } else {
-      this.world.endboss.isAttacking = false;
-      if (!this.world.endboss.isHurt) {
-        this.world.endboss.playSound(this.world.endboss.walkSound);
-      }
+        this.world.endboss.isAttacking = false;
+        if (!this.world.endboss.isHurt) {
+            this.world.endboss.playSound(this.world.endboss.walkSound);
+        }
+    }
+  }
+
+  /**
+  * Handles the event when the character is hit by the endboss.
+  * Reduces character health, updates the status bar, 
+  * and triggers the death animation if health reaches zero.
+  */
+  handleCharacterHitByEndboss() {
+    this.world.endboss.isAttacking = true;
+    this.world.character.isHurt();
+    this.world.character.hit();
+    this.world.updateStatusBar();
+
+    if (this.world.character.energy <= 0) {
+        this.world.character.playDeathAnimation(() => {
+            this.world.stopGame();
+        });
     }
   }
 
@@ -205,43 +215,49 @@ class CollisionManager {
     }, 700);
   }
 
- 
+ /**
+ * Checks for collisions between the character and bomb collectibles.
+ * If collected, increases the bomb count and updates the UI.
+ */
 checkBombCollectibleCollision() {
   for (let i = this.world.level.collectible.length - 1; i >= 0; i--) {
-    let collectible = this.world.level.collectible[i];
-    if (this.world.character.isCollidingBombCollectible(collectible)) {
-      if (this.world.characterBombs < this.world.maxBombs) {
-        this.world.characterBombs++;
-        this.world.collectibleBar.setBombs(this.world.characterBombs);
-        this.world.level.collectible.splice(i, 1);
-        this.world.toggleAlertBomb();
+      let collectible = this.world.level.collectible[i];
+      if (this.world.character.isCollidingBombCollectible(collectible)) {
+          if (this.world.characterBombs < this.world.maxBombs) {
+              this.world.characterBombs++;
+              this.world.collectibleBar.setBombs(this.world.characterBombs);
+              this.world.level.collectible.splice(i, 1);
+              this.world.toggleAlertBomb();
+          }
       }
-    }
   }
 }
 
-
+/**
+* Checks for collisions between the character and crystal collectibles.
+* If collected, increases the crystal count and updates the UI.
+*/
 checkCrystalCollectibleCollision() {
   for (let i = this.world.level.collectible2.length - 1; i >= 0; i--) {
-    const echo = this.world.level.collectible2[i];
-    if (this.world.character.isCollidingEchoCollectible(echo)) {
-      if (this.world.characterCrystals < this.world.maxCrystals) {
-        this.world.characterCrystals++;
-        this.world.level.collectible2.splice(i, 1);
-        this.world.crystalBar.setCrystals(this.world.characterCrystals);
+      const echo = this.world.level.collectible2[i];
+      if (this.world.character.isCollidingEchoCollectible(echo)) {
+          if (this.world.characterCrystals < this.world.maxCrystals) {
+              this.world.characterCrystals++;
+              this.world.level.collectible2.splice(i, 1);
+              this.world.crystalBar.setCrystals(this.world.characterCrystals);
+          }
       }
-    }
   }
   this.world.updateCrystalBar();
 }
 
-
-
-// Diese Methode ruft beide Funktionen auf
-checkCollectibleCollision() {
-  this.checkBombCollectibleCollision();
-  this.checkCrystalCollectibleCollision();
-}
+  /**
+  * Calls both collectible collision functions.
+  */
+  checkCollectibleCollision() {
+    this.checkBombCollectibleCollision();
+    this.checkCrystalCollectibleCollision();
+  }
 
 
 }

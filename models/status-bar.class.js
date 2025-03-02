@@ -2,12 +2,6 @@
  * Class representing the status bar in the game.
  */
 class Statusbar extends DrawableObject {
-    /**
-     * @property {number} width - The width of the status bar.
-     * @property {number} height - The height of the status bar.
-     * @property {string[]} IMAGES - The different images for various states of the status bar.
-     * @property {number} percentage - The current percentage of the status bar.
-     */
     width = 250;
     height = 30;
     IMAGES = [
@@ -23,7 +17,6 @@ class Statusbar extends DrawableObject {
         './img/status.img/full_range_hp_bar_90.webp',
         './img/status.img/full_range_hp_bar_100.webp',
     ];
-  
     percentage = 100;
   
     /**

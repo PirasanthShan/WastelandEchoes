@@ -6,22 +6,11 @@
  * @extends {MovableObject}
  */
 class Enemie extends MovableObject {
-  /** @type {number} Vertical position of the enemy. */
   y = 260;
-
-  /** @type {number} Height of the enemy. */
   height = 160;
-
-  /** @type {number} Width of the enemy. */
   width = 160;
-
-  /** @type {boolean} Indicates whether the enemy is dead. */
   isDead = false;
-
-  /** @type {boolean} Indicates whether sound is enabled for the enemy. */
   soundEnabled = false;
-
-  /** @type {string[]} Image paths for the walking animation. */
   IMAGES_WALKING = [
     'img/enemies.img/zombie1.img/run.img/Run_Frame_2.webp',
     'img/enemies.img/zombie1.img/run.img/Run_Frame_3.webp',
@@ -31,16 +20,12 @@ class Enemie extends MovableObject {
     'img/enemies.img/zombie1.img/run.img/Run_Frame_7.webp',
     'img/enemies.img/zombie1.img/run.img/Run_Frame_8.webp',
   ];
-
-  /** @type {string[]} Image paths for the attack animation. */
   IMAGES_ATTACK = [
     'img/enemies.img/zombie1.img/attack.img/Rotated_Frame_1.webp',
     'img/enemies.img/zombie1.img/attack.img/Rotated_Frame_1.webp',
     'img/enemies.img/zombie1.img/attack.img/Rotated_Frame_1.webp',
     'img/enemies.img/zombie1.img/attack.img/Rotated_Frame_1.webp',
   ];
-
-  /** @type {string[]} Image paths for the death animation. */
   IMAGES_DEAD = [
     './img/enemies.img/zombie1.img/dead.img/Flipped_Dead_Frame_1.webp',
     './img/enemies.img/zombie1.img/dead.img/Flipped_Dead_Frame_2.webp',
@@ -48,11 +33,7 @@ class Enemie extends MovableObject {
     './img/enemies.img/zombie1.img/dead.img/Flipped_Dead_Frame_4.webp',
     './img/enemies.img/zombie1.img/dead.img/Flipped_Dead_Frame_5.webp',
   ];
-
-  /** @type {Audio} Sound played when the enemy is walking. */
   walking_sound;
-
-  /** @type {Audio} Sound played when the enemy dies. */
   dead_sound;
 
   /**

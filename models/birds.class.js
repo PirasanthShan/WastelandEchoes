@@ -14,8 +14,8 @@ class Bird extends MovableObject {
   constructor() {
     super();
     this.loadImage('./img/bird1.webp');
-    this.resetPosition(); // Resets the bird's starting position
-    this.animate();       // Starts the bird's animation (movement)
+    this.resetPosition(); 
+    this.animate();       
   }
 
   /**
@@ -24,9 +24,9 @@ class Bird extends MovableObject {
    * and a random speed.
    */
   resetPosition() {
-    this.x = 3000; // Starts outside the canvas (right)
-    this.y = 20 + Math.random() * 60; // Random height within a range (between 20 and 80)
-    this.speed = 1 + Math.random() * 2; // Random speed between 1 and 3
+    this.x = 3000; 
+    this.y = 20 + Math.random() * 60; 
+    this.speed = 1 + Math.random() * 2; 
   }
 
   /**
@@ -36,12 +36,10 @@ class Bird extends MovableObject {
    */
   animate() {
     setInterval(() => {
-      this.x -= this.speed; // Moves the bird to the left
-
-      // Checks if the bird has left the canvas (left)
+      this.x -= this.speed; 
       if (this.x + this.width < 0) {
-        this.resetPosition(); // Resets the position if the bird is no longer visible
+        this.resetPosition(); 
       }
-    }, 1000 / 60); // Animation interval: 60 FPS for smooth movement
+    }, 1000 / 60);
   }
 }

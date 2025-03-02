@@ -202,16 +202,12 @@ class Character extends MovableObject {
       const isJumping = this.world.keyboard.UP && !this.isAboveGround();
       const isMovingRight = this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
       const isMovingLeft = this.world.keyboard.LEFT && this.x > 0;
-     if (isJumping) {
-        this.handleJump();
-      }
-      if (this.isAboveGround()) {
-        this.handleAirborne();
-      }
+      if (isJumping) {this.handleJump();}
+      if (this.isAboveGround()) {this.handleAirborne();}
       this.handleMovement(isMovingRight, isMovingLeft);
       this.updateCameraPosition();
-    }, 1000 / 100);
-    this.startAnimationLoop();
+      }, 1000 / 100);
+      this.startAnimationLoop();
   }
 
   /**
@@ -230,38 +226,56 @@ class Character extends MovableObject {
     this.stopSound(this.walking_sound);
   }
 
-  /**
-   * Handles the character's lateral movement.
-   * @param {boolean} isMovingRight - Indicates whether the character is moving right.
-   * @param {boolean} isMovingLeft - Indicates whether the character is moving left.
+    
+    /**
+   * Handles character movement based on input direction.
+   * Stops movement sound if the character is dead.
+   * 
+   * @param {boolean} isMovingRight - Indicates if the character is moving right.
+   * @param {boolean} isMovingLeft - Indicates if the character is moving left.
    */
   handleMovement(isMovingRight, isMovingLeft) {
     if (this.isDead()) {
-      this.stopSound(this.walking_sound);
-      return;
+        this.stopSound(this.walking_sound);
+        return;
     }
-    if (isMovingRight) {
-      this.moveRight();
-      this.otherDirection = false;
-      if (!this.isAboveGround()) {
-        this.playSound(this.walking_sound);
-      } else {
-        this.stopSound(this.walking_sound);
-      }
-    } else if (isMovingLeft) {
-      this.moveLeft();
-      this.otherDirection = true;
-      if (!this.isAboveGround()) {
-        this.playSound(this.walking_sound);
-      } else {
-        this.stopSound(this.walking_sound);
-      }
+
+    if (isMovingRight || isMovingLeft) {
+        this.moveCharacter(isMovingRight);
     } else {
-      this.stopSound(this.walking_sound);
+        this.stopSound(this.walking_sound);
     }
   }
 
   /**
+  * Moves the character in the specified direction and updates its orientation.
+  * 
+  * @param {boolean} isMovingRight - Determines if the character moves right.
+  */
+  moveCharacter(isMovingRight) {
+    if (isMovingRight) {
+        this.moveRight();
+        this.otherDirection = false;
+    } else {
+        this.moveLeft();
+        this.otherDirection = true;
+    }
+
+    this.handleWalkingSound();
+  }
+
+  /**
+  * Handles the walking sound based on whether the character is above ground.
+  */
+  handleWalkingSound() {
+    if (!this.isAboveGround()) {
+        this.playSound(this.walking_sound);
+    } else {
+        this.stopSound(this.walking_sound);
+    }
+  }
+
+ /**
    * Updates the camera position based on the character's position.
    */
   updateCameraPosition() {
@@ -278,19 +292,11 @@ class Character extends MovableObject {
   startAnimationLoop() {
     setInterval(() => {
       if (!this.world || !this.world.isGameRunning) return;
-      if (this.isDead()) {
-        this.handleDeathAnimation();
-        return;
-      }
-      if (this.isHurt()) {
-        this.handleHurtAnimation();
-      } else if (this.isAboveGround()) {
-        this.handleJumpingAnimation();
-      } else if (this.isAttacking) {
-        this.handleAttackingAnimation();
-      } else {
-        this.handleMovementAnimation();
-      }
+      if (this.isDead()) {this.handleDeathAnimation();return;}
+      if (this.isHurt()) {this.handleHurtAnimation();} 
+      else if (this.isAboveGround()) {this.handleJumpingAnimation();} 
+      else if (this.isAttacking) {this.handleAttackingAnimation();} 
+      else {this.handleMovementAnimation();}
     }, 90);
   }
 

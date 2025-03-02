@@ -3,14 +3,6 @@
  * This object plays background music when the character is nearby.
  */
 class LastCollectible extends MovableObject {
-    /**
-     * @property {number} width - The width of the collectible object.
-     * @property {number} height - The height of the collectible object.
-     * @property {boolean} musicPlayed - Indicates whether the music has already been played.
-     * @property {boolean} isMusicPaused - Indicates whether the music is paused.
-     * @property {boolean} isMuted - Indicates whether the music is muted.
-     * @property {Audio} music - The audio instance for the background music.
-     */
     width = 250;
     height = 250;
     musicPlayed = false;
@@ -38,24 +30,27 @@ class LastCollectible extends MovableObject {
             this.playMusic();
         }
     }
-
+    
     /**
-     * Creates the audio instance and starts the background music if the object is visible.
+     * Creates the audio instance and registers it in the global SoundManager.
      */
-    playMusic() {
+    initializeMusic() {
         if (!this.music) {
             this.music = new Audio('./audio/spaceEngine_000.mp3');
             this.music.volume = 0.05;
             this.music.loop = true;
-            // Register the music in the global SoundManager,
-            // so it is automatically stopped when pausing the game
-            if (window.world && window.world.soundManager) {
+            if (window.world?.soundManager) {
                 window.world.soundManager.registerSound(this.music);
             }
         }
+    }
 
+    /**
+     * Starts or resumes the background music if it is not muted.
+     */
+    playMusic() {
+        this.initializeMusic();
         if (this.isMuted) return;
-
         if (this.isMusicPaused) {
             this.resumeMusic();
         } else if (this.music.paused) {

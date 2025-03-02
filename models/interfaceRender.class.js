@@ -48,18 +48,13 @@ class InterfaceRender {
    */
   addSoundButtonListener() {
     document.getElementById('soundButton').addEventListener('click', () => {
-      // Use the SoundManager to toggle the mute state
       this.world.soundManager.toggleMute();
-
-      // Update the mute state for all relevant objects
       this.toggleBackgroundMusic();
       this.toggleObjectMute(this.world.character);
       this.toggleGroupMute(this.world.enemies);
       this.toggleGroupMute(this.world.throwableObjects);
       this.toggleObjectMute(this.world.endboss);
       this.toggleObjectMute(this.world.lastCollectible);
-
-      // Update the sound button icon
       this.updateSoundButtonIcon();
     });
   }
@@ -69,7 +64,7 @@ class InterfaceRender {
    */
   toggleBackgroundMusic() {
     if (this.world.backgroundMusic) {
-      this.world.backgroundMusic.muted = this.world.soundManager.isMuted; // Use the mute state from the SoundManager
+      this.world.backgroundMusic.muted = this.world.soundManager.isMuted; 
     }
   }
 
@@ -80,7 +75,7 @@ class InterfaceRender {
    */
   toggleObjectMute(object) {
     if (object && typeof object.toggleMute === 'function') {
-      object.toggleMute(this.world.soundManager.isMuted); // Use the mute state from the SoundManager
+      object.toggleMute(this.world.soundManager.isMuted); 
     }
   }
 
@@ -97,7 +92,7 @@ class InterfaceRender {
    * Updates the sound button icon based on the current mute state.
    */
   updateSoundButtonIcon() {
-    const isMuted = this.world.soundManager.isMuted; // Get the mute state from the SoundManager
+    const isMuted = this.world.soundManager.isMuted; 
     document.getElementById('soundButton').src = isMuted ? './img/soundoff.webp' : './img/soundon.webp';
   }
 
@@ -110,8 +105,7 @@ class InterfaceRender {
     fullscreenButton.addEventListener('click', () => {
       this.toggleFullscreen();
     });
-
-    this.observeAlertBomb();
+   this.observeAlertBomb();
   }
 
   /**
@@ -243,30 +237,9 @@ class InterfaceRender {
    * Renders the You Win screen.
    */
   renderYouWin() {
-    // Wendet den aktuellen globalen Mute-Zustand an
-    this.world.soundManager.applyMuteState();
-    if (this.world.character && typeof this.world.character.toggleMute === 'function') {
-      this.world.character.toggleMute(true);
-    }
-    if (this.world.endboss && typeof this.world.endboss.toggleMute === 'function') {
-      this.world.endboss.toggleMute(true);
-      if (typeof this.world.endboss.stopAllSounds === 'function') {
-        this.world.endboss.stopAllSounds();
-      }
-    }
-  
-    // Nur die Win-Musik initialisieren und abspielen, wenn global nicht gemutet ist.
-    if (!window.world.soundManager.isMuted) {
-      this.setupWinMusic();
-      this.playWinMusic();
-    } else {
-      // Falls gemutet, sicherstellen, dass Win-Musik gestoppt bleibt
-      if (this.winMusic) {
-        this.winMusic.pause();
-        this.winMusic.currentTime = 0;
-      }
-    }
-  
+    this.handleMuteState();
+    this.handleWinMusic();
+
     this.container.innerHTML += `
       <div class="youWin">
         <h3>Congratulations, You Win!</h3>
@@ -276,16 +249,46 @@ class InterfaceRender {
         </div>
       </div>
     `;
-  
-    setTimeout(() => { // Delay to ensure the element exists
-      document.getElementById('restartButtonWin')?.addEventListener('click', () => {
-        if (window.world) window.world.restartGame();
-      });
+
+    setTimeout(() => { 
+        document.getElementById('restartButtonWin')?.addEventListener('click', () => {
+            if (window.world) window.world.restartGame();
+        });
     }, 100);
   }
-  
 
   /**
+  * Handles muting of all sounds related to the character and endboss.
+  */
+  handleMuteState() {
+    this.world.soundManager.applyMuteState();
+    
+    if (this.world.character?.toggleMute) {
+        this.world.character.toggleMute(true);
+    }
+    
+    if (this.world.endboss?.toggleMute) {
+        this.world.endboss.toggleMute(true);
+        this.world.endboss.stopAllSounds?.();
+    }
+  }
+
+  /**
+  * Manages the background music when the player wins.
+  */
+  handleWinMusic() {
+    if (!window.world.soundManager.isMuted) {
+        this.setupWinMusic();
+        this.playWinMusic();
+    } else {
+        if (this.winMusic) {
+            this.winMusic.pause();
+            this.winMusic.currentTime = 0;
+        }
+    }
+  }
+
+ /**
    * Renders the Game Over screen.
    */
   renderGameOver() {
@@ -391,23 +394,20 @@ class InterfaceRender {
    */
   addButtonListener(selector, key) {
     const button = document.querySelector(selector);
-    if (!button) return; // If the button doesn't exist, abort
+    if (!button) return; 
     const setKeyState = (state) => {
       button.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        this.world.keyboard[key] = state;
-      }, { passive: true });
-
+        this.world.keyboard[key] = state;}, 
+        { passive: true });
       button.addEventListener('touchend', (e) => {
         e.preventDefault();
         this.world.keyboard[key] = state;
       }, { passive: true });
     };
-
-    setKeyState(true); // Touchstart
-    setKeyState(false); // Touchend
-
-    // Prevent the context menu (right-click on touch devices)
-    button.addEventListener('contextmenu', (e) => e.preventDefault(), { passive: true });
+   setKeyState(true); 
+   setKeyState(false); 
+   button.addEventListener('contextmenu', (e) => e.preventDefault(), { passive: true });
   }
+
 }
