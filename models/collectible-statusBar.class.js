@@ -40,9 +40,9 @@ class CollectibleBar extends MovableObject {
    * @param {number} count - The current bomb count.
    */
   setBombs(count) {
-    count = Math.max(0, Math.min(count, 10)); // Limit the value between 0 and 10
+    count = Math.max(0, Math.min(count, 10)); 
     const imageIndex = Math.min(count, this.IMAGES.length - 1);
-    this.img = this.imageCache[this.IMAGES[imageIndex]]; // Update the displayed image
+    this.img = this.imageCache[this.IMAGES[imageIndex]]; 
   }
 
   /**

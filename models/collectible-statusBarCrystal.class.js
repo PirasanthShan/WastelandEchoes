@@ -41,7 +41,7 @@ class CollectibleBarCrystal extends MovableObject {
    */
   setCrystals(count) {
     if (count > 0 && count <= this.IMAGES.length) {
-      this.loadImage(this.IMAGES[count - 1]); // Load the appropriate image
+      this.loadImage(this.IMAGES[count - 1]); 
     }
   }
 }

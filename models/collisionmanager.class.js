@@ -11,7 +11,7 @@ class CollisionManager {
    * @param {World} world - The instance of the game world containing all relevant objects.
    */
   constructor(world) {
-    this.world = world; // Reference to the `World` instance
+    this.world = world; 
   }
 
   /**

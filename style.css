@@ -528,15 +528,15 @@ img {
 .impressum{
   margin-left: 50px;
   margin-right: 50px;
-  margin-top: 150px;
+  margin-top: 110px;
 }
 
 .impressum h4{
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .impressum p{
-  font-size: 15px;
+  font-size: 10px;
 }
 
 .impressum h5{
@@ -654,6 +654,11 @@ img {
     
   }
 
+  .toggleMusicimg img {
+    width: 30px;
+    height: 30px;
+  }
+
   span{
     font-size: 15px;
   }
@@ -664,7 +669,7 @@ img {
   }
   
   .impressum p {
-    font-size: 7px;
+    font-size: 5px;
   }
 
   .impressum {
@@ -672,14 +677,14 @@ img {
     }
 
   .impressum h4, .impressum h5 {
-    font-size: 18px;
+    font-size: 10px;
   }
 
   h2 {
     display: none;}
 
     .homeBtn {
-    margin-top: 5px;
+    margin-top: 2px;
     gap: 10px;
   }
 

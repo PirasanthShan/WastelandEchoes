@@ -169,17 +169,13 @@ class EnemieSnakePurple extends MovableObject {
   playDeadAnimation(onComplete) {
     this.isDead = true;
     this.stopSound();
-    if (!window.world.soundManager.isMuted) {
-      this.dead_sound.play().catch(() => {});
-    }
+    if (!window.world.soundManager.isMuted) {this.dead_sound.play().catch(() => {});}
     let frameIndex = 0;
     const deadAnimationInterval = setInterval(() => {
-      this.img = this.imageCache[this.IMAGES_DEAD[frameIndex++]];
-      if (frameIndex >= this.IMAGES_DEAD.length) {
-        clearInterval(deadAnimationInterval);
-        setTimeout(() => {
-          if (onComplete) onComplete();
-          if (this.world) this.world.removeEnemy(this);
+    this.img = this.imageCache[this.IMAGES_DEAD[frameIndex++]];
+    if (frameIndex >= this.IMAGES_DEAD.length) {clearInterval(deadAnimationInterval);
+    setTimeout(() => { if (onComplete) onComplete();
+    if (this.world) this.world.removeEnemy(this);
         }, 2000);
       }
     }, 1000 / 7);

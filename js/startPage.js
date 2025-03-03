@@ -43,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('isMuted', 'false');
       backgroundMusic.muted = false;
       backgroundMusic.play().catch(() => {});
-      musicButton.innerHTML = '<img src="img/soundon.webp" alt="Sound On">';
+      musicButton.innerHTML = '<img class="toggleMusicimg" src="img/soundon.webp" alt="Sound On">';
     } else {
       localStorage.setItem('isMuted', 'true');
       backgroundMusic.pause();
-      musicButton.innerHTML = '<img src="img/soundoff.webp" alt="Sound Off">';
+      musicButton.innerHTML = '<img class="toggleMusicimg" src="img/soundoff.webp" alt="Sound Off">';
     }
   }
 

@@ -200,7 +200,7 @@ class World {
     this.intervals.push(setInterval(() => {
       if (!this.isGameRunning) return;
       this.throwManager.checkThrowObjects();
-    }, 150));
+    }, 150 ));
   }
 
   /**

@@ -3,15 +3,7 @@
  * Inherits from DrawableObject.
  */
 class MovableObject extends DrawableObject {
-    /**
-     * @property {number} speed - The speed of the object.
-     * @property {boolean} otherDirection - Determines if the object is moving in the opposite direction.
-     * @property {number} speedY - Vertical speed for jumping.
-     * @property {number} acceleration - Acceleration affecting vertical movement.
-     * @property {number} energy - The energy value of the object.
-     * @property {number} lastHit - Timestamp of the last hit taken.
-     */
-    speed = 0.20;
+   speed = 0.20;
     otherDirection = false;
     speedY = 0;
     acceleration = 2;
