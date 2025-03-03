@@ -115,11 +115,9 @@ class InterfaceRender {
     document.getElementById('restartButton')?.addEventListener('click', () => {
       if (window.world) window.world.restartGame();
     });
-
     document.getElementById('restartButtonWin')?.addEventListener('click', () => {
       if (window.world) window.world.restartGame();
     });
-
     document.getElementById('restartButtonGameOver')?.addEventListener('click', () => {
       if (window.world) window.world.restartGame();
     });
@@ -134,8 +132,6 @@ class InterfaceRender {
     });
   }
   
-  
-
   /**
    * Toggles fullscreen mode on or off.
    */
@@ -143,7 +139,6 @@ class InterfaceRender {
     const canvas = document.querySelector('canvas');
     const controllBtn = document.querySelector('.controllBtn');
     this.isFullscreen = !this.isFullscreen;
-
     canvas.classList.toggle("fullscreen", this.isFullscreen);
     controllBtn.classList.toggle("fullscreen", this.isFullscreen);
     document.getElementById('fullscreenButton').src = this.isFullscreen ? './img/smallscreen.webp' : './img/fullscreen.webp';
@@ -262,12 +257,10 @@ class InterfaceRender {
   */
   handleMuteState() {
     this.world.soundManager.applyMuteState();
-    
-    if (this.world.character?.toggleMute) {
+     if (this.world.character?.toggleMute) {
         this.world.character.toggleMute(true);
-    }
-    
-    if (this.world.endboss?.toggleMute) {
+       }
+     if (this.world.endboss?.toggleMute) {
         this.world.endboss.toggleMute(true);
         this.world.endboss.stopAllSounds?.();
     }
@@ -305,9 +298,7 @@ class InterfaceRender {
     `;
   }
 
-  /**
-   * Renders a warning message for bombs or crystals.
-   *
+   /**
    * @param {string} [type='bomb'] - The type of warning message ('bomb' or 'crystals').
    */
   renderAlertBomb(type = 'bomb') {
@@ -317,7 +308,6 @@ class InterfaceRender {
       alertDiv.classList.add('alertBomb');
       this.container.appendChild(alertDiv);
     }
-
     if (type === 'crystals') {
       alertDiv.innerHTML = `
         Collect all Echoes to proceed to the spaceship!
@@ -386,9 +376,7 @@ class InterfaceRender {
     this.addButtonListener('.phoneControllBtn .bombimg[src="./img/bomb2.webp"]', 'SPACE');
   }
 
-  /**
-   * Adds an event listener to a button.
-   *
+   /**
    * @param {string} selector - The CSS selector for the button.
    * @param {string} key - The key to simulate.
    */
@@ -407,7 +395,5 @@ class InterfaceRender {
     };
    setKeyState(true); 
    setKeyState(false); 
-   button.addEventListener('contextmenu', (e) => e.preventDefault(), { passive: true });
-  }
-
+   button.addEventListener('contextmenu', (e) => e.preventDefault(), { passive: true });}
 }
