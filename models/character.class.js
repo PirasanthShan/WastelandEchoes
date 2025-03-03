@@ -387,6 +387,6 @@ class Character extends MovableObject {
         this.isAnimationPlaying = false;
         if (callback) callback();
       }
-    }, 1000 / 25); // 25 FPS for the death animation
+    }, 1000 / 25); 
   }
 }

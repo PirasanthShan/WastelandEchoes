@@ -52,7 +52,6 @@ function init() {
  * @param {KeyboardEvent} e - The keyboard event.
  */
 window.addEventListener("keydown", (e) => {
-  // Process key presses only if the game is running
   if (typeof world === "undefined" || !world?.isGameRunning) return;
 
   switch (e.key) {

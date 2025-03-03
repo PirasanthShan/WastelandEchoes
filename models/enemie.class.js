@@ -45,17 +45,13 @@ class Enemie extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
-
     this.x = 550 + Math.random() * 800;
     this.speed = 0.30 + Math.random() * 0.70;
-
     this.walking_sound = new Audio(`./audio/Zombie.mp3?nocache=${Date.now()}`);
     this.walking_sound.volume = 0.02;
     this.walking_sound.loop = true;
-
     this.dead_sound = new Audio(`./audio/zombieDead.mp3?nocache=${Date.now()}`);
     this.dead_sound.volume = 0.07;
-
     this.setupUserInteraction();
   }
 

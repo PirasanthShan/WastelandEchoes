@@ -50,18 +50,13 @@ class EnemieSnakePurple extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
-
     this.x = 1750;
     this.speed = 1;
-
-    // Initialize sounds
     this.walking_sound = new Audio(`./audio/snakeWalk.mp3?nocache=${Date.now()}`);
     this.walking_sound.volume = 0.02;
     this.walking_sound.loop = true;
-
     this.dead_sound = new Audio(`./audio/snakeDead.mp3?nocache=${Date.now()}`);
     this.dead_sound.volume = 0.05;
-
     this.animate();
   }
 
